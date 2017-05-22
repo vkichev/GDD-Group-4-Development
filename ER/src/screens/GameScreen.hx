@@ -4,6 +4,7 @@ import openfl.Assets;
 import openfl.events.Event;
 import openfl.display.Sprite;
 import openfl.Lib;
+//import src.*;
 import sys.db.Sqlite;
 import sys.db.Connection;
 import sys.db.ResultSet;
@@ -28,11 +29,13 @@ class GameScreen extends Screen
 
 	var pos : Int = 20;
 	var pos2 : Int = 20;
+	
+	var players:Array<Player> = new Array<Player>();
+	var cardsInHand:StaffCard;
 
 	public function new()
 	{
 		super();
-
 	}
 
 	override public function onLoad():Void
@@ -44,21 +47,47 @@ class GameScreen extends Screen
 			Assets.getBitmapData("img/Button_pressed.png"), 
 			"quit", 
 			onQuitClick );
-
+		
 		toMenu.x = (stage.stageWidth-toMenu.width) / 2;
 		toMenu.y = stage.stageHeight / 3;
 		addChild( toMenu );
-
-		//createStaff();
+		
+		//
+		
+		createStaff();
 		readFromDataBase();
 		
+		shuffleDeck(patientDeck);
+		shuffleDeck(toolDeck);
+		shuffleDeck(staffDeck);
+		
+		createHand();
+		
 	}
-
+	
+	function createHand()
+	{
+		var card : StaffCard;
+		
+		for (i in 1...5)
+		{
+			var player = new Player(i);
+			players.push(player);
+			
+			for (i in 0...4)
+			{
+				var card = staffDeck.pop();
+				trace(staffDeck.length);
+				player.addCard(card);
+			}
+			addChild(player);
+		}
+	}
+	
 	function createStaff()
 	{
 		type = ["N", "D", "H", "M", "ALL"];
 		value = [1, 2, 3, 4, 5];
-
 		for (i in 0...2)
 		{
 			for (tp in type)
@@ -67,24 +96,29 @@ class GameScreen extends Screen
 				{
 					var imgname : String = "img/Staff_" + tp + "_" + val + ".png";
 					stCard = new StaffCard(tp, val, imgname);
-					addChild(stCard);
-					//stCard.x = pos;
-					//stCard.y = 100;
-					//pos = pos + 33;
 					staffDeck.push(stCard);
 				}
 			}
 		}
-
+		
 		for (val in value)
 		{
 			var imgname : String = "img/Staff_" + "ALL" + "_" + val + ".png";
 			stCard = new StaffCard("ALL", val, imgname);
-			//sCard.x = pos2;
-			//sCard.y = 300;
-			addChild(stCard);
-			//pos2 = pos2 + 33;
 			staffDeck.push(stCard);
+		}
+	}
+	
+	function shuffleDeck(deck : Dynamic)
+	{
+		var n:Int = deck.length;
+		
+		for (i in 0...n )
+		{
+			var change:Int = i + Math.floor( Math.random() * (n - i) );
+			var tempCard = deck[i];
+			deck[i] = deck[change];
+			deck[change] = tempCard;
 		}
 	}
 
@@ -99,19 +133,9 @@ class GameScreen extends Screen
 			for (row in resultset)
 			{
 				var patient : PatientCard = new PatientCard(row.imgID, row.doctor, row.nurse, row.management, row.healthcare, row.equipment, row.reward);
-
-				trace("read " + patient.imgID);
-
 				patientDeck.push(patient);
-
-				trace("length " + patientDeck.length);
-
-				addChild(patient);
-				patient.x = pos + 40;
-				pos = pos + 50;
-				patient.y = 300;
 			}
-
+			
 			if ( i == 16)
 			{
 				patientdat.close();
@@ -128,18 +152,7 @@ class GameScreen extends Screen
 			for (row in resultset)
 			{
 				var tool : ToolCard = new ToolCard(row.imgID, row.doctor, row.nurse, row.management, row.healthcare);
-				trace("read" + row.imgID);
-
 				toolDeck.push(tool);
-
-				trace("length " + toolDeck.length);
-
-				addChild(tool);
-
-				tool.x = pos2 + 30;
-				pos2 = pos2 + 60;
-				tool.y = 70;
-
 			}
 
 			if ( e == 6)
