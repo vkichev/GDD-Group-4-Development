@@ -106,10 +106,23 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
+		
+		
+		
+		openfl.text.Font.registerFont (__ASSET__OPENFL__fonts_retro_computer_demo_ttf);
+		
+		
 		#end
 		
 		#if flash
 		
+		path.set ("img/Button.png", "img/Button.png");
+		type.set ("img/Button.png", AssetType.IMAGE);
+		path.set ("img/Button_over.png", "img/Button_over.png");
+		type.set ("img/Button_over.png", AssetType.IMAGE);
+		path.set ("img/Button_pressed.png", "img/Button_pressed.png");
+		type.set ("img/Button_pressed.png", AssetType.IMAGE);
 		path.set ("img/Patient_1.png", "img/Patient_1.png");
 		type.set ("img/Patient_1.png", AssetType.IMAGE);
 		path.set ("img/Patient_10.png", "img/Patient_10.png");
@@ -202,11 +215,28 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("img/Tool_E.png", AssetType.IMAGE);
 		path.set ("db/patientdata.db", "db/patientdata.db");
 		type.set ("db/patientdata.db", AssetType.BINARY);
+		path.set ("fonts/Retro Computer_DEMO.eot", "fonts/Retro Computer_DEMO.eot");
+		type.set ("fonts/Retro Computer_DEMO.eot", AssetType.BINARY);
+		path.set ("fonts/Retro Computer_DEMO.svg", "fonts/Retro Computer_DEMO.svg");
+		type.set ("fonts/Retro Computer_DEMO.svg", AssetType.TEXT);
+		path.set ("fonts/Retro Computer_DEMO.ttf", "fonts/Retro Computer_DEMO.ttf");
+		type.set ("fonts/Retro Computer_DEMO.ttf", AssetType.FONT);
+		path.set ("fonts/Retro Computer_DEMO.woff", "fonts/Retro Computer_DEMO.woff");
+		type.set ("fonts/Retro Computer_DEMO.woff", AssetType.BINARY);
 		
 		
 		#elseif html5
 		
 		var id;
+		id = "img/Button.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
+		id = "img/Button_over.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
+		id = "img/Button_pressed.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
 		id = "img/Patient_1.png";
 		path.set (id, id);
 		type.set (id, AssetType.IMAGE);
@@ -345,6 +375,18 @@ class DefaultAssetLibrary extends AssetLibrary {
 		id = "db/patientdata.db";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
+		id = "fonts/Retro Computer_DEMO.eot";
+		path.set (id, id);
+		type.set (id, AssetType.BINARY);
+		id = "fonts/Retro Computer_DEMO.svg";
+		path.set (id, id);
+		type.set (id, AssetType.TEXT);
+		id = "fonts/Retro Computer_DEMO.ttf";
+		path.set (id, id);
+		type.set (id, AssetType.FONT);
+		id = "fonts/Retro Computer_DEMO.woff";
+		path.set (id, id);
+		type.set (id, AssetType.BINARY);
 		
 		
 		var assetsPrefix = null;
@@ -407,6 +449,15 @@ class DefaultAssetLibrary extends AssetLibrary {
 		useManifest = true;
 		useManifest = true;
 		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		
+		className.set ("fonts/Retro Computer_DEMO.ttf", __ASSET__fonts_retro_computer_demo_ttf);
+		type.set ("fonts/Retro Computer_DEMO.ttf", AssetType.FONT);
 		useManifest = true;
 		
 		
@@ -1094,6 +1145,13 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
+
+
+
+
+
+
 #elseif html5
 
 
@@ -1144,8 +1202,16 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
+
+
+@:keep #if display private #end class __ASSET__fonts_retro_computer_demo_ttf extends lime.text.Font { public function new () { super (); name = "Retro Computer"; } } 
+
+
+
 #else
 
+@:keep #if display private #end class __ASSET__fonts_retro_computer_demo_ttf extends lime.text.Font { public function new () { __fontPath = #if (ios || tvos) "assets/" + #end "fonts/Retro Computer_DEMO.ttf"; name = "Retro Computer"; super (); }}
 
 
 #if (windows || mac || linux || cpp)
@@ -1158,6 +1224,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 #end
 
 #if (openfl && !flash)
+@:keep #if display private #end class __ASSET__OPENFL__fonts_retro_computer_demo_ttf extends openfl.text.Font { public function new () { __fontPath = #if (ios || tvos) "assets/" + #end "fonts/Retro Computer_DEMO.ttf"; name = "Retro Computer"; super (); }}
 
 #end
 

@@ -1,138 +1,82 @@
 package;
 
 import openfl.display.Sprite;
-import openfl.Lib;
-import sys.db.Sqlite;
-import sys.db.Connection;
-import sys.db.ResultSet;
 
+import screens.*;
 
 /**
- * ...
- * @author Rutger Regtop
+ * Demonstrates a way to devide up an application into seperate screens represented by their own class.
+ *
+ * This Main class is a Singleton
  */
 class Main extends Sprite 
 {
 
-	var patientDeck : Array<PatientCard> = [];
-	var toolDeck : Array<ToolCard> = [];
-	var staffDeck : Array<StaffCard> = [];
+	// which screen is visible/active now
+	private var currentScreen:Screen;
 
-	var stCard : StaffCard;
-	var pCard1 : PatientCard;
+	// the static variable pointing to the instance of this class
+	// see http://haxe.org/manual/class-field-property.html for the access modifiers
+	public static var instance(get, null):Main;
 
-	var type : Array<String>;
-	var value : Array<Int>;
-
-	var pos : Int = 20;
-	var pos2 : Int = 20;
-
-	
-	
-	public function new() 
+	/** 
+	 * This constructor does not do much...
+	 */
+	private function new () 
 	{
-		super();
-		
-		//createStaff();
-		readFromDataBase();
-		
-
-	}
-	
-	function createStaff()
-	{
-		type = ["N", "D", "H", "M", "ALL"];
-		value = [1, 2, 3, 4, 5];
-
-		for (i in 0...2)
-		{
-			for (tp in type)
-			{
-				for (val in value) 
-				{
-					var imgname : String = "img/Staff_" + tp + "_" + val + ".png";
-					stCard = new StaffCard(tp, val, imgname);
-					addChild(stCard);
-					//stCard.x = pos;
-					//stCard.y = 100;
-					//pos = pos + 33;
-					staffDeck.push(stCard);
-				}
-			}
-		}
-
-		for (val in value)
-		{
-			var imgname : String = "img/Staff_" + "ALL" + "_" + val + ".png";
-			stCard = new StaffCard("ALL", val, imgname);
-			//sCard.x = pos2;
-			//sCard.y = 300;
-			addChild(stCard);
-			//pos2 = pos2 + 33;
-			staffDeck.push(stCard);
-		}
+		super ();
 	}
 
-	function readFromDataBase()
+	/**
+	 * Load a screen.
+	 * If there is a screen active:
+	 * - it is removed first from the display list
+	 * - it's onDestroy function is called to do possible house keeping tasks
+	 *
+	 * Then a check is done for which screen to load, 
+	 *  it is instantitated, added to the display list and it's onLoad function is called.
+	 */
+	public function loadScreen( which:ScreenType )
 	{
-
-		for (i in 1...16 )
+		if( currentScreen != null && contains( currentScreen ) )
 		{
-			var patientdat = Sqlite.open("db/patientdata.db");
-			var resultset = patientdat.request("SELECT * FROM patients WHERE rowid = " + i + ";");
-
-			for (row in resultset)
-			{
-				var patient : PatientCard = new PatientCard(row.imgID, row.doctor, row.nurse, row.management, row.healthcare, row.equipment, row.reward);
-
-				trace("read " + patient.imgID);
-
-				patientDeck.push(patient);
-
-				trace("length " + patientDeck.length);
-
-				addChild(patient);
-				patient.x = pos + 40;
-				pos = pos + 50;
-				patient.y = 300;
-			}
-
-			if ( i == 16)
-			{
-				patientdat.close();
-			}
+			removeChild( currentScreen );
+			currentScreen.onDestroy();
 		}
 
-		//
-
-		for ( e in 1...6 )
+		switch ( which ) 
 		{
-			var patientdat = Sqlite.open( "db/patientdata.db");
-			var resultset = patientdat.request("SELECT * FROM tools WHERE rowid = " + e + ";");
-
-			for (row in resultset)
-			{
-				var tool : ToolCard = new ToolCard(row.imgID, row.doctor, row.nurse, row.management, row.healthcare);
-				trace("read" + row.imgID);
-
-				toolDeck.push(tool);
-
-				trace("length " + toolDeck.length);
-
-				addChild(tool);
-
-				tool.x = pos2 + 30;
-				pos2 = pos2 + 60;
-				tool.y = 70;
-
-			}
-
-			if ( e == 6)
-			{
-				patientdat.close();
-			}
+			case ScreenType.Menu:
+				currentScreen = new MenuScreen();
+			case ScreenType.Game:
+				currentScreen = new GameScreen();
 		}
 
+		addChild( currentScreen );
+		currentScreen.onLoad();
 	}
 
+	/**
+	 * The public access to the private instance variable
+	 *
+	 */
+	public static function get_instance():Main
+	{
+		if( instance == null )
+			instance = new Main();
+
+		return instance;
+	}
+
+	/**
+	 * The static function main is first called by the OpenFL framework
+	 * This allows for the actual constructor to be private, living up to the Singleton pattern
+	 */
+	public static function main()
+	{
+		var m:Main = Main.instance;
+		openfl.Lib.current.stage.addChild( m );
+
+		m.loadScreen( ScreenType.Menu );
+	}
 }

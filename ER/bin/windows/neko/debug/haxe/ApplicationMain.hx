@@ -26,7 +26,7 @@ class ApplicationMain {
 		
 		config = {
 			
-			build: "126",
+			build: "130",
 			company: "Rutger Regtop",
 			file: "NewProject",
 			fps: 60,
