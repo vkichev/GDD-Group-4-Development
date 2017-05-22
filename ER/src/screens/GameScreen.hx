@@ -33,6 +33,8 @@ class GameScreen extends Screen
 	var players:Array<Player> = new Array<Player>();
 	var cardsInHand:StaffCard;
 
+	var patientsField : Array<PatientCard> = [];
+
 	public function new()
 	{
 		super();
@@ -49,7 +51,7 @@ class GameScreen extends Screen
 			onQuitClick );
 		
 		toMenu.x = (stage.stageWidth-toMenu.width) / 2;
-		toMenu.y = stage.stageHeight / 3;
+		toMenu.y = 100;
 		addChild( toMenu );
 		
 		//
@@ -62,7 +64,28 @@ class GameScreen extends Screen
 		shuffleDeck(staffDeck);
 		
 		createHand();
+		displayPatients();
 		
+	}
+
+	function displayPatients()
+	{
+		
+		for (i in 0...4)
+		{
+			
+			var card = patientDeck.pop();
+			patientsField.push(card);
+		}
+		var posX : Float = -patientsField.length * patientsField[0].width / 2;
+		for (card in patientsField)
+		{
+			trace(patientDeck.length);
+			addChild(card);
+			card.x = 400 + posX;
+			card.y = 300;
+			posX += card.width + 10;
+		}
 	}
 	
 	function createHand()
@@ -77,7 +100,7 @@ class GameScreen extends Screen
 			for (i in 0...4)
 			{
 				var card = staffDeck.pop();
-				trace(staffDeck.length);
+				//trace(staffDeck.length);
 				player.addCard(card);
 			}
 			addChild(player);

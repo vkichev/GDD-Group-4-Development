@@ -39,6 +39,7 @@ class PatientCard extends Sprite {
 
 		card.x = -card.width / 2;
 		card.y = -card.height / 2;
+		
 
 		addChild(card); 
 
