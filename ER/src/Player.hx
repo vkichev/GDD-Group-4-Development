@@ -4,6 +4,8 @@ import openfl.Assets;
 import screens.*;
 import openfl.display.Sprite;
 import openfl.Lib;
+import openfl.events.MouseEvent;
+import openfl.events.Event;
 
 
 /**
@@ -18,6 +20,8 @@ class Player extends Sprite
 	var selectedCard:StaffCard;
 	var assignedCard:PatientCard;
 	
+	var selected : Array<StaffCard> = [];
+	
 	public function new(i:Int) 
 	{
 		super();
@@ -28,6 +32,33 @@ class Player extends Sprite
 	{
 		cardsInHand.push(card);
 		displayCards();
+		
+		this.addEventListener(MouseEvent.CLICK, playCard);
+		this.addEventListener(MouseEvent.RIGHT_CLICK, deselect);
+	}
+	
+	function deselect(e:Event)
+	{
+		var card : StaffCard = cast (e.target);
+		card.scaleX = card.scaleY = 1;
+		selected.remove(card);
+		trace(selected.length);
+	}
+	
+	function playCard(e:Event)
+	{
+		//if its player's turn
+		var card : StaffCard = cast (e.target);
+		
+		if (selected.length < 1)
+		{
+			selected.push(card);
+			card.scaleX = card.scaleY = 1.2;
+			trace(selected.length);
+		}
+		
+		
+		
 	}
 	
 	public function displayCards()
@@ -49,6 +80,7 @@ class Player extends Sprite
 				card.x = firstPosId1x + posX;
 				card.y = firstPosId1y;
 				posX += card.width + 10;
+				
 			}
 		}
 		if (id == 2)

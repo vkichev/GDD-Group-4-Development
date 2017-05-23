@@ -34,6 +34,8 @@ class GameScreen extends Screen
 	var cardsInHand:StaffCard;
 
 	var patientsField : Array<PatientCard> = [];
+	
+	var playedCards : Map<Player, StaffCard> = new Map<Player, StaffCard>();
 
 	public function new()
 	{
@@ -60,14 +62,27 @@ class GameScreen extends Screen
 		readFromDataBase();
 		
 		shuffleDeck(patientDeck);
-		shuffleDeck(toolDeck);
 		shuffleDeck(staffDeck);
 		
 		createHand();
 		displayPatients();
+		//displayTools();
 		
 	}
 
+	function displayTools()
+	{
+		var posX : Float = -toolDeck.length * toolDeck[0].width / 2;
+		for (card in toolDeck)
+		{
+			addChild(card);
+			card.x = 400 + posX;
+			card.y = 150;
+			posX += card.width + 10;
+		}
+		
+	}
+	
 	function displayPatients()
 	{
 		
@@ -80,7 +95,6 @@ class GameScreen extends Screen
 		var posX : Float = -patientsField.length * patientsField[0].width / 2;
 		for (card in patientsField)
 		{
-			trace(patientDeck.length);
 			addChild(card);
 			card.x = 400 + posX;
 			card.y = 300;
@@ -100,7 +114,6 @@ class GameScreen extends Screen
 			for (i in 0...4)
 			{
 				var card = staffDeck.pop();
-				//trace(staffDeck.length);
 				player.addCard(card);
 			}
 			addChild(player);
@@ -147,7 +160,8 @@ class GameScreen extends Screen
 
 	function readFromDataBase()
 	{
-
+		// patients
+		
 		for (i in 1...16 )
 		{
 			var patientdat = Sqlite.open("db/patientdata.db");
@@ -165,7 +179,7 @@ class GameScreen extends Screen
 			}
 		}
 
-		//
+		// tools 
 
 		for ( e in 1...6 )
 		{
