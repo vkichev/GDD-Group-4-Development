@@ -36,7 +36,9 @@ class GameScreen extends Screen
 	var patientsField : Array<PatientCard> = [];
 	
 	var playedCards : Map<Player, StaffCard> = new Map<Player, StaffCard>();
-
+	
+	var currentTurn : Int = 3;
+	
 	public function new()
 	{
 		super();
@@ -67,6 +69,27 @@ class GameScreen extends Screen
 		createHand();
 		displayPatients();
 		//displayTools();
+		canPlayerPlay();
+		
+	}
+	
+	function canPlayerPlay()
+	{
+		for (player in players)
+		{
+			if (currentTurn == player.id)
+			{
+				trace(player.id + " works");
+				player.turn = true;
+				trace(player.turn);
+			}
+			else
+			{
+				trace(player.id + " no turn");
+				player.turn = false;
+				trace(player.turn);
+			}
+		}
 		
 	}
 

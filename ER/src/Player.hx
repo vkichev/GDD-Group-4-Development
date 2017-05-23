@@ -14,13 +14,15 @@ import openfl.events.Event;
  */
 class Player extends Sprite
 {
-	var id:Int = 0;
+	public var id:Int = 0;
 	var turnPassed:Bool;
 	var cardsInHand:Array<StaffCard> = [];
 	var selectedCard:StaffCard;
 	var assignedCard:PatientCard;
 	
 	var selected : Array<StaffCard> = [];
+	
+	public var turn : Bool; 
 	
 	public function new(i:Int) 
 	{
@@ -47,18 +49,17 @@ class Player extends Sprite
 	
 	function playCard(e:Event)
 	{
-		//if its player's turn
-		var card : StaffCard = cast (e.target);
-		
-		if (selected.length < 1)
+		if ( turn == true)
 		{
-			selected.push(card);
-			card.scaleX = card.scaleY = 1.2;
-			trace(selected.length);
-		}
-		
-		
-		
+			var card : StaffCard = cast (e.target);
+			
+			if (selected.length < 1)
+			{
+				selected.push(card);
+				card.scaleX = card.scaleY = 1.2;
+				trace(selected.length);
+			}
+		}	
 	}
 	
 	public function displayCards()
