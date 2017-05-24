@@ -4,6 +4,7 @@ import openfl.Assets;
 import openfl.events.Event;
 import openfl.display.Sprite;
 import openfl.Lib;
+import openfl.events.MouseEvent;
 //import src.*;
 import sys.db.Sqlite;
 import sys.db.Connection;
@@ -34,9 +35,7 @@ class GameScreen extends Screen
 	var cardsInHand:StaffCard;
 
 	var patientsField : Array<PatientCard> = [];
-	
-	var playedCards : Map<Player, StaffCard> = new Map<Player, StaffCard>();
-	
+		
 	var currentTurn : Int = 3;
 	
 	public function new()
@@ -46,7 +45,6 @@ class GameScreen extends Screen
 
 	override public function onLoad():Void
 	{
-
 		var toMenu:Button = new Button( 
 			Assets.getBitmapData("img/Button.png"), 
 			Assets.getBitmapData("img/Button_over.png"), 
@@ -57,8 +55,6 @@ class GameScreen extends Screen
 		toMenu.x = (stage.stageWidth-toMenu.width) / 2;
 		toMenu.y = 100;
 		addChild( toMenu );
-		
-		//
 		
 		createStaff();
 		readFromDataBase();
@@ -92,6 +88,24 @@ class GameScreen extends Screen
 		}
 		
 	}
+	
+	private function patientClicked():Void
+	{
+		for (player in players)
+		{
+			if (player.turn)
+			{
+				var card : PatientCard = cast (e.target);
+				var staffCard : StaffCard;
+				
+				if (player.selected.length == 1)
+				{
+					staffCard = player.selected.pop();
+					card.assignedCards.push(staffCard);
+				} 
+			}
+		}
+	}
 
 	function displayTools()
 	{
@@ -118,6 +132,7 @@ class GameScreen extends Screen
 		var posX : Float = -patientsField.length * patientsField[0].width / 2;
 		for (card in patientsField)
 		{
+			card.addEventListener(MouseEvent.CLICK, patientClicked);
 			addChild(card);
 			card.x = 400 + posX;
 			card.y = 300;
