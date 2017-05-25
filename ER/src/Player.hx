@@ -20,7 +20,7 @@ class Player extends Sprite
 	var selectedCard:StaffCard;
 	var assignedCard:PatientCard;
 	
-	var selected : Array<StaffCard> = [];
+	public var selected : Array<StaffCard> = [];
 	
 	public var turn : Bool; 
 	
@@ -28,6 +28,12 @@ class Player extends Sprite
 	{
 		super();
 		id = i;
+	}
+	
+	public function removeCard(card:StaffCard)
+	{
+		cardsInHand.remove(card);
+		removeChild(card);
 	}
 	
 	public function addCard(card:StaffCard)

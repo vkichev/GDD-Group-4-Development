@@ -35,7 +35,7 @@ class GameScreen extends Screen
 	var cardsInHand:StaffCard;
 
 	var patientsField : Array<PatientCard> = [];
-		
+	
 	var currentTurn : Int = 3;
 	
 	public function new()
@@ -45,12 +45,14 @@ class GameScreen extends Screen
 
 	override public function onLoad():Void
 	{
-		var toMenu:Button = new Button( 
+		var toMenu:Button = new Button
+		( 
 			Assets.getBitmapData("img/Button.png"), 
 			Assets.getBitmapData("img/Button_over.png"), 
 			Assets.getBitmapData("img/Button_pressed.png"), 
 			"quit", 
-			onQuitClick );
+			onQuitClick 
+		);
 		
 		toMenu.x = (stage.stageWidth-toMenu.width) / 2;
 		toMenu.y = 100;
@@ -89,8 +91,9 @@ class GameScreen extends Screen
 		
 	}
 	
-	private function patientClicked():Void
+	private function patientClicked(e:Event):Void
 	{
+		trace("patient clicked");
 		for (player in players)
 		{
 			if (player.turn)
@@ -101,7 +104,11 @@ class GameScreen extends Screen
 				if (player.selected.length == 1)
 				{
 					staffCard = player.selected.pop();
-					card.assignedCards.push(staffCard);
+					player.removeCard(staffCard);
+					var type : String = staffCard.type;
+					var value : Int = staffCard.num;
+					
+					card.assignStaffCard(type, value);
 				} 
 			}
 		}

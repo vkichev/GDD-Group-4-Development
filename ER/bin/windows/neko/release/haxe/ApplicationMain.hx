@@ -8,25 +8,23 @@ import haxe.macro.Expr;
 #end
 
 @:access(lime.app.Application)
-@:access(lime.Assets)
+@:access(lime.system.System)
 @:access(openfl.display.Stage)
 
 
-class ApplicationMain {
+@:dox(hide) class ApplicationMain {
 	
 	
 	#if !macro
 	
 	
-	public static var config:lime.app.Config;
-	public static var preloader:openfl.display.Preloader;
-	
-	
 	public static function main () {
 		
-		config = {
+		var projectName = "NewProject";
+		
+		var config = {
 			
-			build: "260",
+			build: "9",
 			company: "Rutger Regtop",
 			file: "NewProject",
 			fps: 60,
@@ -38,6 +36,7 @@ class ApplicationMain {
 				
 				{
 					allowHighDPI: false,
+					alwaysOnTop: false,
 					antialiasing: 0,
 					background: 0,
 					borderless: false,
@@ -49,7 +48,7 @@ class ApplicationMain {
 					hidden: #if munit true #else null #end,
 					maximized: null,
 					minimized: null,
-					parameters: "{}",
+					parameters: {},
 					resizable: true,
 					stencilBuffer: true,
 					title: "New Project",
@@ -62,7 +61,9 @@ class ApplicationMain {
 			
 		};
 		
-		#if hxtelemetry
+		lime.system.System.__registerEntryPoint (projectName, create, config);
+		
+		#if (hxtelemetry && !macro)
 		var telemetry = new hxtelemetry.HxTelemetry.Config ();
 		telemetry.allocations = true;
 		telemetry.host = "localhost";
@@ -72,48 +73,40 @@ class ApplicationMain {
 		
 		#if (js && html5)
 		#if (munit || utest)
-		embed (null, 800, 480, "null");
+		lime.system.System.embed (projectName, null, 800, 480, config);
 		#end
 		#else
-		create ();
+		create (config);
 		#end
 		
 	}
 	
 	
-	public static function create ():Void {
+	public static function create (config:lime.app.Config):Void {
 		
 		var app = new openfl.display.Application ();
 		app.create (config);
 		
-		preloader = getPreloader ();
-		preloader.onComplete.add (registerLibrary);
+		ManifestResources.init (config);
+		
+		var preloader = getPreloader ();
 		app.setPreloader (preloader);
-		preloader.onComplete.add (init);
 		preloader.create (config);
+		preloader.onComplete.add (start.bind (app.window.stage));
 		
-		#if (js && html5)
-		var urls = [];
-		var types = [];
-		
-		
-		
-		if (config.assetsPrefix != null) {
+		for (library in ManifestResources.preloadLibraries) {
 			
-			for (i in 0...urls.length) {
-				
-				if (types[i] != lime.Assets.AssetType.FONT) {
-					
-					urls[i] = config.assetsPrefix + urls[i];
-					
-				}
-				
-			}
+			preloader.addLibrary (library);
 			
 		}
 		
-		preloader.load (urls, types);
-		#end
+		for (name in ManifestResources.preloadLibraryNames) {
+			
+			preloader.addLibraryName (name);
+			
+		}
+		
+		preloader.load ();
 		
 		var result = app.exec ();
 		
@@ -124,125 +117,34 @@ class ApplicationMain {
 	}
 	
 	
-	#if (js && html5)
-	@:keep @:expose("lime.embed")
-	public static function embed (element:Dynamic, width:Null<Int> = null, height:Null<Int> = null, background:String = null, assetsPrefix:String = null) {
+	public static function start (stage:openfl.display.Stage):Void {
 		
-		var htmlElement:js.html.Element = null;
-		
-		if (Std.is (element, String)) {
-			
-			htmlElement = cast js.Browser.document.getElementById (cast (element, String));
-			
-		} else if (element == null) {
-			
-			htmlElement = cast js.Browser.document.createElement ("div");
-			
-		} else {
-			
-			htmlElement = cast element;
-			
-		}
-		
-		var color = null;
-		
-		if (background != null && background != "") {
-			
-			background = StringTools.replace (background, "#", "");
-			
-			if (background.indexOf ("0x") > -1) {
-				
-				color = Std.parseInt (background);
-				
-			} else {
-				
-				color = Std.parseInt ("0x" + background);
-				
-			}
-			
-		}
-		
-		if (width == null) {
-			
-			width = 0;
-			
-		}
-		
-		if (height == null) {
-			
-			height = 0;
-			
-		}
-		
-		config.windows[0].background = color;
-		config.windows[0].element = htmlElement;
-		config.windows[0].width = width;
-		config.windows[0].height = height;
-		config.assetsPrefix = assetsPrefix;
-		
-		create ();
-		
-	}
-	
-	
-	@:keep @:expose("openfl.embed")
-	public static function _embed (element:Dynamic, width:Null<Int> = null, height:Null<Int> = null, background:String = null, assetsPrefix:String = null) {
-		
-		embed (element, width, height, background, assetsPrefix);
-		
-	}
-	#end
-	
-	
-	public static function init ():Void {
-		
-		var loaded = 0;
-		var total = 0;
-		var library_onLoad = function (__) {
-			
-			loaded++;
-			
-			if (loaded == total) {
-				
-				start ();
-				
-			}
-			
-		}
-		
-		preloader = null;
-		
-		
-		
-		
-		if (total == 0) {
-			
-			start ();
-			
-		}
-		
-	}
-	
-	
-	private static function registerLibrary ():Void {
-		
-		lime.Assets.registerLibrary ("default", new DefaultAssetLibrary ());
-		
-	}
-	
-	
-	public static function start ():Void {
+		#if flash
 		
 		ApplicationMain.getEntryPoint ();
 		
-		#if !flash
-		openfl.Lib.current.stage.dispatchEvent (new openfl.events.Event (openfl.events.Event.RESIZE, false, false));
+		#else
 		
-		if (openfl.Lib.current.stage.window.fullscreen) {
+		try {
 			
-			openfl.Lib.current.stage.dispatchEvent (new openfl.events.FullScreenEvent (openfl.events.FullScreenEvent.FULL_SCREEN, false, false, true, true));
+			ApplicationMain.getEntryPoint ();
+			
+			stage.dispatchEvent (new openfl.events.Event (openfl.events.Event.RESIZE, false, false));
+			
+			if (stage.window.fullscreen) {
+				
+				stage.dispatchEvent (new openfl.events.FullScreenEvent (openfl.events.FullScreenEvent.FULL_SCREEN, false, false, true, true));
+				
+			}
+			
+		} catch (e:Dynamic) {
+			
+			#if !display
+			stage.__handleError (e);
+			#end
 			
 		}
+		
 		#end
 		
 	}
@@ -278,7 +180,20 @@ class ApplicationMain {
 					
 				} else if (type.constructor != null) {
 					
-					return macro { new DocumentClass (); };
+					return macro {
+						
+						var current = stage.getChildAt (0);
+						
+						if (current == null || !Std.is (current, openfl.display.DisplayObjectContainer)) {
+							
+							current = new openfl.display.MovieClip ();
+							stage.addChild (current);
+							
+						}
+						
+						new DocumentClass (cast current);
+						
+					};
 					
 				} else {
 					
@@ -306,9 +221,12 @@ class ApplicationMain {
 	}
 	
 	
-	#if (neko && !macro)
+	#if !macro
 	@:noCompletion @:dox(hide) public static function __init__ () {
 		
+		var init = lime.app.Application;
+		
+		#if neko
 		// Copy from https://github.com/HaxeFoundation/haxe/blob/development/std/neko/_std/Sys.hx#L164
 		// since Sys.programPath () isn't available in __init__
 		var sys_program_path = {
@@ -333,6 +251,7 @@ class ApplicationMain {
 		loader.addPath (haxe.io.Path.directory (#if (haxe_ver >= 3.3) sys_program_path #else Sys.executablePath () #end));
 		loader.addPath ("./");
 		loader.addPath ("@executable_path/");
+		#end
 		
 	}
 	#end
@@ -345,7 +264,7 @@ class ApplicationMain {
 
 
 @:build(DocumentClass.build())
-@:keep class DocumentClass extends Main {}
+@:keep @:dox(hide) class DocumentClass extends Main {}
 
 
 #else
@@ -361,19 +280,19 @@ class DocumentClass {
 		
 		while (searchTypes != null) {
 			
-			if (searchTypes.pack.length == 2 && searchTypes.pack[1] == "display" && searchTypes.name == "DisplayObject") {
+			if (searchTypes.module == "openfl.display.DisplayObject" || searchTypes.module == "flash.display.DisplayObject") {
 				
 				var fields = Context.getBuildFields ();
 				
 				var method = macro {
 					
-					openfl.Lib.current.addChild (this);
+					current.addChild (this);
 					super ();
 					dispatchEvent (new openfl.events.Event (openfl.events.Event.ADDED_TO_STAGE, false, false));
 					
 				}
 				
-				fields.push ({ name: "new", access: [ APublic ], kind: FFun({ args: [], expr: method, params: [], ret: macro :Void }), pos: Context.currentPos () });
+				fields.push ({ name: "new", access: [ APublic ], kind: FFun({ args: [ { name: "current", opt: false, type: macro :openfl.display.DisplayObjectContainer, value: null } ], expr: method, params: [], ret: macro :Void }), pos: Context.currentPos () });
 				
 				return fields;
 				

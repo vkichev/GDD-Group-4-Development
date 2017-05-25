@@ -20,21 +20,20 @@ class StaffCard extends Sprite
 	public function new(subType : String, value : Int, imgName : String) 
 	{
 		super();
-
+		
 		type = subType;
 		num = value;
 		imageName = imgName;
-
+		
 		var cardData : BitmapData = Assets.getBitmapData( imageName );
 		var card : Bitmap = new Bitmap( cardData );
-
+		
 		card.x = -card.width / 2;
 		card.y = -card.height / 2;
-
+		
 		card.scaleX = card.scaleY = .5;
-
+		
 		addChild(card);
-
 	}
 	
 }
