@@ -36,7 +36,7 @@ class GameScreen extends Screen
 
 	var patientsField : Array<PatientCard> = [];
 	
-	var currentTurn : Int = 3;
+	var currentTurn : Int = 1;
 	
 	public function new()
 	{
@@ -67,28 +67,23 @@ class GameScreen extends Screen
 		createHand();
 		displayPatients();
 		//displayTools();
-		canPlayerPlay();
+		this.addEventListener(Event.ENTER_FRAME, canPlayerPlay);
 		
 	}
 	
-	function canPlayerPlay()
+	function canPlayerPlay(e:Event)
 	{
 		for (player in players)
 		{
 			if (currentTurn == player.id)
 			{
-				trace(player.id + " works");
 				player.turn = true;
-				trace(player.turn);
 			}
 			else
 			{
-				trace(player.id + " no turn");
 				player.turn = false;
-				trace(player.turn);
 			}
 		}
-		
 	}
 	
 	private function patientClicked(e:Event):Void
@@ -99,6 +94,13 @@ class GameScreen extends Screen
 			if (player.turn)
 			{
 				var card : PatientCard = cast (e.target);
+				player.turn = false;
+				currentTurn += 1;
+				trace( currentTurn );
+				if (currentTurn == 5)
+				{
+					currentTurn = 1;
+				}
 				var staffCard : StaffCard;
 				
 				if (player.selected.length == 1)
@@ -109,6 +111,8 @@ class GameScreen extends Screen
 					var value : Int = staffCard.num;
 					
 					card.assignStaffCard(type, value);
+					
+					
 				} 
 			}
 		}

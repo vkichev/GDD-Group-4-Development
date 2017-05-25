@@ -17,7 +17,6 @@ class Player extends Sprite
 	public var id:Int = 0;
 	var turnPassed:Bool;
 	var cardsInHand:Array<StaffCard> = [];
-	var selectedCard:StaffCard;
 	var assignedCard:PatientCard;
 	
 	public var selected : Array<StaffCard> = [];
@@ -33,6 +32,7 @@ class Player extends Sprite
 	public function removeCard(card:StaffCard)
 	{
 		cardsInHand.remove(card);
+		selected.remove(card);
 		removeChild(card);
 	}
 	
