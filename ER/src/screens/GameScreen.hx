@@ -66,7 +66,7 @@ class GameScreen extends Screen
 		
 		createHand();
 		displayPatients();
-		//displayTools();
+		displayTools();
 		this.addEventListener(Event.ENTER_FRAME, canPlayerPlay);
 		
 	}
@@ -111,8 +111,36 @@ class GameScreen extends Screen
 					var value : Int = staffCard.num;
 					
 					card.assignStaffCard(type, value);
+				} 
+			}
+		}
+	}
+	
+	private function toolClicked(e:Event):Void
+	{
+		trace("tool clicked");
+		for (player in players)
+		{
+			if (player.turn)
+			{
+				var card : ToolCard = cast (e.target);
+				player.turn = false;
+				currentTurn += 1;
+				trace( currentTurn );
+				if (currentTurn == 5)
+				{
+					currentTurn = 1;
+				}
+				var staffCard : StaffCard;
+				
+				if (player.selected.length == 1)
+				{
+					staffCard = player.selected.pop();
+					player.removeCard(staffCard);
+					var type : String = staffCard.type;
+					var value : Int = staffCard.num;
 					
-					
+					card.assignStaffCard(type, value);
 				} 
 			}
 		}
@@ -123,6 +151,7 @@ class GameScreen extends Screen
 		var posX : Float = -toolDeck.length * toolDeck[0].width / 2;
 		for (card in toolDeck)
 		{
+			card.addEventListener(MouseEvent.CLICK, toolClicked);
 			addChild(card);
 			card.x = 400 + posX;
 			card.y = 150;
