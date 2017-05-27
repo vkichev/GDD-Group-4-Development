@@ -1,10 +1,15 @@
 package screens;
 
+import lime.ui.Mouse;
 import openfl.Assets;
 import openfl.events.Event;
 import openfl.display.Sprite;
 import openfl.Lib;
 import openfl.events.MouseEvent;
+import openfl.text.TextField;
+import openfl.text.TextFormat;
+import openfl.text.TextFormatAlign;
+import openfl.text.TextFieldAutoSize;
 //import src.*;
 import sys.db.Sqlite;
 import sys.db.Connection;
@@ -37,6 +42,12 @@ class GameScreen extends Screen
 	var patientsField : Array<PatientCard> = [];
 	
 	var currentTurn : Int = 1;
+	
+	private var _rect:Sprite;
+	var allPromptButtons:Array<TextField>;
+	var card:PatientCard;
+	var staffValue:Int;
+	var allTextField:openfl.text.TextField;
 	
 	public function new()
 	{
@@ -86,6 +97,91 @@ class GameScreen extends Screen
 		}
 	}
 	
+	function displayALLPrompt()
+	{
+		_rect = new Sprite();
+		_rect.graphics.beginFill(0xFF0000);
+		_rect.graphics.drawRect(0,0,400,300);
+		_rect.graphics.endFill();
+		
+		_rect.x = 200;
+		_rect.y = 100;
+		
+		addChild(_rect);
+		
+		var textFormat:TextFormat = new TextFormat("Verdana", 24, 0xbbbbbb, true);
+		textFormat.align = TextFormatAlign.LEFT;
+		
+		allTextField = new TextField();
+		allTextField.defaultTextFormat = textFormat;
+		allTextField.autoSize = TextFieldAutoSize.LEFT;
+		allTextField.text = "Who do you assign this to?";
+		allTextField.x = _rect.width / 2 ;
+		allTextField.y = _rect.y + 20;
+		addChild(allTextField);
+		
+		allPromptButtons = new Array<TextField>();
+		
+		var iToString : String = "";
+		
+		for (i in 0...4)
+		{
+			
+			switch (i) {
+				case 0: iToString = "doctor";
+				case 1: iToString = "nurse";
+				case 2: iToString = "healthcare";
+				case 3: iToString = "management";
+			}
+			
+			//var promptButton:Button = new Button
+			//( 
+				//Assets.getBitmapData("img/Button.png"), 
+				//Assets.getBitmapData("img/Button_over.png"), 
+				//Assets.getBitmapData("img/Button_pressed.png"), 
+				//iToString, 
+				//promptButtonClicked
+			//);
+			
+			var promptButton : TextField = new TextField();
+			
+			promptButton.defaultTextFormat = textFormat;
+			promptButton.autoSize = TextFieldAutoSize.LEFT;
+			promptButton.text = iToString;
+			promptButton.x = _rect.width / 2 ;
+			promptButton.y = _rect.y + 20;
+			
+			promptButton.addEventListener(MouseEvent.CLICK, promptButtonClicked);
+			
+			allPromptButtons.push(promptButton);
+			promptButton.x = _rect.width - promptButton.width/2;
+			promptButton.y = 200 + 50 * i;
+			addChild(promptButton);
+		}
+	}
+	
+	function promptButtonClicked(e:MouseEvent)
+	{
+		var clickedButtonIndex:Int = allPromptButtons.indexOf(cast e.currentTarget);
+		trace(clickedButtonIndex);
+		trace(staffValue);
+		
+		switch(clickedButtonIndex){
+			case 0: card.assignStaffCard("D", staffValue); trace("assigning");
+		}
+		removeALLPrompt();
+	}
+	
+	function removeALLPrompt()
+	{
+		for (textField in allPromptButtons)
+		{
+			removeChild(textField);
+		}
+		removeChild(_rect);
+		removeChild(allTextField);
+	}
+	
 	private function patientClicked(e:Event):Void
 	{
 		trace("patient clicked");
@@ -93,14 +189,16 @@ class GameScreen extends Screen
 		{
 			if (player.turn)
 			{
-				var card : PatientCard = cast (e.target);
+				card = cast (e.target);
 				player.turn = false;
 				currentTurn += 1;
 				trace( currentTurn );
+				
 				if (currentTurn == 5)
 				{
 					currentTurn = 1;
 				}
+				
 				var staffCard : StaffCard;
 				
 				if (player.selected.length == 1)
@@ -108,9 +206,10 @@ class GameScreen extends Screen
 					staffCard = player.selected.pop();
 					player.removeCard(staffCard);
 					var type : String = staffCard.type;
-					var value : Int = staffCard.num;
+					staffValue = staffCard.num;
 					
-					card.assignStaffCard(type, value);
+					card.assignStaffCard(type, staffValue);
+					if (type == "ALL") displayALLPrompt();
 				} 
 			}
 		}
