@@ -167,7 +167,10 @@ class GameScreen extends Screen
 		trace(staffValue);
 		
 		switch(clickedButtonIndex){
-			case 0: card.assignStaffCard("D", staffValue); trace("assigning");
+			case 0: card.assignStaffCard("D", staffValue);
+			case 1: card.assignStaffCard("N", staffValue); 
+			case 2: card.assignStaffCard("H", staffValue); 
+			case 3: card.assignStaffCard("M", staffValue);
 		}
 		removeALLPrompt();
 	}
