@@ -42,12 +42,19 @@ class GameScreen extends Screen
 	var patientsField : Array<PatientCard> = [];
 	
 	var currentTurn : Int = 1;
+	var lastTurn : Int;
 	
 	private var _rect:Sprite;
 	var allPromptButtons:Array<TextField>;
 	var card:PatientCard;
 	var staffValue:Int;
 	var allTextField:openfl.text.TextField;
+	
+	var timerBar:Timer;
+	var maxTime:Int = 15000;
+	var currentTime:Int = 15000;
+	var lastUpdate:Int;
+	
 	
 	public function new()
 	{
@@ -80,7 +87,82 @@ class GameScreen extends Screen
 		displayTools();
 		this.addEventListener(Event.ENTER_FRAME, canPlayerPlay);
 		
+		createTimer();
+		
 	}
+	
+	private function createTimer() 
+	{
+		// create and position the progres bar. (Width, Height, 
+		timerBar = new Timer( 100, 15, 4 );
+		timerBar.x = timerBar.y = 350;
+		addChild( timerBar );
+		
+		// set the 'lastUpdate' for the first time
+		lastUpdate = Lib.getTimer();
+		addEventListener( Event.ENTER_FRAME, update );
+		
+		// Remembers the player who is supposed to be playing)
+		lastTurn = currentTurn;
+	}
+	
+	/**
+	 * Event handler for the Event.ENTER_FRAME event
+	 * 
+	 * 
+	 * @param event 	The Event instance
+	 */
+	function update( event:Event )
+	{
+		// calculate time passed since last update in milliseconds
+		var now:Int = Lib.getTimer();
+		var msPassed:Int = now - lastUpdate;
+		lastUpdate = now;
+		
+		// subtract time passed from the currentTime variable
+		currentTime -= msPassed;
+		
+		
+		
+		// if currentTime is less than or equal to zero the time is up. Reset the timer
+		if( currentTime <= 0 )
+		{			
+			// Resets the time
+			currentTime = maxTime + currentTime;
+			trace("Reset");
+			
+			for (player in players)
+			{
+				if (player.turn)
+				{
+					var staffCard : StaffCard = player.selected[0];
+					
+					//deselect the card
+					player.selected.remove(staffCard);
+					staffCard.scaleX = staffCard.scaleY = 1;
+					
+					currentTurn += 1;
+					if (currentTurn == 5)
+					{
+						currentTurn = 1;
+					}
+				}
+			}	
+		}
+		
+		//If a player ends his turn, resets timer.
+		if (lastTurn != currentTurn)
+		{
+			currentTime = maxTime;
+			lastTurn = currentTurn;
+		}
+		
+		
+		// calculate the percentage (between 0 and 1) to update the bar
+		timerBar.setValue( currentTime / maxTime );
+	}
+	
+	
 	
 	function canPlayerPlay(e:Event)
 	{
@@ -389,5 +471,6 @@ class GameScreen extends Screen
 	{
 		
 	}
+
 
 }
