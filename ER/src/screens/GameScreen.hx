@@ -51,8 +51,8 @@ class GameScreen extends Screen
 	var allTextField:openfl.text.TextField;
 	
 	var timerBar:Timer;
-	var maxTime:Int = 15000;
-	var currentTime:Int = 15000;
+	var maxTime:Int = 5000;
+	var currentTime:Int = 5000;
 	var lastUpdate:Int;
 	
 	
@@ -133,21 +133,21 @@ class GameScreen extends Screen
 			
 			for (player in players)
 			{
-				if (player.turn)
+				if (player.selected.length == 1)
 				{
 					var staffCard : StaffCard = player.selected[0];
 					
 					//deselect the card
 					player.selected.remove(staffCard);
 					staffCard.scaleX = staffCard.scaleY = 1;
-					
-					currentTurn += 1;
-					if (currentTurn == 5)
-					{
-						currentTurn = 1;
-					}
 				}
 			}	
+				
+			currentTurn += 1;
+			if (currentTurn == 5)
+			{
+				currentTurn = 1;
+			}			
 		}
 		
 		//If a player ends his turn, resets timer.
