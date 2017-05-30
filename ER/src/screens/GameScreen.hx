@@ -51,8 +51,8 @@ class GameScreen extends Screen
 	var allTextField:openfl.text.TextField;
 	
 	var timerBar:Timer;
-	var maxTime:Int = 5000;
-	var currentTime:Int = 5000;
+	var maxTime:Int = 15000;
+	var currentTime:Int = 15000;
 	var lastUpdate:Int;
 	
 	
@@ -274,15 +274,7 @@ class GameScreen extends Screen
 		{
 			if (player.turn)
 			{
-				card = cast (e.target);
-				player.turn = false;
-				currentTurn += 1;
-				trace( currentTurn );
-				
-				if (currentTurn == 5)
-				{
-					currentTurn = 1;
-				}
+				card = cast (e.currentTarget);
 				
 				var staffCard : StaffCard;
 				
@@ -295,6 +287,14 @@ class GameScreen extends Screen
 					
 					card.assignStaffCard(type, staffValue);
 					if (type == "ALL") displayALLPrompt();
+					
+					currentTurn += 1;
+					trace( currentTurn );
+					
+					if (currentTurn == 5)
+					{
+						currentTurn = 1;
+					}
 				} 
 			}
 		}
@@ -307,14 +307,8 @@ class GameScreen extends Screen
 		{
 			if (player.turn)
 			{
-				var card : ToolCard = cast (e.target);
-				player.turn = false;
-				currentTurn += 1;
-				trace( currentTurn );
-				if (currentTurn == 5)
-				{
-					currentTurn = 1;
-				}
+				var card : ToolCard = cast (e.currentTarget);
+				
 				var staffCard : StaffCard;
 				
 				if (player.selected.length == 1)
@@ -325,6 +319,13 @@ class GameScreen extends Screen
 					var value : Int = staffCard.num;
 					
 					card.assignStaffCard(type, value);
+					
+					currentTurn += 1;
+					trace( currentTurn );
+					if (currentTurn == 5)
+					{
+						currentTurn = 1;
+					}
 				} 
 			}
 		}
