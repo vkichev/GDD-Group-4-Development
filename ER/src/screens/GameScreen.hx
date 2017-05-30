@@ -55,6 +55,8 @@ class GameScreen extends Screen
 	var currentTime:Int = 15000;
 	var lastUpdate:Int;
 	
+	public var solved : Int = 0;
+	var solvedTextField : TextField = new TextField();
 	
 	public function new()
 	{
@@ -88,7 +90,20 @@ class GameScreen extends Screen
 		this.addEventListener(Event.ENTER_FRAME, canPlayerPlay);
 		
 		createTimer();
+		solvedCounter();
 		
+	}
+	
+	function solvedCounter()
+	{
+		var solvedTextFormat : TextFormat = new TextFormat("_sans", 15, 0xFFFFFF, true);
+		solvedTextField.defaultTextFormat = solvedTextFormat;
+		solvedTextField.width = 150;
+		solvedTextField.height = 100;
+		solvedTextField.x = 30;
+		solvedTextField.y = 30;
+		solvedTextField.text = "patients solved: " + solved;
+		addChild(solvedTextField);
 	}
 	
 	private function createTimer() 
@@ -177,6 +192,8 @@ class GameScreen extends Screen
 				player.turn = false;
 			}
 		}
+		
+		solvedTextField.text = "patients solved: " + solved;
 	}
 	
 	function displayALLPrompt()
@@ -432,7 +449,7 @@ class GameScreen extends Screen
 
 			for (row in resultset)
 			{
-				var patient : PatientCard = new PatientCard(row.imgID, row.doctor, row.nurse, row.management, row.healthcare, row.equipment, row.reward);
+				var patient : PatientCard = new PatientCard(row.imgID, row.doctor, row.nurse, row.management, row.healthcare, row.equipment, row.reward, this);
 				patientDeck.push(patient);
 			}
 			

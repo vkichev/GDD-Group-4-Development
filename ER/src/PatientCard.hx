@@ -1,11 +1,13 @@
 package;
 
+import openfl.events.Event;
 import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.Assets;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
+import screens.*;
 
 
 /**
@@ -21,6 +23,7 @@ class PatientCard extends Sprite {
 	public var healthcare : Int;
 	public var equipment : String;
 	public var reward : String;
+	public var gamescreen : GameScreen;
 	
 	public var assignedCards : Array<StaffCard> = [];
 	
@@ -29,7 +32,7 @@ class PatientCard extends Sprite {
 	public var managementTextField : TextField;
 	public var healthcareTextField : TextField;
 
-	public function new (imageName : String, doc : Int, nur : Int, mng : Int, hcw : Int, eqm : String, rew : String)
+	public function new (imageName : String, doc : Int, nur : Int, mng : Int, hcw : Int, eqm : String, rew : String, gs : GameScreen)
 	{
 		super();
 		
@@ -40,6 +43,7 @@ class PatientCard extends Sprite {
 		healthcare = hcw;
 		equipment = eqm;
 		reward = rew;
+		gamescreen = gs;
 		
 		var cardData : BitmapData = Assets.getBitmapData(imgID);
 		var card : Bitmap = new Bitmap( cardData );
@@ -49,6 +53,21 @@ class PatientCard extends Sprite {
 		
 		addChild(card);
 		createStaffFields(card);
+		
+		this.addEventListener(Event.ENTER_FRAME, update);
+	}
+	
+	function update(e:Event)
+	{
+		if (doctor <= 0 && nurse <= 0 && management <= 0 && healthcare <= 0)
+		{
+			trace("solved");
+			gamescreen.solved += 1;
+			gamescreen.removeChild(this);
+			removeChild(this);
+			removeEventListener(Event.ENTER_FRAME, update);
+			
+		}
 	}
 	
 	public function assignStaffCard(type:String, value:Int)
