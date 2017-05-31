@@ -67,6 +67,8 @@ class PatientCard extends Sprite {
 			removeChild(this);
 			removeEventListener(Event.ENTER_FRAME, update);
 			
+			//Rewards the player for completing a card.
+			new Rewards(reward);
 		}
 	}
 	
