@@ -4,6 +4,7 @@ import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
+import openfl.events.Event;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 
@@ -14,13 +15,14 @@ class ToolCard extends Sprite {
 	public var nurse : Int;
 	public var management : Int;
 	public var healthcare : Int;
+	public var type : String;
 	
 	public var doctorTextField : TextField;
 	public var nurseTextField : TextField;
 	public var managementTextField : TextField;
 	public var healthcareTextField : TextField;
 
-	public function new (imageName : String, doc : Int, nur : Int, mng : Int, hcw : Int)
+	public function new (imageName : String, doc : Int, nur : Int, mng : Int, hcw : Int, typ : String)
 	{
 		super();
 		
@@ -29,6 +31,7 @@ class ToolCard extends Sprite {
 		nurse = nur;
 		management = mng;
 		healthcare = hcw;
+		type = typ;
 		
 		var cardData : BitmapData = Assets.getBitmapData( imgID );
 		var card : Bitmap = new Bitmap( cardData );
@@ -38,6 +41,7 @@ class ToolCard extends Sprite {
 		
 		addChild(card); 
 		createStaffFields(card); 
+		
 	}
 	
 	public function assignStaffCard(type:String, value:Int)

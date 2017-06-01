@@ -38,6 +38,7 @@ class GameScreen extends Screen
 	
 	var players:Array<Player> = new Array<Player>();
 	var cardsInHand:StaffCard;
+	var boughtTool:Array<ToolCard> = [];
 
 	var patientsField : Array<PatientCard> = [];
 	
@@ -177,8 +178,6 @@ class GameScreen extends Screen
 		timerBar.setValue( currentTime / maxTime );
 	}
 	
-	
-	
 	function canPlayerPlay(e:Event)
 	{
 		for (player in players)
@@ -293,6 +292,12 @@ class GameScreen extends Screen
 			{
 				card = cast (e.currentTarget);
 				
+				if (boughtTool.length == 1 && boughtTool[0].type == card.equipment)
+				{
+					card.equipmentBought = true;
+					card.assignStaffCard("Tool", 0);
+				}
+				
 				var staffCard : StaffCard;
 				
 				if (player.selected.length == 1)
@@ -344,6 +349,12 @@ class GameScreen extends Screen
 						currentTurn = 1;
 					}
 				} 
+				
+				if (card.doctor <= 0 && card.nurse <= 0 && card.management <= 0 && card.healthcare <= 0)
+				{
+					trace("solved Tool");
+					boughtTool.push(card);
+				}
 			}
 		}
 	}
@@ -446,7 +457,7 @@ class GameScreen extends Screen
 		{
 			var patientdat = Sqlite.open("db/patientdata.db");
 			var resultset = patientdat.request("SELECT * FROM patients WHERE rowid = " + i + ";");
-
+			
 			for (row in resultset)
 			{
 				var patient : PatientCard = new PatientCard(row.imgID, row.doctor, row.nurse, row.management, row.healthcare, row.equipment, row.reward, this);
@@ -458,26 +469,26 @@ class GameScreen extends Screen
 				patientdat.close();
 			}
 		}
-
+		
 		// tools 
-
+		
 		for ( e in 1...6 )
 		{
 			var patientdat = Sqlite.open( "db/patientdata.db");
 			var resultset = patientdat.request("SELECT * FROM tools WHERE rowid = " + e + ";");
-
+			
 			for (row in resultset)
 			{
-				var tool : ToolCard = new ToolCard(row.imgID, row.doctor, row.nurse, row.management, row.healthcare);
+				var tool : ToolCard = new ToolCard(row.imgID, row.doctor, row.nurse, row.management, row.healthcare, row.type);
 				toolDeck.push(tool);
 			}
-
+			
 			if ( e == 6)
 			{
 				patientdat.close();
 			}
 		}
-
+		
 	}
 
 	private function onQuitClick()

@@ -23,6 +23,8 @@ class PatientCard extends Sprite {
 	public var healthcare : Int;
 	public var equipment : String;
 	public var reward : String;
+	public var equipmentBought:Bool = false;
+	
 	public var gamescreen : GameScreen;
 	
 	public var assignedCards : Array<StaffCard> = [];
@@ -31,6 +33,7 @@ class PatientCard extends Sprite {
 	public var nurseTextField : TextField;
 	public var managementTextField : TextField;
 	public var healthcareTextField : TextField;
+	public var equipmentTextField : TextField;
 
 	public function new (imageName : String, doc : Int, nur : Int, mng : Int, hcw : Int, eqm : String, rew : String, gs : GameScreen)
 	{
@@ -59,7 +62,7 @@ class PatientCard extends Sprite {
 	
 	function update(e:Event)
 	{
-		if (doctor <= 0 && nurse <= 0 && management <= 0 && healthcare <= 0)
+		if (doctor <= 0 && nurse <= 0 && management <= 0 && healthcare <= 0 && equipmentBought == true)
 		{
 			trace("solved");
 			gamescreen.solved += 1;
@@ -79,6 +82,7 @@ class PatientCard extends Sprite {
 			case "N": nurse -= value; nurseTextField.text = nurse + "";
 			case "H": healthcare -= value; healthcareTextField.text = healthcare + "";
 			case "M": management -= value; managementTextField.text = management + "";
+			case "Tool": management -= value; equipmentTextField.text = equipmentBought + "";
 		}
 	}
 	
@@ -120,6 +124,15 @@ class PatientCard extends Sprite {
 		healthcareTextField.y = managementTextField.y + 12;
 		healthcareTextField.text = healthcare + "";
 		addChild(healthcareTextField);
+		
+		equipmentTextField = new TextField();
+		equipmentTextField.defaultTextFormat = staffTextFormat;
+		equipmentTextField.width = 10;
+		equipmentTextField.height = 15;
+		equipmentTextField.x = doctorTextField.x;
+		equipmentTextField.y = healthcareTextField.y + 12;
+		equipmentTextField.text = equipmentBought + "";
+		addChild(equipmentTextField);
 	}
 	
 }
