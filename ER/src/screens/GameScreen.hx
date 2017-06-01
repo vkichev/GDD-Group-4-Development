@@ -58,6 +58,7 @@ class GameScreen extends Screen
 	
 	public var solved : Int = 0;
 	var solvedTextField : TextField = new TextField();
+	var _circle:Sprite;
 	
 	public function new()
 	{
@@ -185,6 +186,7 @@ class GameScreen extends Screen
 			if (currentTurn == player.id)
 			{
 				player.turn = true;
+				displayTurnIndicator(player.id);
 			}
 			else
 			{
@@ -193,6 +195,38 @@ class GameScreen extends Screen
 		}
 		
 		solvedTextField.text = "patients solved: " + solved;
+	}
+	
+	function displayTurnIndicator(id:Int)
+	{
+		removeChild(_circle);
+		_circle = new Sprite();
+		_circle.graphics.beginFill(0x00FF00);
+		_circle.graphics.drawCircle(0,0,5);
+		_circle.graphics.endFill();
+		
+		if (id == 1)
+		{
+			_circle.x = Lib.current.stage.stageWidth / 2;
+			_circle.y = Lib.current.stage.stageHeight - 100;
+		}
+		if (id == 2)
+		{
+			_circle.x = Lib.current.stage.stageWidth - 100;
+			_circle.y = Lib.current.stage.stageHeight / 2;
+		}
+		if (id == 3)
+		{
+			_circle.x = Lib.current.stage.stageWidth / 2;
+			_circle.y = 100;
+		}
+		if (id == 4)
+		{
+			_circle.x = 100;
+			_circle.y = Lib.current.stage.stageHeight/2;
+		}
+		
+		addChild(_circle);
 	}
 	
 	function displayALLPrompt()
