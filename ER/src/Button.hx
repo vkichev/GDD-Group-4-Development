@@ -53,7 +53,7 @@ class Button extends Sprite
 
 		if( label.length > 0 )
 		{
-			var tfmt:TextFormat = new TextFormat( Assets.getFont("fonts/Retro Computer_DEMO.ttf").fontName, 22, 0x000000, true, false, false, null, null, TextFormatAlign.CENTER );
+			var tfmt:TextFormat = new TextFormat( Assets.getFont("fonts/Retro Computer_DEMO.ttf").fontName, 22, 0xFFFFFF, true, false, false, null, null, TextFormatAlign.CENTER );
 			var tf:TextField = new TextField();
 			tf.defaultTextFormat = tfmt;
 			tf.embedFonts = true;
@@ -61,6 +61,8 @@ class Button extends Sprite
 			tf.mouseEnabled = false;
 			tf.selectable = false;
 			tf.text = label;
+			tf.x = (image.width - tf.width) / 2;
+			tf.y = ((image.height - tf.height) / 2) - 3;
 			addChild( tf );
 		}
 		
