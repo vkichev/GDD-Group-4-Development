@@ -10,7 +10,6 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.text.TextFormatAlign;
 import openfl.text.TextFieldAutoSize;
-//import src.*;
 import sys.db.Sqlite;
 import sys.db.Connection;
 import sys.db.ResultSet;
@@ -62,6 +61,8 @@ class GameScreen extends Screen
 	var exitButton:Button;
 	var continueButton:Button;
 	var winTextField : TextField;
+	
+	var roundsPassed : Int = 0;
 	//}
 	
 	public function new()
@@ -91,6 +92,7 @@ class GameScreen extends Screen
 		shuffleDeck(staffDeck);
 		
 		createHand();
+		initPatients();
 		displayPatients();
 		displayTools();
 		this.addEventListener(Event.ENTER_FRAME, canPlayerPlay);
@@ -103,12 +105,12 @@ class GameScreen extends Screen
 	function checkEndCondition()
 	{
 		//trace(patientsField.length);
-		if (patientsField.length == 0)
+		if (solved == 6)
 		{
 			trace("you win"); //Go to win screen
 			setupWinScreen();
 		}
-		if (patientsField.length > 6)
+		if (patientsField.length == 6)
 		{
 			trace("you lose"); //Go to losing screen
 		}
@@ -170,6 +172,7 @@ class GameScreen extends Screen
 		removeChild(continueButton);
 		removeChild(exitButton);
 		
+		initPatients();
 		displayPatients();
 		
 		addEventListener(Event.ENTER_FRAME, update);
@@ -179,10 +182,11 @@ class GameScreen extends Screen
 	{
 		var solvedTextFormat : TextFormat = new TextFormat("_sans", 15, 0xFFFFFF, true);
 		solvedTextField.defaultTextFormat = solvedTextFormat;
-		solvedTextField.width = 150;
-		solvedTextField.height = 100;
+		solvedTextField.width = 140;
+		solvedTextField.height = 30;
 		solvedTextField.x = 30;
 		solvedTextField.y = 30;
+		solvedTextField.selectable = false;
 		solvedTextField.text = "patients solved: " + solved;
 		addChild(solvedTextField);
 	}
@@ -470,15 +474,19 @@ class GameScreen extends Screen
 		
 	}
 	
-	function displayPatients()
+	function initPatients()
 	{
 		
 		for (i in 0...4)//4
 		{
-			
 			var card = patientDeck.pop();
 			patientsField.push(card);
 		}
+		
+	}
+	
+	function displayPatients()
+	{
 		var posX : Float = -patientsField.length * patientsField[0].width / 2;
 		
 		for (card in patientsField)
@@ -604,14 +612,24 @@ class GameScreen extends Screen
 			doubleTurn = 0;
 			currentTime = maxTime;
 		}
-		
 		else
 		{
 			currentTurn += 1;
 			if (currentTurn == 5)
 			{
+				roundsPassed++;
+				trace("rounds passed = " + roundsPassed);
 				currentTurn = 1;
 			}
+		}
+		
+		if (roundsPassed == 2)
+		{
+			var card = patientDeck.pop();
+			patientsField.push(card);
+			displayPatients();
+			
+			roundsPassed = 0;
 		}
 	}
 	
