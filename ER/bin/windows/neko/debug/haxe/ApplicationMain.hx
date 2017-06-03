@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "23",
+			build: "24",
 			company: "Rutger Regtop",
 			file: "NewProject",
 			fps: 60,

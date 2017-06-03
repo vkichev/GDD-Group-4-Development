@@ -40,7 +40,7 @@ class GameScreen extends Screen
 	var cardsInHand:StaffCard;
 	var boughtTool:Array<ToolCard> = [];
 
-	var patientsField : Array<PatientCard> = [];
+	public var patientsField : Array<PatientCard> = [];
 	
 	var currentTurn : Int = 1;
 	var lastTurn : Int;
@@ -59,6 +59,9 @@ class GameScreen extends Screen
 	public var solved : Int = 0;
 	var solvedTextField : TextField = new TextField();
 	var _circle:Sprite;
+	var exitButton:Button;
+	var continueButton:Button;
+	var winTextField : TextField;
 	
 	public function new()
 	{
@@ -94,6 +97,81 @@ class GameScreen extends Screen
 		createTimer();
 		solvedCounter();
 		
+	}
+	
+	function checkEndCondition()
+	{
+		//trace(patientsField.length);
+		if (patientsField.length == 0)
+		{
+			trace("you win"); //Go to win screen
+			setupWinScreen();
+		}
+		if (patientsField.length > 6)
+		{
+			trace("you lose"); //Go to losing screen
+		}
+	}
+	
+	function setupWinScreen()
+	{
+		this.removeEventListener(Event.ENTER_FRAME, update); //stop the timer
+		
+		_rect = new Sprite();
+		_rect.graphics.beginFill(0xFFFFFF);
+		_rect.graphics.drawRect(0,0,400,300);
+		_rect.graphics.endFill();
+		
+		_rect.x = 200;
+		_rect.y = 100;
+		
+		addChild(_rect);
+		
+		var textFormat:TextFormat = new TextFormat("Verdana", 24, 0xbbbbbb, true);
+		textFormat.align = TextFormatAlign.LEFT;
+		
+		winTextField = new TextField();
+		winTextField.defaultTextFormat = textFormat;
+		winTextField.autoSize = TextFieldAutoSize.LEFT;
+		winTextField.text = "You Won!";
+		winTextField.x = _rect.width / 2 ;
+		winTextField.y = _rect.y + 20;
+		addChild(winTextField);
+		
+		continueButton = new Button( 
+			Assets.getBitmapData("img/Button.png"), 
+			Assets.getBitmapData("img/Button_over.png"), 
+			Assets.getBitmapData("img/Button_pressed.png"), 
+			"Continue Playing", 
+			onContinueClicked );
+		
+		continueButton.x = continueButton.width;
+		continueButton.y = _rect.height - continueButton.height;
+		addChild( continueButton );
+		
+		exitButton = new Button( 
+			Assets.getBitmapData("img/Button.png"), 
+			Assets.getBitmapData("img/Button_over.png"), 
+			Assets.getBitmapData("img/Button_pressed.png"), 
+			"Exit", 
+			onQuitClick );
+		
+		exitButton.x = (Lib.current.stage.stageWidth-exitButton.width) / 2;
+		exitButton.y = Lib.current.stage.stageHeight / 3;
+		addChild( exitButton );
+	}
+	
+	function onContinueClicked() 
+	{
+		trace("continue");
+		removeChild(_rect);
+		removeChild(winTextField);
+		removeChild(continueButton);
+		removeChild(exitButton);
+		
+		displayPatients();
+		
+		addEventListener(Event.ENTER_FRAME, update);
 	}
 	
 	function solvedCounter()
@@ -139,7 +217,7 @@ class GameScreen extends Screen
 		// subtract time passed from the currentTime variable
 		currentTime -= msPassed;
 		
-		
+		checkEndCondition();
 		
 		// if currentTime is less than or equal to zero the time is up. Reset the timer
 		if( currentTime <= 0 )
@@ -410,13 +488,14 @@ class GameScreen extends Screen
 	function displayPatients()
 	{
 		
-		for (i in 0...4)
+		for (i in 0...4)//4
 		{
 			
 			var card = patientDeck.pop();
 			patientsField.push(card);
 		}
 		var posX : Float = -patientsField.length * patientsField[0].width / 2;
+		
 		for (card in patientsField)
 		{
 			card.addEventListener(MouseEvent.CLICK, patientClicked);

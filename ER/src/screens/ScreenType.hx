@@ -6,4 +6,5 @@ enum ScreenType
 {
 	Menu;
 	Game;
+	Lose;
 }

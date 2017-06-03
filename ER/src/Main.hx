@@ -50,6 +50,8 @@ class Main extends Sprite
 				currentScreen = new MenuScreen();
 			case ScreenType.Game:
 				currentScreen = new GameScreen();
+			case ScreenType.Lose:
+				currentScreen = new LoseScreen();
 		}
 
 		addChild( currentScreen );
