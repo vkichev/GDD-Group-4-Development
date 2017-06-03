@@ -48,7 +48,7 @@ class PatientCard extends Sprite {
 		reward = rew;
 		gamescreen = gs;
 		
-		if (equipment == "NA") equipmentBought = true;
+		if (equipment == null) equipmentBought = true;
 		
 		var cardData : BitmapData = Assets.getBitmapData(imgID);
 		var card : Bitmap = new Bitmap( cardData );
@@ -66,6 +66,8 @@ class PatientCard extends Sprite {
 	{
 		if (doctor <= 0 && nurse <= 0 && management <= 0 && healthcare <= 0 && equipmentBought == true)
 		{
+			new Rewards(reward, gamescreen);
+			
 			trace("solved");
 			gamescreen.solved += 1;
 			gamescreen.removeChild(this);
@@ -74,7 +76,7 @@ class PatientCard extends Sprite {
 			removeEventListener(Event.ENTER_FRAME, update);
 			
 			//Rewards the player for completing a card.
-			new Rewards(reward);
+
 		}
 	}
 	

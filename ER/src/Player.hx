@@ -16,7 +16,7 @@ class Player extends Sprite
 {
 	public var id:Int = 0;
 	var turnPassed:Bool;
-	var cardsInHand:Array<StaffCard> = [];
+	public var cardsInHand:Array<StaffCard> = [];
 	var assignedCard:PatientCard;
 	
 	public var selected : Array<StaffCard> = [];

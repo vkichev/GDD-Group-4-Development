@@ -1,32 +1,41 @@
 package;
+import openfl.display.Sprite;
+import screens.GameScreen;
 
 /**
  * ...
  * @author vincent van de vegte
  */
-class Rewards 
+class Rewards extends Sprite
 {
-	var specialReward:String;
+	var sR:String;
+	public var main:GameScreen;
 	
-	public function new(rewards:String) 
+	public function new(rewards:String, gs:GameScreen) 
 	{
+		super();
+		main = gs;
 		standardReward();
 		
-		specialReward = rewards;
-		switch (specialReward)
+		sR = rewards;
+		switch (sR)
 		{
-			case 'NA':
-				trace("noSpecialReward");
-			case '1':
-				specialReward1();
-			case '2':
+			case 'ALL +1':
+				standardReward();
+			case 'LEAST +1':
 				specialReward2();
+			case 'RANDOM s5':
+				specialReward3();
+			case 'RANDOM *2':
+				specialReward4();
 		}
 	}
 	
+
+	
 	function standardReward() 
 	{
-		trace("Reward");
+		main.addStaffAllPlayers();
 	}
 	
 	function specialReward1() 
@@ -37,5 +46,17 @@ class Rewards
 	function specialReward2() 
 	{
 		trace("SpecialReward2");
+
+	}
+	
+	function specialReward3() 
+	{
+		
+	}
+		
+	function specialReward4() 
+	{
+		main.doubleTurn = Std.int(Std.random(4)+1);
+		trace("doubleTurn player " +main.doubleTurn);
 	}
 }
