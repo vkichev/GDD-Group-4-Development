@@ -48,6 +48,8 @@ class PatientCard extends Sprite {
 		reward = rew;
 		gamescreen = gs;
 		
+		if (equipment == "NA") equipmentBought = true;
+		
 		var cardData : BitmapData = Assets.getBitmapData(imgID);
 		var card : Bitmap = new Bitmap( cardData );
 		
@@ -67,6 +69,7 @@ class PatientCard extends Sprite {
 			trace("solved");
 			gamescreen.solved += 1;
 			gamescreen.removeChild(this);
+			gamescreen.patientsField.remove(this);
 			removeChild(this);
 			removeEventListener(Event.ENTER_FRAME, update);
 			
