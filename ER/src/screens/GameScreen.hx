@@ -63,6 +63,7 @@ class GameScreen extends Screen
 	var continueButton:Button;
 	var winTextField : TextField;
 	
+	
 	public function new()
 	{
 		super();
@@ -236,13 +237,10 @@ class GameScreen extends Screen
 					player.selected.remove(staffCard);
 					staffCard.scaleX = staffCard.scaleY = 1;
 				}
-			}	
-				
-			currentTurn += 1;
-			if (currentTurn == 5)
-			{
-				currentTurn = 1;
-			}			
+			}
+			
+			goNextTurn();	
+			
 		}
 		
 		//If a player ends his turn, resets timer.
@@ -397,7 +395,6 @@ class GameScreen extends Screen
 	
 	private function patientClicked(e:Event):Void
 	{
-		trace("patient clicked");
 		for (player in players)
 		{
 			if (player.turn)
@@ -422,13 +419,7 @@ class GameScreen extends Screen
 					card.assignStaffCard(type, staffValue);
 					if (type == "ALL") displayALLPrompt();
 					
-					currentTurn += 1;
-					trace( currentTurn );
-					
-					if (currentTurn == 5)
-					{
-						currentTurn = 1;
-					}
+					goNextTurn();
 				} 
 			}
 		}
@@ -436,7 +427,6 @@ class GameScreen extends Screen
 	
 	private function toolClicked(e:Event):Void
 	{
-		trace("tool clicked");
 		for (player in players)
 		{
 			if (player.turn)
@@ -454,12 +444,8 @@ class GameScreen extends Screen
 					
 					card.assignStaffCard(type, value);
 					
-					currentTurn += 1;
-					trace( currentTurn );
-					if (currentTurn == 5)
-					{
-						currentTurn = 1;
-					}
+					goNextTurn();
+					
 				} 
 				
 				if (card.doctor <= 0 && card.nurse <= 0 && card.management <= 0 && card.healthcare <= 0)
@@ -607,6 +593,18 @@ class GameScreen extends Screen
 	private function onQuitClick()
 	{
 		Main.instance.loadScreen( ScreenType.Menu );
+	}
+	
+	/**
+	 * The player with 
+	 */
+	function goNextTurn():Void 
+	{
+		currentTurn += 1;
+		if (currentTurn == 5)
+		{
+			currentTurn = 1;
+		}
 	}
 
 	override public function onDestroy()
