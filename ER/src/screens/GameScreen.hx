@@ -22,7 +22,7 @@ import sys.db.ResultSet;
  */
 class GameScreen extends Screen
 {
-	
+	//{
 	var patientDeck : Array<PatientCard> = [];
 	var toolDeck : Array<ToolCard> = [];
 	var staffDeck : Array<StaffCard> = [];
@@ -37,13 +37,14 @@ class GameScreen extends Screen
 	var pos2 : Int = 20;
 	
 	var players:Array<Player> = new Array<Player>();
-	var cardsInHand:StaffCard;
+	var cardAmount:Map<Player, Int>;
 	var boughtTool:Array<ToolCard> = [];
 
 	public var patientsField : Array<PatientCard> = [];
 	
 	var currentTurn : Int = 1;
 	var lastTurn : Int;
+	public var doubleTurn:Int = 0;
 	
 	private var _rect:Sprite;
 	var allPromptButtons:Array<TextField>;
@@ -62,7 +63,7 @@ class GameScreen extends Screen
 	var exitButton:Button;
 	var continueButton:Button;
 	var winTextField : TextField;
-	
+	//}
 	
 	public function new()
 	{
@@ -225,7 +226,6 @@ class GameScreen extends Screen
 		{			
 			// Resets the time
 			currentTime = maxTime + currentTime;
-			trace("Reset");
 			
 			for (player in players)
 			{
@@ -600,13 +600,51 @@ class GameScreen extends Screen
 	 */
 	function goNextTurn():Void 
 	{
-		currentTurn += 1;
-		if (currentTurn == 5)
+		if (doubleTurn == currentTurn)
 		{
-			currentTurn = 1;
+			doubleTurn = 0;
+			currentTime = maxTime;
+		}
+		
+		else
+		{
+			currentTurn += 1;
+			if (currentTurn == 5)
+			{
+				currentTurn = 1;
+			}
 		}
 	}
-
+	
+	
+	public function addStaffAllPlayers()
+	{
+		var card : StaffCard;
+		for (player in players)
+		{
+			var card = staffDeck.pop();
+			player.addCard(card);
+		}
+	}
+	
+	/*
+	public function addStaffLeastPlayer()
+	{
+		cardAmount = new Map<Player, Int>();
+		for (player in players)
+		{
+			cardAmount.set(player, player.cardsInHand.length);
+		}
+		
+		var card : StaffCard;
+		for (player in players)
+		{
+			var card = staffDeck.pop();
+			player.addCard(card);
+		}
+	}
+	*/
+	
 	override public function onDestroy()
 	{
 		
