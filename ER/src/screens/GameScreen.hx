@@ -37,7 +37,6 @@ class GameScreen extends Screen
 	var pos2 : Int = 20;
 	
 	var players:Array<Player> = new Array<Player>();
-	var cardAmount:Map<Player, Int>;
 	var boughtTool:Array<ToolCard> = [];
 
 	public var patientsField : Array<PatientCard> = [];
@@ -98,7 +97,7 @@ class GameScreen extends Screen
 		
 		createTimer();
 		solvedCounter();
-		
+
 	}
 	
 	function checkEndCondition()
@@ -616,8 +615,7 @@ class GameScreen extends Screen
 		}
 	}
 	
-	
-	public function addStaffAllPlayers()
+	public function addCardAllPlayers()
 	{
 		var card : StaffCard;
 		for (player in players)
@@ -627,23 +625,78 @@ class GameScreen extends Screen
 		}
 	}
 	
-	/*
-	public function addStaffLeastPlayer()
+
+	public function addCardLeastPlayer()
 	{
-		cardAmount = new Map<Player, Int>();
+		var cards:Int = 0;
+		var amount:Int = 0;
+		var lowest:Int = 9;
+		var n:Int = 9;
+		
+		//counting the amout of copies of the emptiest hand.
 		for (player in players)
 		{
-			cardAmount.set(player, player.cardsInHand.length);
+			cards = player.cardsInHand.length;
+			if (lowest == cards)
+			{
+				amount += 1;
+			}
+			
+			if (lowest > cards)
+			{
+				lowest = cards;
+				amount = 1;
+			}
+		}		
+		
+		if (amount > 1)
+		{
+			var tempPlayers:Array<Player> = new Array<Player>();
+			for (player in players)
+			{
+				if (lowest == player.cardsInHand.length)
+				{
+					tempPlayers.push(player);
+				}
+			}
+			
+			while(n >= amount)
+			{
+				n = Std.int(Std.random(amount));
+			}
+			var card = staffDeck.pop();
+			tempPlayers[n].addCard(card);
 		}
 		
-		var card : StaffCard;
-		for (player in players)
+		if (amount == 1)
 		{
-			var card = staffDeck.pop();
-			player.addCard(card);
+			for (player in players)
+			{
+				if (lowest == player.cardsInHand.length)
+				{
+					var card = staffDeck.pop();
+					player.addCard(card);
+				}
+			}	
 		}
 	}
-	*/
+	
+	/**
+	 * Gives a staff 5 card to a random player.
+	 */
+	public function addStaff5RandomPlayer()
+	{
+		
+		var n:Int = 4;
+		while(n >= 4)
+		{
+			n = Std.int(Std.random(4));
+		}
+		var imgname : String = "img/Staff_" + 'ALL' + "_" + 5 + ".png";
+		stCard = new StaffCard("ALL", 5, imgname);
+		players[n].addCard(stCard);
+	}
+	
 	
 	override public function onDestroy()
 	{
