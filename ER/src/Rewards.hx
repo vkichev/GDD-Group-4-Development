@@ -22,6 +22,7 @@ class Rewards extends Sprite
 		{
 			case 'ALL +1':
 				standardReward();
+				trace("SP reward 1");
 			case 'LEAST +1':
 				specialReward2();
 			case 'RANDOM s5':
@@ -35,28 +36,30 @@ class Rewards extends Sprite
 	
 	function standardReward() 
 	{
-		main.addStaffAllPlayers();
-	}
-	
-	function specialReward1() 
-	{
-		trace("SpecialReward1");
+		main.addCardAllPlayers();
 	}
 	
 	function specialReward2() 
 	{
 		trace("SpecialReward2");
-
+		
 	}
 	
 	function specialReward3() 
 	{
-		
+		main.addStaff5RandomPlayer();
 	}
-		
+	
 	function specialReward4() 
 	{
-		main.doubleTurn = Std.int(Std.random(4)+1);
+		var n:Int = 4;
+		
+		while(n >= 4)
+		{
+			n = Std.int(Std.random(4));
+		}
+		
+		main.doubleTurn = n;
 		trace("doubleTurn player " +main.doubleTurn);
 	}
 }
