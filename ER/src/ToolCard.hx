@@ -36,6 +36,12 @@ class ToolCard extends Sprite {
 		var cardData : BitmapData = Assets.getBitmapData( imgID );
 		var card : Bitmap = new Bitmap( cardData );
 		
+		//temp tool size
+		card.height = 100;
+		card.width = 60;
+		//temp tool size
+		
+		
 		card.x = -card.width / 2;
 		card.y = -card.height / 2;
 		

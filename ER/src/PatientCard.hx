@@ -8,7 +8,7 @@ import openfl.Assets;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 import screens.*;
-
+import openfl.Lib;
 
 /**
  * ...
@@ -52,6 +52,12 @@ class PatientCard extends Sprite {
 		
 		var cardData : BitmapData = Assets.getBitmapData(imgID);
 		var card : Bitmap = new Bitmap( cardData );
+		
+		//temp cardsize
+		card.width = 60;
+		card.height = 100;
+		//temp cardsize
+		
 		
 		card.x = -card.width / 2;
 		card.y = -card.height / 2;

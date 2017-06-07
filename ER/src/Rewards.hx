@@ -41,7 +41,7 @@ class Rewards extends Sprite
 	
 	function specialReward2() 
 	{
-		trace("SpecialReward2");
+		main.addCardLeastPlayer();
 		
 	}
 	
