@@ -73,16 +73,13 @@ class Player extends Sprite
 		var posX : Float = -cardsInHand.length * cardsInHand[0].width / 2;
 		var posY : Float = -cardsInHand.length * cardsInHand[0].height / 2;
 		
-		var firstPosId1x = 400;
+		var firstPosId1x = Lib.current.stage.stageWidth / 2;
 		var firstPosId1y = Lib.current.stage.stageHeight - cardsInHand[0].height / 2;
 		
 		var firstPosId2x = Lib.current.stage.stageWidth - cardsInHand[0].width / 2;
 		var firstPosId2y = 200;
 		
 		var firstPosId3y = 0;
-		
-		
-		
 		
 		if (id == 1)
 		{

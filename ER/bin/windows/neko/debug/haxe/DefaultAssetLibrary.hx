@@ -110,6 +110,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
+		
+		
 		openfl.text.Font.registerFont (__ASSET__OPENFL__fonts_retro_computer_demo_ttf);
 		
 		
@@ -123,6 +126,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("img/Button_over.png", AssetType.IMAGE);
 		path.set ("img/Button_pressed.png", "img/Button_pressed.png");
 		type.set ("img/Button_pressed.png", AssetType.IMAGE);
+		path.set ("img/menu_bg.png", "img/menu_bg.png");
+		type.set ("img/menu_bg.png", AssetType.IMAGE);
+		path.set ("img/menu_bg_Old.png", "img/menu_bg_Old.png");
+		type.set ("img/menu_bg_Old.png", AssetType.IMAGE);
 		path.set ("img/Patient_1.png", "img/Patient_1.png");
 		type.set ("img/Patient_1.png", AssetType.IMAGE);
 		path.set ("img/Patient_10.png", "img/Patient_10.png");
@@ -153,6 +160,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("img/Patient_8.png", AssetType.IMAGE);
 		path.set ("img/Patient_9.png", "img/Patient_9.png");
 		type.set ("img/Patient_9.png", AssetType.IMAGE);
+		path.set ("img/Shit backgroundi.png", "img/Shit backgroundi.png");
+		type.set ("img/Shit backgroundi.png", AssetType.IMAGE);
 		path.set ("img/Staff_ALL_1.png", "img/Staff_ALL_1.png");
 		type.set ("img/Staff_ALL_1.png", AssetType.IMAGE);
 		path.set ("img/Staff_ALL_2.png", "img/Staff_ALL_2.png");
@@ -237,6 +246,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		id = "img/Button_pressed.png";
 		path.set (id, id);
 		type.set (id, AssetType.IMAGE);
+		id = "img/menu_bg.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
+		id = "img/menu_bg_Old.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
 		id = "img/Patient_1.png";
 		path.set (id, id);
 		type.set (id, AssetType.IMAGE);
@@ -280,6 +295,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		path.set (id, id);
 		type.set (id, AssetType.IMAGE);
 		id = "img/Patient_9.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
+		id = "img/Shit backgroundi.png";
 		path.set (id, id);
 		type.set (id, AssetType.IMAGE);
 		id = "img/Staff_ALL_1.png";
@@ -404,6 +422,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if (windows || mac || linux)
 		
 		var useManifest = false;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
 		useManifest = true;
 		useManifest = true;
 		useManifest = true;
@@ -1152,7 +1173,13 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
+
+
 #elseif html5
+
+
+
 
 
 

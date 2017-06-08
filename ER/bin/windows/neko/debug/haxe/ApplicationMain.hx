@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "344",
+			build: "373",
 			company: "Rutger Regtop",
 			file: "NewProject",
 			fps: 60,
@@ -42,7 +42,7 @@ import haxe.macro.Expr;
 					borderless: false,
 					depthBuffer: false,
 					display: 0,
-					fullscreen: false,
+					fullscreen: true,
 					hardware: true,
 					height: 480,
 					hidden: #if munit true #else null #end,

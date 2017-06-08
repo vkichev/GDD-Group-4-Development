@@ -26,7 +26,7 @@ class MenuScreen extends Screen
 		var background: Bitmap = new Bitmap(backgroundData);
 		background.width = stage.stageWidth;
 		background.height = stage.stageHeight;
-		stage.addChildAt(background, 0);
+		addChildAt(background, 0);
 		
 		var play:Button = new Button( 
 			Assets.getBitmapData("img/Button.png"), 

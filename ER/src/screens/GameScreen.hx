@@ -2,6 +2,8 @@ package screens;
 
 import lime.ui.Mouse;
 import openfl.Assets;
+import openfl.display.Bitmap;
+import openfl.display.BitmapData;
 import openfl.events.Event;
 import openfl.display.Sprite;
 import openfl.Lib;
@@ -21,7 +23,6 @@ import sys.db.ResultSet;
  */
 class GameScreen extends Screen
 {
-	//{
 	var patientDeck : Array<PatientCard> = [];
 	var toolDeck : Array<ToolCard> = [];
 	var staffDeck : Array<StaffCard> = [];
@@ -63,7 +64,6 @@ class GameScreen extends Screen
 	var winTextField : TextField;
 	
 	var roundsPassed : Int = 0;
-	//}
 	
 	public function new()
 	{
@@ -72,6 +72,10 @@ class GameScreen extends Screen
 
 	override public function onLoad():Void
 	{
+		var bg:Bitmap = new Bitmap(Assets.getBitmapData("img/Shit backgroundi.png"));
+		bg.width = Lib.current.stage.stageWidth;
+		bg.height = Lib.current.stage.stageHeight;
+		addChild(bg);
 		var toMenu:Button = new Button
 		( 
 			Assets.getBitmapData("img/Button.png"), 
@@ -493,8 +497,8 @@ class GameScreen extends Screen
 		{
 			card.addEventListener(MouseEvent.CLICK, patientClicked);
 			addChild(card);
-			card.x = 400 + posX;
-			card.y = 300;
+			card.x = Lib.current.stage.stageWidth/2 + posX;
+			card.y = Lib.current.stage.stageHeight/2;
 			posX += card.width + 10;
 		}
 	}

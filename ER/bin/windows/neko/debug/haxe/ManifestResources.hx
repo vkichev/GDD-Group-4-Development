@@ -47,7 +47,7 @@ import sys.FileSystem;
 		
 		Assets.defaultRootPath = rootPath;
 		
-		#if (openfl && !flash)
+		#if (openfl && !flash && !display)
 		openfl.text.Font.registerFont (__ASSET__OPENFL__fonts_retro_computer_demo_ttf);
 		
 		#end
