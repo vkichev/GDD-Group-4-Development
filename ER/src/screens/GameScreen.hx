@@ -201,7 +201,7 @@ class GameScreen extends Screen
 		// create and position the progres bar. (Width, Height, 
 		timerBar = new Timer( Math.floor(2*Lib.current.stage.stageWidth/3), 15, 4 );
 		timerBar.x = Lib.current.stage.stageWidth / 2 - Lib.current.stage.stageWidth / 3;
-		timerBar.y = patientsField[0].y - patientsField[0].height*3;
+		timerBar.y = Lib.current.stage.stageHeight / 4.5;
 		addChild( timerBar );
 		
 		// set the 'lastUpdate' for the first time
@@ -379,17 +379,21 @@ class GameScreen extends Screen
 			case 3: card.assignStaffCard("M", staffValue);
 		}
 		removeALLPrompt();
+		goNextTurn();
 	}
 	
 	function removeALLPrompt()
 	{
-		for (textField in allPromptButtons)
+		if (_rect != null)
 		{
-			removeChild(textField);
+			for (textField in allPromptButtons)
+			{
+				removeChild(textField);
+			}
+			removeChild(_rect);
+			removeChild(allTextField);
 		}
-		removeChild(_rect);
-		removeChild(allTextField);
-		goNextTurn();
+		//goNextTurn();
 	}
 	
 	private function patientClicked(e:Event):Void
@@ -609,6 +613,7 @@ class GameScreen extends Screen
 		}
 		else
 		{
+			removeALLPrompt();
 			currentTurn += 1;
 			if (currentTurn == 5)
 			{

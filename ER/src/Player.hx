@@ -74,12 +74,14 @@ class Player extends Sprite
 		var posY : Float = -cardsInHand.length * cardsInHand[0].height / 2;
 		
 		var firstPosId1x = Lib.current.stage.stageWidth / 2;
-		var firstPosId1y = Lib.current.stage.stageHeight - cardsInHand[0].height / 2;
+		var firstPosId1y = Lib.current.stage.stageHeight - cardsInHand[0].height / 1.5;
 		
-		var firstPosId2x = Lib.current.stage.stageWidth - cardsInHand[0].width / 2;
-		var firstPosId2y = 200;
+		var firstPosId2x = Lib.current.stage.stageWidth - cardsInHand[0].width / 1.5;
+		var firstPosId2y = Lib.current.stage.stageHeight/2;
 		
-		var firstPosId3y = 0;
+		var firstPosId3y = cardsInHand[0].height / 1.5;
+		
+		var firstPosId4x = cardsInHand[0].width / 1.5;
 		
 		if (id == 1)
 		{
@@ -120,7 +122,7 @@ class Player extends Sprite
 			{
 				addChild(card);
 				card.rotation = 90; 
-				card.x = 0;
+				card.x = firstPosId4x;
 				card.y = firstPosId2y + posY;
 				posY += card.height + 10;
 			}
