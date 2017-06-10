@@ -37,7 +37,7 @@ class GameScreen extends Screen
 	var pos2 : Int = 20;
 	
 	var players:Array<Player> = new Array<Player>();
-	var boughtTool:Array<ToolCard> = [];
+	public var boughtTool:Array<ToolCard> = [];
 
 	public var patientsField : Array<PatientCard> = [];
 	
@@ -408,6 +408,7 @@ class GameScreen extends Screen
 				{
 					card.equipmentBought = true;
 					card.assignStaffCard("Tool", 0);
+					boughtTool[0].restoreDefaults();
 					boughtTool.pop();
 					trace("eqm bought");
 				}
@@ -450,20 +451,7 @@ class GameScreen extends Screen
 					if (type == "ALL") displayALLPrompt();
 					else goNextTurn();
 					
-					if (card.doctor <= 0 && card.nurse <= 0 && card.management <= 0 && card.healthcare <= 0)
-					{
-						
-						if ( boughtTool.indexOf(card) == -1 )
-						{
-							boughtTool.push(card);
-							trace("solved Tool");
-							trace("tool length " + boughtTool.length);
-						}
-						
-					}
 				} 
-				
-				
 			}
 		}
 	}
@@ -476,7 +464,7 @@ class GameScreen extends Screen
 			card.addEventListener(MouseEvent.CLICK, toolClicked);
 			addChild(card);
 			card.x = 400 + posX;
-			card.y = 150;
+			card.y = 130;
 			posX += card.width + 10;
 		}
 		
@@ -593,7 +581,7 @@ class GameScreen extends Screen
 			
 			for (row in resultset)
 			{
-				var tool : ToolCard = new ToolCard(row.imgID, row.doctor, row.nurse, row.management, row.healthcare, row.type);
+				var tool : ToolCard = new ToolCard(row.imgID, row.doctor, row.nurse, row.management, row.healthcare, row.type, this);
 				toolDeck.push(tool);
 			}
 			

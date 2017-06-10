@@ -4,6 +4,7 @@ import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.Assets;
+import openfl.Lib;
 
 /**
  * ...
@@ -33,7 +34,7 @@ class StaffCard extends Sprite
 		//card.height = 50;
 		//scale was disabled
 		
-		card.scaleX = card.scaleY = .1;
+		card.scaleX = card.scaleY = .1 * Lib.current.stage.stageHeight / 1080;
 		
 		card.x = -card.width / 2;
 		card.y = -card.height / 2;

@@ -7,25 +7,35 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
+import screens.GameScreen;
 
 class ToolCard extends Sprite {
 	
+	var gamescreen : GameScreen;
 	public var imgID : String;
 	public var doctor : Int;
 	public var nurse : Int;
 	public var management : Int;
 	public var healthcare : Int;
 	public var type : String;
+	var orDoc : Int;
+	var orNur : Int;
+	var orMng : Int;
+	var orHcw : Int;
+	var orType : String;
 	
 	public var doctorTextField : TextField;
 	public var nurseTextField : TextField;
 	public var managementTextField : TextField;
 	public var healthcareTextField : TextField;
+	
+	var card : Bitmap;
 
-	public function new (imageName : String, doc : Int, nur : Int, mng : Int, hcw : Int, typ : String)
+	public function new (imageName : String, doc : Int, nur : Int, mng : Int, hcw : Int, typ : String, gs : GameScreen)
 	{
 		super();
 		
+		gamescreen = gs;
 		imgID = imageName;
 		doctor = doc;
 		nurse = nur;
@@ -33,8 +43,14 @@ class ToolCard extends Sprite {
 		healthcare = hcw;
 		type = typ;
 		
+		orDoc = doctor;
+		orNur = nurse;
+		orMng = management;
+		orHcw = healthcare;
+		orType = type;
+		
 		var cardData : BitmapData = Assets.getBitmapData( imgID );
-		var card : Bitmap = new Bitmap( cardData );
+		card = new Bitmap( cardData );
 		
 		//temp tool size
 		card.height = 100;
@@ -48,6 +64,36 @@ class ToolCard extends Sprite {
 		addChild(card); 
 		createStaffFields(card); 
 		
+		addEventListener(Event.ENTER_FRAME, update);
+		
+	}
+	
+	function update(e:Event)
+	{
+		if (doctor <= 0 && nurse <= 0 && management <= 0 && healthcare <= 0)
+		{
+			if ( gamescreen.boughtTool.indexOf(this) == -1 )
+			{
+				gamescreen.boughtTool.push(this);
+				trace("solved Tool");
+				trace("tool length " + gamescreen.boughtTool.length);
+			}
+			
+		}
+	}
+	
+	public function restoreDefaults()
+	{
+		doctor = orDoc;
+		nurse = orNur;
+		management = orMng;
+		healthcare = orHcw;
+		type = orType;
+		removeChild(doctorTextField);
+		removeChild(nurseTextField);
+		removeChild(managementTextField);
+		removeChild(healthcareTextField);
+		createStaffFields(card);
 	}
 	
 	public function assignStaffCard(type:String, value:Int)
