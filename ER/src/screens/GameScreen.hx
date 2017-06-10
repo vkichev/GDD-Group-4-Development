@@ -66,6 +66,9 @@ class GameScreen extends Screen
 	
 	var roundsPassed : Int = 0;
 	
+	var _toolRect : Sprite;
+	var closeButton : Sprite;
+	
 	public function new()
 	{
 		super();
@@ -104,7 +107,54 @@ class GameScreen extends Screen
 		
 		createTimer();
 		solvedCounter();
-
+		
+	}
+	
+	function toolPrompt()
+	{
+		lastUpdate = null;
+		removeEventListener( Event.ENTER_FRAME, update );
+		
+		_toolRect = new Sprite();
+		_toolRect.graphics.beginFill(0x698abf);
+		_toolRect.graphics.drawRect(0,0, Math.floor(2*Lib.current.stage.stageWidth/3), Math.floor(Lib.current.stage.stageHeight/2));
+		_toolRect.graphics.endFill();
+		
+		_toolRect.x = Lib.current.stage.stageWidth / 2 - Lib.current.stage.stageWidth / 3;
+		_toolRect.y = Lib.current.stage.stageHeight / 2 - Lib.current.stage.stageHeight / 3;
+		
+		addChild(_toolRect);
+		
+		for (card in toolDeck)
+		{
+			card.y = Lib.current.stage.stageHeight / 2 - card.height;
+			addChild(card);
+		}
+		
+		closeButton = new Button( 
+			Assets.getBitmapData("img/Button.png"), 
+			Assets.getBitmapData("img/Button_over.png"), 
+			Assets.getBitmapData("img/Button_pressed.png"), 
+			"Close", 
+			onCloseClick );
+		
+		closeButton.x = (Lib.current.stage.stageWidth - closeButton.width) / 2;
+		closeButton.y = Lib.current.stage.stageHeight / 2;
+		addChild( closeButton );
+	}
+	
+	function onCloseClick()
+	{
+		trace("close tools");
+		for (card in toolDeck)
+		{
+			card.y = -50;
+		}
+		removeChild(_toolRect);
+		removeChild(closeButton);
+		
+		lastUpdate = Lib.getTimer();
+		addEventListener( Event.ENTER_FRAME, update );
 	}
 	
 	function checkEndCondition()
@@ -463,10 +513,21 @@ class GameScreen extends Screen
 		{
 			card.addEventListener(MouseEvent.CLICK, toolClicked);
 			addChild(card);
-			card.x = 400 + posX;
-			card.y = 130;
+			card.x = Lib.current.stage.stageWidth / 2 + posX;
+			card.y = -50;
 			posX += card.width + 10;
 		}
+		
+		var toolButton = new Button( 
+			Assets.getBitmapData("img/Button.png"), 
+			Assets.getBitmapData("img/Button_over.png"), 
+			Assets.getBitmapData("img/Button_pressed.png"), 
+			"Tools", 
+			toolPrompt );
+		
+		toolButton.x = (Lib.current.stage.stageWidth - toolButton.width) / 2;
+		toolButton.y = Lib.current.stage.stageHeight / 3;
+		addChild( toolButton );
 		
 	}
 	
