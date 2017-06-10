@@ -408,6 +408,8 @@ class GameScreen extends Screen
 				{
 					card.equipmentBought = true;
 					card.assignStaffCard("Tool", 0);
+					boughtTool.pop();
+					trace("eqm bought");
 				}
 				
 				var staffCard : StaffCard;
@@ -448,13 +450,20 @@ class GameScreen extends Screen
 					if (type == "ALL") displayALLPrompt();
 					else goNextTurn();
 					
+					if (card.doctor <= 0 && card.nurse <= 0 && card.management <= 0 && card.healthcare <= 0)
+					{
+						
+						if ( boughtTool.indexOf(card) == -1 )
+						{
+							boughtTool.push(card);
+							trace("solved Tool");
+							trace("tool length " + boughtTool.length);
+						}
+						
+					}
 				} 
 				
-				if (card.doctor <= 0 && card.nurse <= 0 && card.management <= 0 && card.healthcare <= 0)
-				{
-					trace("solved Tool");
-					boughtTool.push(card);
-				}
+				
 			}
 		}
 	}

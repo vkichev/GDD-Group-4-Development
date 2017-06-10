@@ -48,7 +48,7 @@ class PatientCard extends Sprite {
 		reward = rew;
 		gamescreen = gs;
 		
-		if (equipment == null) equipmentBought = true;
+		if (equipment == " ") equipmentBought = true;
 		
 		var cardData : BitmapData = Assets.getBitmapData(imgID);
 		var card : Bitmap = new Bitmap( cardData );
@@ -137,11 +137,11 @@ class PatientCard extends Sprite {
 		
 		equipmentTextField = new TextField();
 		equipmentTextField.defaultTextFormat = staffTextFormat;
-		equipmentTextField.width = 10;
+		equipmentTextField.width = 50;
 		equipmentTextField.height = 15;
 		equipmentTextField.x = doctorTextField.x;
 		equipmentTextField.y = healthcareTextField.y + 12;
-		equipmentTextField.text = equipmentBought + "";
+		equipmentTextField.text = equipment + "";
 		addChild(equipmentTextField);
 	}
 	
