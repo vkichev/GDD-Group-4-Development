@@ -47,7 +47,8 @@ class GameScreen extends Screen
 	
 	private var _rect:Sprite;
 	var allPromptButtons:Array<TextField>;
-	var card:PatientCard;
+	var patientCard:PatientCard;
+	var card:Dynamic;
 	var staffValue:Int;
 	var allTextField:openfl.text.TextField;
 	
@@ -198,8 +199,9 @@ class GameScreen extends Screen
 	private function createTimer() 
 	{
 		// create and position the progres bar. (Width, Height, 
-		timerBar = new Timer( 100, 15, 4 );
-		timerBar.x = timerBar.y = 350;
+		timerBar = new Timer( Math.floor(2*Lib.current.stage.stageWidth/3), 15, 4 );
+		timerBar.x = Lib.current.stage.stageWidth / 2 - Lib.current.stage.stageWidth / 3;
+		timerBar.y = patientsField[0].y - patientsField[0].height*3;
 		addChild( timerBar );
 		
 		// set the 'lastUpdate' for the first time
@@ -316,11 +318,11 @@ class GameScreen extends Screen
 	{
 		_rect = new Sprite();
 		_rect.graphics.beginFill(0xFF0000);
-		_rect.graphics.drawRect(0,0,400,300);
+		_rect.graphics.drawRect(0,0, Math.floor(2*Lib.current.stage.stageWidth/3), Math.floor(Lib.current.stage.stageHeight/2));
 		_rect.graphics.endFill();
 		
-		_rect.x = 200;
-		_rect.y = 100;
+		_rect.x = Lib.current.stage.stageWidth / 2 - Lib.current.stage.stageWidth / 3;
+		_rect.y = patientsField[0].y - patientsField[0].height*3 + timerBar.height;
 		
 		addChild(_rect);
 		
@@ -331,8 +333,8 @@ class GameScreen extends Screen
 		allTextField.defaultTextFormat = textFormat;
 		allTextField.autoSize = TextFieldAutoSize.LEFT;
 		allTextField.text = "Who do you assign this to?";
-		allTextField.x = _rect.width / 2 ;
-		allTextField.y = _rect.y + 20;
+		allTextField.x = Lib.current.stage.stageWidth / 2 - allTextField.width/2 ;
+		allTextField.y = Lib.current.stage.stageHeight/2 - _rect.height/2;
 		addChild(allTextField);
 		
 		allPromptButtons = new Array<TextField>();
@@ -343,34 +345,23 @@ class GameScreen extends Screen
 		{
 			
 			switch (i) {
-				case 0: iToString = "doctor";
-				case 1: iToString = "nurse";
-				case 2: iToString = "healthcare";
-				case 3: iToString = "management";
+				case 0: iToString = "Doctor";
+				case 1: iToString = "Nurse";
+				case 2: iToString = "Healthcare";
+				case 3: iToString = "Management";
 			}
-			
-			//var promptButton:Button = new Button
-			//( 
-				//Assets.getBitmapData("img/Button.png"), 
-				//Assets.getBitmapData("img/Button_over.png"), 
-				//Assets.getBitmapData("img/Button_pressed.png"), 
-				//iToString, 
-				//promptButtonClicked
-			//);
 			
 			var promptButton : TextField = new TextField();
 			
 			promptButton.defaultTextFormat = textFormat;
 			promptButton.autoSize = TextFieldAutoSize.LEFT;
 			promptButton.text = iToString;
-			promptButton.x = _rect.width / 2 ;
-			promptButton.y = _rect.y + 20;
+			promptButton.x = Lib.current.stage.stageWidth/2 - promptButton.width/2;
+			promptButton.y = Lib.current.stage.stageHeight/2 - _rect.height/4 + 75 * i;
 			
 			promptButton.addEventListener(MouseEvent.CLICK, promptButtonClicked);
 			
 			allPromptButtons.push(promptButton);
-			promptButton.x = _rect.width - promptButton.width/2;
-			promptButton.y = 200 + 50 * i;
 			addChild(promptButton);
 		}
 	}
@@ -398,6 +389,7 @@ class GameScreen extends Screen
 		}
 		removeChild(_rect);
 		removeChild(allTextField);
+		goNextTurn();
 	}
 	
 	private function patientClicked(e:Event):Void
@@ -425,8 +417,7 @@ class GameScreen extends Screen
 					
 					card.assignStaffCard(type, staffValue);
 					if (type == "ALL") displayALLPrompt();
-					
-					goNextTurn();
+					else goNextTurn();
 				} 
 			}
 		}
@@ -438,7 +429,7 @@ class GameScreen extends Screen
 		{
 			if (player.turn)
 			{
-				var card : ToolCard = cast (e.currentTarget);
+				card = cast (e.currentTarget);
 				
 				var staffCard : StaffCard;
 				
@@ -447,11 +438,11 @@ class GameScreen extends Screen
 					staffCard = player.selected.pop();
 					player.removeCard(staffCard);
 					var type : String = staffCard.type;
-					var value : Int = staffCard.num;
+					staffValue = staffCard.num;
 					
-					card.assignStaffCard(type, value);
-					
-					goNextTurn();
+					card.assignStaffCard(type, staffValue);
+					if (type == "ALL") displayALLPrompt();
+					else goNextTurn();
 					
 				} 
 				

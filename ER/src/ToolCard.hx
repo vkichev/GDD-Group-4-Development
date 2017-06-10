@@ -53,7 +53,7 @@ class ToolCard extends Sprite {
 	public function assignStaffCard(type:String, value:Int)
 	{
 		switch (type) {
-			case "D": doctor = doctor - value; doctorTextField.text = doctor + "";
+			case "D": doctor -= value; doctorTextField.text = doctor + "";
 			case "N": nurse -= value; nurseTextField.text = nurse + "";
 			case "H": healthcare -= value; healthcareTextField.text = healthcare + "";
 			case "M": management -= value; managementTextField.text = management + "";
