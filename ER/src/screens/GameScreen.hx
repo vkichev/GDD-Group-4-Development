@@ -43,7 +43,7 @@ class GameScreen extends Screen
 	
 	var currentTurn : Int = 1;
 	var lastTurn : Int;
-	public var doubleTurn:Int = 0;
+	public var doubleTurn:Int = 2;
 	
 	private var _rect:Sprite;
 	var allPromptButtons:Array<TextField>;
@@ -59,7 +59,6 @@ class GameScreen extends Screen
 	
 	public var solved : Int = 0;
 	var solvedTextField : TextField = new TextField();
-	var _circle:Sprite;
 	var exitButton:Button;
 	var continueButton:Button;
 	var winTextField : TextField;
@@ -68,6 +67,10 @@ class GameScreen extends Screen
 	
 	var _toolRect : Sprite;
 	var closeButton : Sprite;
+	
+	var turnI:Bitmap;
+	var turnD:openfl.display.Bitmap;
+
 	
 	public function new()
 	{
@@ -89,8 +92,10 @@ class GameScreen extends Screen
 			onQuitClick 
 		);
 		
-		toMenu.x = (stage.stageWidth-toMenu.width) / 2;
-		toMenu.y = 100;
+		createTurnIndicator();
+		
+		toMenu.x = stage.stageWidth - (toMenu.width * 1.5);
+		toMenu.y = stage.stageHeight - toMenu.height;
 		addChild( toMenu );
 		
 		createStaff();
@@ -106,6 +111,7 @@ class GameScreen extends Screen
 		this.addEventListener(Event.ENTER_FRAME, canPlayerPlay);
 		
 		createTimer();
+		
 		solvedCounter();
 		
 	}
@@ -332,36 +338,59 @@ class GameScreen extends Screen
 		solvedTextField.text = "patients solved: " + solved;
 	}
 	
+	function createTurnIndicator() 
+	{
+		var turnIndicator:BitmapData = Assets.getBitmapData( "img/Indicator_Turn.png" );
+		turnI = new Bitmap( turnIndicator );
+		turnI.scaleX = turnI.scaleY = 0.1;
+
+		var turnDouble:BitmapData = Assets.getBitmapData("img/Indicator_Double.png");
+		turnD = new Bitmap( turnDouble );
+		turnD.scaleX = turnD.scaleY = 0.1;
+		
+
+	}
+	
 	function displayTurnIndicator(id:Int)
 	{
-		removeChild(_circle);
-		_circle = new Sprite();
-		_circle.graphics.beginFill(0x00FF00);
-		_circle.graphics.drawCircle(0,0,5);
-		_circle.graphics.endFill();
+		removeChild(turnI);
+		removeChild(turnD);
 		
 		if (id == 1)
 		{
-			_circle.x = Lib.current.stage.stageWidth / 2;
-			_circle.y = Lib.current.stage.stageHeight - 100;
+			turnI.x = Lib.current.stage.stageWidth / 2;
+			turnI.y = Lib.current.stage.stageHeight / 4 * 3;
+			turnI.rotation = 0;
 		}
 		if (id == 2)
 		{
-			_circle.x = Lib.current.stage.stageWidth - 100;
-			_circle.y = Lib.current.stage.stageHeight / 2;
+			turnI.x = Lib.current.stage.stageWidth / 6 * 5;
+			turnI.y = Lib.current.stage.stageHeight / 2;
+			turnI.rotation = 270;
 		}
 		if (id == 3)
 		{
-			_circle.x = Lib.current.stage.stageWidth / 2;
-			_circle.y = 100;
+			turnI.x = Lib.current.stage.stageWidth / 2;
+			turnI.y = Lib.current.stage.stageHeight / 4;
+			turnI.rotation = 180;
 		}
 		if (id == 4)
 		{
-			_circle.x = 100;
-			_circle.y = Lib.current.stage.stageHeight/2;
+			turnI.x = Lib.current.stage.stageWidth / 6;
+			turnI.y = Lib.current.stage.stageHeight / 2;
+			turnI.rotation = 90;
 		}
 		
-		addChild(_circle);
+		addChild(turnI);
+		
+		if (id == doubleTurn)
+		{
+			turnD.x = turnI.x;
+			turnD.y = turnI.y;
+			turnD.rotation = turnI.rotation;
+			
+			addChild(turnD);
+		}
 	}
 	
 	function displayALLPrompt()
