@@ -53,11 +53,7 @@ class PatientCard extends Sprite {
 		var cardData : BitmapData = Assets.getBitmapData(imgID);
 		var card : Bitmap = new Bitmap( cardData );
 		
-		//temp cardsize
-		card.width = 60;
-		card.height = 100;
-		//temp cardsize
-		
+		card.scaleX = card.scaleY = .15 * Lib.current.stage.stageHeight / 1080;		
 		
 		card.x = -card.width / 2;
 		card.y = -card.height / 2;

@@ -43,7 +43,7 @@ class GameScreen extends Screen
 	
 	var currentTurn : Int = 1;
 	var lastTurn : Int;
-	public var doubleTurn:Int = 2;
+	public var doubleTurn:Int = 2; //0 is the normal value.
 	
 	private var _rect:Sprite;
 	var allPromptButtons:Array<TextField>;
