@@ -53,8 +53,8 @@ class GameScreen extends Screen
 	var allTextField:openfl.text.TextField;
 	
 	var timerBar:Timer;
-	var maxTime:Int = 15000;
-	var currentTime:Int = 15000;
+	var maxTime:Int = 5000;		//should be 15000
+	var currentTime:Int = 5000; //should be 15000
 	var lastUpdate:Int;
 	
 	public var solved : Int = 0;
@@ -683,7 +683,7 @@ class GameScreen extends Screen
 		
 	}
 
-	private function onQuitClick()
+	function onQuitClick()
 	{
 		Main.instance.loadScreen( ScreenType.Menu );
 	}
@@ -708,15 +708,15 @@ class GameScreen extends Screen
 				trace("rounds passed = " + roundsPassed);
 				currentTurn = 1;
 			}
-		}
-		
-		if (roundsPassed == 2)
-		{
-			var card = patientDeck.pop();
-			patientsField.push(card);
-			displayPatients();
 			
-			roundsPassed = 0;
+			if (roundsPassed == 2)
+			{
+				var card = patientDeck.pop();
+				patientsField.push(card);
+				displayPatients();
+				
+				roundsPassed = 0;
+			}
 		}
 	}
 	
