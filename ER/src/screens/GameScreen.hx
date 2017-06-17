@@ -53,8 +53,8 @@ class GameScreen extends Screen
 	var allTextField:openfl.text.TextField;
 	
 	var timerBar:Timer;
-	var maxTime:Int = 5000;		//should be 15000
-	var currentTime:Int = 5000; //should be 15000
+	var maxTime:Int = 300;		//should be 15000
+	var currentTime:Int = 300; //should be 15000
 	var lastUpdate:Int;
 	
 	public var solved : Int = 0;
@@ -174,6 +174,7 @@ class GameScreen extends Screen
 		if (patientsField.length == 6)
 		{
 			trace("you lose"); //Go to losing screen
+			Main.instance.loadScreen( ScreenType.Lose );
 		}
 	}
 	
@@ -543,7 +544,7 @@ class GameScreen extends Screen
 			card.addEventListener(MouseEvent.CLICK, toolClicked);
 			addChild(card);
 			card.x = Lib.current.stage.stageWidth / 2 + posX;
-			card.y = -50;
+			card.y = -300;
 			posX += card.width + 10;
 		}
 		
