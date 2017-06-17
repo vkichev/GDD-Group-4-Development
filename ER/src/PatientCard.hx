@@ -37,6 +37,16 @@ class PatientCard extends Sprite {
 	
 	var card:Bitmap;
 	
+	var dSprite:Sprite;
+	var nSprite:Sprite;
+	var mSprite:Sprite;
+	var hSprite:Sprite;
+	
+	var dSpriteInner:Sprite;
+	var nSpriteInner:Sprite;
+	var mSpriteInner:Sprite;
+	var hSpriteInner:Sprite;
+	
 	var doctorSprite : Sprite;
 	var nurseSprite : Sprite;
 	var managementSprite : Sprite;
@@ -115,6 +125,85 @@ class PatientCard extends Sprite {
 		//doctorTextField.text = doctor + "";
 		//addChild(doctorTextField);
 		
+		//outer line of the circle
+		dSprite = new Sprite();
+		for (i in 0...5)
+		{
+			dSprite.graphics.beginFill(0xFFFFFF);
+			dSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, card.y + 2*card.height/3 - 9, 4);
+			dSprite.graphics.endFill();
+		}
+		addChild(dSprite);
+		
+		if (firstTime) posY = dSprite.y + dSprite.height; firstTime = false;
+		
+		nSprite = new Sprite();
+		for (i in 0...5)
+		{
+			nSprite.graphics.beginFill(0xFFFFFF);
+			nSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/6.5, 4);
+			nSprite.graphics.endFill();
+		}
+		addChild(nSprite);
+		
+		mSprite = new Sprite();
+		for (i in 0...5)
+		{
+			mSprite.graphics.beginFill(0xFFFFFF);
+			mSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/4.75, 4);
+			mSprite.graphics.endFill();
+		}
+		addChild(mSprite);
+		
+		hSprite = new Sprite();
+		for (i in 0...5)
+		{
+			hSprite.graphics.beginFill(0xFFFFFF);
+			hSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/3.75, 4);
+			hSprite.graphics.endFill();
+		}
+		addChild(hSprite);
+		
+		//the inner part of the circles
+		dSpriteInner = new Sprite();
+		for (i in 0...5)
+		{
+			dSpriteInner.graphics.beginFill(0x181818);
+			dSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, card.y + 2*card.height/3 - 9, 3);
+			dSpriteInner.graphics.endFill();
+		}
+		addChild(dSpriteInner);
+		
+		if (firstTime) posY = dSpriteInner.y + dSpriteInner.height; firstTime = false;
+		
+		nSpriteInner = new Sprite();
+		for (i in 0...5)
+		{
+			nSpriteInner.graphics.beginFill(0x181818);
+			nSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/6.5, 3);
+			nSpriteInner.graphics.endFill();
+		}
+		addChild(nSpriteInner);
+		
+		mSpriteInner = new Sprite();
+		for (i in 0...5)
+		{
+			mSpriteInner.graphics.beginFill(0x181818);
+			mSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/4.75, 3);
+			mSpriteInner.graphics.endFill();
+		}
+		addChild(mSprite);
+		
+		hSpriteInner = new Sprite();
+		for (i in 0...5)
+		{
+			hSpriteInner.graphics.beginFill(0x181818);
+			hSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/3.75, 3);
+			hSpriteInner.graphics.endFill();
+		}
+		addChild(hSpriteInner);
+		
+		//adds white circles
 		removeChild(doctorSprite);
 		doctorSprite = new Sprite();
 		for (i in 0...doctor)
