@@ -45,7 +45,7 @@ class GameScreen extends Screen
 	var lastTurn : Int;
 	public var doubleTurn:Int = 2; //0 is the normal value.
 	
-	private var _rect:Sprite;
+	var _rect:Sprite;
 	var allPromptButtons:Array<TextField>;
 	var patientCard:PatientCard;
 	var card:Dynamic;
@@ -65,7 +65,8 @@ class GameScreen extends Screen
 	
 	var roundsPassed : Int = 0;
 	
-	var _toolRect : Sprite;
+	var assignRect : Bitmap;
+	var toolRect : Bitmap;
 	var closeButton : Sprite;
 	
 	var turnI:Bitmap;
@@ -83,21 +84,10 @@ class GameScreen extends Screen
 		bg.width = Lib.current.stage.stageWidth;
 		bg.height = Lib.current.stage.stageHeight;
 		addChild(bg);
-		var toMenu:Button = new Button
-		( 
-			Assets.getBitmapData("img/Button.png"), 
-			Assets.getBitmapData("img/Button_over.png"), 
-			Assets.getBitmapData("img/Button_pressed.png"), 
-			"quit", 
-			onQuitClick 
-		);
+		createQuitButton();
 		
 		createTurnIndicator();
-		
-		toMenu.x = stage.stageWidth - (toMenu.width * 1.5);
-		toMenu.y = stage.stageHeight - toMenu.height;
-		addChild( toMenu );
-		
+
 		createStaff();
 		readFromDataBase();
 		
@@ -121,15 +111,13 @@ class GameScreen extends Screen
 		lastUpdate = null;
 		removeEventListener( Event.ENTER_FRAME, update );
 		
-		_toolRect = new Sprite();
-		_toolRect.graphics.beginFill(0x698abf);
-		_toolRect.graphics.drawRect(0,0, Math.floor(2*Lib.current.stage.stageWidth/3), Math.floor(Lib.current.stage.stageHeight/2));
-		_toolRect.graphics.endFill();
+		toolRect = new Bitmap( Assets.getBitmapData("img/menu_tools.png") );
+		toolRect.scaleX = 1.3;
 		
-		_toolRect.x = Lib.current.stage.stageWidth / 2 - Lib.current.stage.stageWidth / 3;
-		_toolRect.y = Lib.current.stage.stageHeight / 2 - Lib.current.stage.stageHeight / 3;
+		toolRect.x = Lib.current.stage.stageWidth / 2 - toolRect.width / 2;
+		toolRect.y = Lib.current.stage.stageHeight / 2 - toolRect.height / 2;
 		
-		addChild(_toolRect);
+		addChild(toolRect);
 		
 		for (card in toolDeck)
 		{
@@ -156,7 +144,7 @@ class GameScreen extends Screen
 		{
 			card.y = -50;
 		}
-		removeChild(_toolRect);
+		removeChild(toolRect);
 		removeChild(closeButton);
 		
 		lastUpdate = Lib.getTimer();
@@ -409,15 +397,13 @@ class GameScreen extends Screen
 	
 	function displayALLPrompt()
 	{
-		_rect = new Sprite();
-		_rect.graphics.beginFill(0xFF0000);
-		_rect.graphics.drawRect(0,0, Math.floor(2*Lib.current.stage.stageWidth/3), Math.floor(Lib.current.stage.stageHeight/2));
-		_rect.graphics.endFill();
+		assignRect = new Bitmap(  Assets.getBitmapData( "img/menu_staff.png" ) );
+		assignRect.scaleX = 1.3;
 		
-		_rect.x = Lib.current.stage.stageWidth / 2 - Lib.current.stage.stageWidth / 3;
-		_rect.y = patientsField[0].y - patientsField[0].height*3 + timerBar.height;
+		assignRect.x = Lib.current.stage.stageWidth / 2 - toolRect.width / 2;
+		assignRect.y = Lib.current.stage.stageHeight / 2 - toolRect.height / 2;
 		
-		addChild(_rect);
+		addChild(assignRect);
 		
 		var textFormat:TextFormat = new TextFormat("Verdana", 24, 0xbbbbbb, true);
 		textFormat.align = TextFormatAlign.LEFT;
@@ -427,7 +413,7 @@ class GameScreen extends Screen
 		allTextField.autoSize = TextFieldAutoSize.LEFT;
 		allTextField.text = "Who do you assign this to?";
 		allTextField.x = Lib.current.stage.stageWidth / 2 - allTextField.width/2 ;
-		allTextField.y = Lib.current.stage.stageHeight/2 - _rect.height/2;
+		allTextField.y = Lib.current.stage.stageHeight/2 - assignRect.height/2;
 		addChild(allTextField);
 		
 		allPromptButtons = new Array<TextField>();
@@ -450,7 +436,7 @@ class GameScreen extends Screen
 			promptButton.autoSize = TextFieldAutoSize.LEFT;
 			promptButton.text = iToString;
 			promptButton.x = Lib.current.stage.stageWidth/2 - promptButton.width/2;
-			promptButton.y = Lib.current.stage.stageHeight/2 - _rect.height/4 + 75 * i;
+			promptButton.y = Lib.current.stage.stageHeight/2 - assignRect.height/4 + 75 * i;
 			
 			promptButton.addEventListener(MouseEvent.CLICK, promptButtonClicked);
 			
@@ -477,13 +463,16 @@ class GameScreen extends Screen
 	
 	function removeALLPrompt()
 	{
-		if (_rect != null)
+		//remove the if statement? It seems redundant.
+		if (_rect != null || assignRect != null || toolRect != null)
 		{
 			for (textField in allPromptButtons)
 			{
 				removeChild(textField);
 			}
 			removeChild(_rect);
+			removeChild(assignRect);
+			removeChild(toolRect);
 			removeChild(allTextField);
 		}
 		//goNextTurn();
@@ -562,14 +551,16 @@ class GameScreen extends Screen
 		}
 		
 		var toolButton = new Button( 
-			Assets.getBitmapData("img/Button.png"), 
-			Assets.getBitmapData("img/Button_over.png"), 
-			Assets.getBitmapData("img/Button_pressed.png"), 
+			Assets.getBitmapData("img/Button_tools.png"),
+			Assets.getBitmapData("img/Button_tools.png"), 
+			Assets.getBitmapData("img/Button_tools.png"), 
 			"Tools", 
 			toolPrompt );
-		
+			
+			toolButton.scaleX = toolButton.scaleY = 0.4;
+			
 		toolButton.x = (Lib.current.stage.stageWidth - toolButton.width) / 2;
-		toolButton.y = Lib.current.stage.stageHeight / 3;
+		toolButton.y = Lib.current.stage.stageHeight / 3 - toolButton.height/2;
 		addChild( toolButton );
 		
 	}
@@ -732,6 +723,21 @@ class GameScreen extends Screen
 				roundsPassed = 0;
 			}
 		}
+	}
+	
+	function createQuitButton():Void 
+	{
+		var toMenu:Button = new Button
+		( 
+			Assets.getBitmapData("img/Button.png"), 
+			Assets.getBitmapData("img/Button_over.png"), 
+			Assets.getBitmapData("img/Button_pressed.png"), 
+			"quit", 
+			onQuitClick 
+		);
+		toMenu.x = stage.stageWidth - (toMenu.width * 1.5);
+		toMenu.y = stage.stageHeight - toMenu.height;
+		addChild( toMenu );
 	}
 	
 	public function addCardAllPlayers()

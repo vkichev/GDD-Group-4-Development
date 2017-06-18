@@ -25,6 +25,9 @@ class OptionsScreen extends Screen
 	
 	override public function onLoad():Void
 	{
+		createBackButton();
+		
+		
 		musicToggle = new Toggle( 
 			Assets.getBitmapData("img/Toggle_left.png"), 
 			Assets.getBitmapData("img/Toggle_right.png"), 
@@ -42,6 +45,28 @@ class OptionsScreen extends Screen
 		musicToggle.x = soundToggle.x = (stage.stageWidth - musicToggle.width) / 2;
 		musicToggle.y = stage.stageHeight / 2 - musicToggle.height;
 		soundToggle.y = musicToggle.y + soundToggle.height + 10;
+		
+		
+	}
+	
+	function createBackButton() 
+	{
+		var toMenu:Button = new Button
+		( 
+			Assets.getBitmapData("img/Button.png"), 
+			Assets.getBitmapData("img/Button_over.png"), 
+			Assets.getBitmapData("img/Button_pressed.png"), 
+			"back", 
+			onBackClick 
+		);
+		toMenu.x = stage.stageWidth - (toMenu.width * 1.5);
+		toMenu.y = stage.stageHeight - toMenu.height;
+		addChild(toMenu);
+	}
+	
+	function onBackClick()
+	{
+		Main.instance.loadScreen( ScreenType.Menu );
 	}
 	
 	private function music()
