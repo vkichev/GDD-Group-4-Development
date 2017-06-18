@@ -7,4 +7,5 @@ enum ScreenType
 	Menu;
 	Game;
 	Lose;
+	Options;
 }

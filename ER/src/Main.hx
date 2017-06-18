@@ -52,6 +52,8 @@ class Main extends Sprite
 				currentScreen = new GameScreen();
 			case ScreenType.Lose:
 				currentScreen = new LoseScreen();
+			case ScreenType.Options:
+				currentScreen = new OptionsScreen();
 		}
 
 		addChild( currentScreen );
@@ -78,7 +80,7 @@ class Main extends Sprite
 	{
 		var m:Main = Main.instance;
 		openfl.Lib.current.stage.addChild( m );
-
+		
 		m.loadScreen( ScreenType.Menu );
 	}
 }
