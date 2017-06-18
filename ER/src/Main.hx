@@ -48,10 +48,14 @@ class Main extends Sprite
 		{
 			case ScreenType.Menu:
 				currentScreen = new MenuScreen();
+			case ScreenType.Tut:
+				currentScreen = new TutorialScreen();
 			case ScreenType.Game:
 				currentScreen = new GameScreen();
 			case ScreenType.Lose:
 				currentScreen = new LoseScreen();
+			case ScreenType.Options:
+				currentScreen = new OptionsScreen();
 		}
 
 		addChild( currentScreen );
@@ -78,7 +82,7 @@ class Main extends Sprite
 	{
 		var m:Main = Main.instance;
 		openfl.Lib.current.stage.addChild( m );
-
+		
 		m.loadScreen( ScreenType.Menu );
 	}
 }

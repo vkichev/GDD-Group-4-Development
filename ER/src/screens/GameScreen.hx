@@ -53,8 +53,8 @@ class GameScreen extends Screen
 	var allTextField:openfl.text.TextField;
 	
 	var timerBar:Timer;
-	var maxTime:Int = 300;		//should be 15000
-	var currentTime:Int = 300; //should be 15000
+	var maxTime:Int = 15000;		//should be 15000
+	var currentTime:Int = 15000; //should be 15000
 	var lastUpdate:Int;
 	
 	public var solved : Int = 0;
@@ -287,6 +287,8 @@ class GameScreen extends Screen
 		
 		checkEndCondition();
 		
+		checkForNoCards();
+		
 		// if currentTime is less than or equal to zero the time is up. Reset the timer
 		if( currentTime <= 0 )
 		{			
@@ -319,6 +321,17 @@ class GameScreen extends Screen
 		
 		// calculate the percentage (between 0 and 1) to update the bar
 		timerBar.setValue( currentTime / maxTime );
+	}
+	
+	function checkForNoCards()
+	{
+		for (player in players)
+		{
+			if (currentTurn == player.id && player.cardsInHand.length < 1)
+			{
+				currentTime = 0;
+			}
+		}
 	}
 	
 	function canPlayerPlay(e:Event)

@@ -72,7 +72,7 @@ class MenuScreen extends Screen
 	
 	private function onOptionClick() 
 	{
-		//Main.instance.loadScreen( ScreenType.OPTION );
+		Main.instance.loadScreen( ScreenType.Options );
 	}
 
 	private function onPlayClick()

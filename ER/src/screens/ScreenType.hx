@@ -5,6 +5,8 @@ package screens;
 enum ScreenType
 {
 	Menu;
+	Tut;
 	Game;
 	Lose;
+	Options;
 }
