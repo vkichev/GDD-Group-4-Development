@@ -14,11 +14,11 @@ import openfl.display.JointStyle;
 class Timer extends Sprite
 {
 	// the width of the entire bar (incl. outline)
-	var barWidth:Int = 60;
+	var barWidth:Float = 60;
 	// the height of the entire bar (incl. outline)
-	var barHeight:Int = 8;
+	var barHeight:Float = 8;
 	// the size/thickness of the outline
-	var outlineWidth:Int = 2;
+	var outlineWidth:Float = 2;
 
 	// variable indicating the current state of the bar (how far it is 'filled')
 	var value:Float = 1;
@@ -27,7 +27,7 @@ class Timer extends Sprite
 	// because the bar needs change now and then, it is stored in a var
 	var barShape:Shape;
 
-	public function new( width:Int = 60, height:Int = 8, outlineThickness:Int = 2 )
+	public function new( width:Float = 60, height:Float = 8, outlineThickness:Float = 2 )
 	{
 		super();
 

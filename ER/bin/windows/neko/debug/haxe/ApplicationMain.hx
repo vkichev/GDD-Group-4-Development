@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "55",
+			build: "523",
 			company: "Rutger Regtop",
 			file: "NewProject",
 			fps: 60,
@@ -44,7 +44,7 @@ import haxe.macro.Expr;
 					display: 0,
 					fullscreen: true,
 					hardware: true,
-					height: 720,
+					height: 2160,
 					hidden: #if munit true #else null #end,
 					maximized: null,
 					minimized: null,
@@ -53,7 +53,7 @@ import haxe.macro.Expr;
 					stencilBuffer: true,
 					title: "New Project",
 					vsync: false,
-					width: 1280,
+					width: 3140,
 					x: null,
 					y: null
 				},
@@ -73,7 +73,7 @@ import haxe.macro.Expr;
 		
 		#if (js && html5)
 		#if (munit || utest)
-		lime.system.System.embed (projectName, null, 1280, 720, config);
+		lime.system.System.embed (projectName, null, 3140, 2160, config);
 		#end
 		#else
 		create (config);

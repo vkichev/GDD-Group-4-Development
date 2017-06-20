@@ -71,7 +71,9 @@ class GameScreen extends Screen
 	
 	var turnI:Bitmap;
 	var turnD:openfl.display.Bitmap;
-
+	
+	//Multiply by this for magic
+	var universalScalingConstant = Lib.current.stage.stageHeight / 1080;
 	
 	public function new()
 	{
@@ -112,7 +114,8 @@ class GameScreen extends Screen
 		removeEventListener( Event.ENTER_FRAME, update );
 		
 		toolRect = new Bitmap( Assets.getBitmapData("img/menu_tools.png") );
-		toolRect.scaleX = 1.3;
+		toolRect.scaleX = 1.3 * universalScalingConstant;
+		toolRect.scaleY = 1 * universalScalingConstant;
 		
 		toolRect.x = Lib.current.stage.stageWidth / 2 - toolRect.width / 2;
 		toolRect.y = Lib.current.stage.stageHeight / 2 - toolRect.height / 2;
@@ -244,7 +247,7 @@ class GameScreen extends Screen
 	private function createTimer() 
 	{
 		// create and position the progres bar. (Width, Height, 
-		timerBar = new Timer( Math.floor(2*Lib.current.stage.stageWidth/3), 15, 4 );
+		timerBar = new Timer( Math.floor(2*Lib.current.stage.stageWidth/3), 15 * universalScalingConstant, 4 * universalScalingConstant );
 		timerBar.x = Lib.current.stage.stageWidth / 2 - Lib.current.stage.stageWidth / 3;
 		timerBar.y = Lib.current.stage.stageHeight / 4.5;
 		addChild( timerBar );
@@ -344,11 +347,11 @@ class GameScreen extends Screen
 	{
 		var turnIndicator:BitmapData = Assets.getBitmapData( "img/Indicator_Turn.png" );
 		turnI = new Bitmap( turnIndicator );
-		turnI.scaleX = turnI.scaleY = 0.1;
+		turnI.scaleX = turnI.scaleY = 0.1 * universalScalingConstant;
 
 		var turnDouble:BitmapData = Assets.getBitmapData("img/Indicator_Double.png");
 		turnD = new Bitmap( turnDouble );
-		turnD.scaleX = turnD.scaleY = 0.1;
+		turnD.scaleX = turnD.scaleY = 0.1 * universalScalingConstant;
 		
 
 	}
@@ -398,7 +401,8 @@ class GameScreen extends Screen
 	function displayALLPrompt()
 	{
 		assignRect = new Bitmap(  Assets.getBitmapData( "img/menu_staff.png" ) );
-		assignRect.scaleX = 1.3;
+		assignRect.scaleX = 1.3 * universalScalingConstant;
+		assignRect.scaleY = 1 * universalScalingConstant;
 		
 		assignRect.x = Lib.current.stage.stageWidth / 2 - assignRect.width / 2;
 		assignRect.y = Lib.current.stage.stageHeight / 2 - assignRect.height / 2;
@@ -437,7 +441,8 @@ class GameScreen extends Screen
 			promptButton.autoSize = TextFieldAutoSize.LEFT;
 			promptButton.text = iToString;
 			promptButton.x = Lib.current.stage.stageWidth/2 - promptButton.width/2;
-			promptButton.y = allTextField.y + allTextField.height*2 + 75 * i;
+			promptButton.y = allTextField.y + allTextField.height * 2 + 75 * i;
+			promptButton.scaleX = promptButton.scaleY = 1 * universalScalingConstant;
 			
 			promptButton.addEventListener(MouseEvent.CLICK, promptButtonClicked);
 			
@@ -558,7 +563,7 @@ class GameScreen extends Screen
 			"Tools", 
 			toolPrompt );
 			
-			toolButton.scaleX = toolButton.scaleY = 0.4;
+			toolButton.scaleX = toolButton.scaleY = 0.4 * universalScalingConstant;
 			
 		toolButton.x = (Lib.current.stage.stageWidth - toolButton.width) / 2;
 		toolButton.y = Lib.current.stage.stageHeight / 3 - toolButton.height/2;
