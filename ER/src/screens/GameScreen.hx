@@ -400,20 +400,22 @@ class GameScreen extends Screen
 		assignRect = new Bitmap(  Assets.getBitmapData( "img/menu_staff.png" ) );
 		assignRect.scaleX = 1.3;
 		
-		assignRect.x = Lib.current.stage.stageWidth / 2 - toolRect.width / 2;
-		assignRect.y = Lib.current.stage.stageHeight / 2 - toolRect.height / 2;
+		assignRect.x = Lib.current.stage.stageWidth / 2 - assignRect.width / 2;
+		assignRect.y = Lib.current.stage.stageHeight / 2 - assignRect.height / 2;
 		
 		addChild(assignRect);
 		
-		var textFormat:TextFormat = new TextFormat("Verdana", 24, 0xbbbbbb, true);
-		textFormat.align = TextFormatAlign.LEFT;
+		var promptTextFormat:TextFormat = new TextFormat("Verdana", 48, 0x3b5572, true);
+		var buttonTextFormat:TextFormat = new TextFormat("Verdana", 24, 0x3b5572, true);
+		promptTextFormat.align = TextFormatAlign.LEFT;
+		buttonTextFormat.align = TextFormatAlign.LEFT;
 		
 		allTextField = new TextField();
-		allTextField.defaultTextFormat = textFormat;
+		allTextField.defaultTextFormat = promptTextFormat;
 		allTextField.autoSize = TextFieldAutoSize.LEFT;
 		allTextField.text = "Who do you assign this to?";
 		allTextField.x = Lib.current.stage.stageWidth / 2 - allTextField.width/2 ;
-		allTextField.y = Lib.current.stage.stageHeight/2 - assignRect.height/2;
+		allTextField.y = assignRect.y + assignRect.height/12;
 		addChild(allTextField);
 		
 		allPromptButtons = new Array<TextField>();
@@ -422,7 +424,6 @@ class GameScreen extends Screen
 		
 		for (i in 0...4)
 		{
-			
 			switch (i) {
 				case 0: iToString = "Doctor";
 				case 1: iToString = "Nurse";
@@ -432,11 +433,11 @@ class GameScreen extends Screen
 			
 			var promptButton : TextField = new TextField();
 			
-			promptButton.defaultTextFormat = textFormat;
+			promptButton.defaultTextFormat = buttonTextFormat;
 			promptButton.autoSize = TextFieldAutoSize.LEFT;
 			promptButton.text = iToString;
 			promptButton.x = Lib.current.stage.stageWidth/2 - promptButton.width/2;
-			promptButton.y = Lib.current.stage.stageHeight/2 - assignRect.height/4 + 75 * i;
+			promptButton.y = allTextField.y + allTextField.height*2 + 75 * i;
 			
 			promptButton.addEventListener(MouseEvent.CLICK, promptButtonClicked);
 			
