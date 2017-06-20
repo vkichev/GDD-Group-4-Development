@@ -75,6 +75,9 @@ class GameScreen extends Screen
 	//Multiply by this for magic
 	var universalScalingConstant = Lib.current.stage.stageHeight / 1080;
 	
+	var toolButton : Button;
+	var thiscard : PatientCard;
+	
 	public function new()
 	{
 		super();
@@ -110,6 +113,7 @@ class GameScreen extends Screen
 	
 	function toolPrompt()
 	{
+		removeChild(toolButton);
 		lastUpdate = null;
 		removeEventListener( Event.ENTER_FRAME, update );
 		
@@ -145,10 +149,11 @@ class GameScreen extends Screen
 		trace("close tools");
 		for (card in toolDeck)
 		{
-			card.y = -50;
+			card.y = -300;
 		}
 		removeChild(toolRect);
 		removeChild(closeButton);
+		addChild(toolButton);
 		
 		lastUpdate = Lib.getTimer();
 		addEventListener( Event.ENTER_FRAME, update );
@@ -298,6 +303,14 @@ class GameScreen extends Screen
 				}
 			}
 			
+			if ( thiscard != null)
+			{
+				if ( thiscard.x != thiscard.originalX && thiscard.y != thiscard.originalY)
+				{
+					thiscard.x = thiscard.originalX;
+					thiscard.y = thiscard.originalY;
+				}
+			}
 			goNextTurn();	
 			
 		}
@@ -410,13 +423,13 @@ class GameScreen extends Screen
 		addChild(assignRect);
 		
 		var promptTextFormat:TextFormat = new TextFormat("Verdana", 48, 0x3b5572, true);
-		var buttonTextFormat:TextFormat = new TextFormat("Verdana", 24, 0x3b5572, true);
-		promptTextFormat.align = TextFormatAlign.LEFT;
-		buttonTextFormat.align = TextFormatAlign.LEFT;
+		var buttonTextFormat:TextFormat = new TextFormat("Verdana", 32, 0x3b5572, true);
+		promptTextFormat.align = TextFormatAlign.CENTER;
+		buttonTextFormat.align = TextFormatAlign.CENTER;
 		
 		allTextField = new TextField();
 		allTextField.defaultTextFormat = promptTextFormat;
-		allTextField.autoSize = TextFieldAutoSize.LEFT;
+		allTextField.autoSize = TextFieldAutoSize.CENTER;
 		allTextField.text = "Who do you assign this to?";
 		allTextField.x = Lib.current.stage.stageWidth / 2 - allTextField.width/2 ;
 		allTextField.y = assignRect.y + assignRect.height/12;
@@ -431,17 +444,17 @@ class GameScreen extends Screen
 			switch (i) {
 				case 0: iToString = "Doctor";
 				case 1: iToString = "Nurse";
-				case 2: iToString = "Healthcare";
-				case 3: iToString = "Management";
+				case 2: iToString = "Management";
+				case 3: iToString = "CNA";
 			}
 			
 			var promptButton : TextField = new TextField();
 			
 			promptButton.defaultTextFormat = buttonTextFormat;
-			promptButton.autoSize = TextFieldAutoSize.LEFT;
+			promptButton.autoSize = TextFieldAutoSize.CENTER;
 			promptButton.text = iToString;
 			promptButton.x = Lib.current.stage.stageWidth/2 - promptButton.width/2;
-			promptButton.y = allTextField.y + allTextField.height * 2 + 75 * i;
+			promptButton.y = allTextField.y + allTextField.height * 1.4 + 50 * i;
 			promptButton.scaleX = promptButton.scaleY = 1 * universalScalingConstant;
 			
 			promptButton.addEventListener(MouseEvent.CLICK, promptButtonClicked);
@@ -460,17 +473,20 @@ class GameScreen extends Screen
 		switch(clickedButtonIndex){
 			case 0: card.assignStaffCard("D", staffValue);
 			case 1: card.assignStaffCard("N", staffValue); 
-			case 2: card.assignStaffCard("H", staffValue); 
-			case 3: card.assignStaffCard("M", staffValue);
+			case 2: card.assignStaffCard("M", staffValue); 
+			case 3: card.assignStaffCard("H", staffValue);
 		}
 		removeALLPrompt();
+		thiscard.x = thiscard.originalX;
+		thiscard.y = thiscard.originalY;
+		thiscard = null;
 		goNextTurn();
 	}
 	
 	function removeALLPrompt()
 	{
 		//remove the if statement? It seems redundant.
-		if (_rect != null || assignRect != null || toolRect != null)
+		if (_rect != null || assignRect != null)
 		{
 			for (textField in allPromptButtons)
 			{
@@ -491,6 +507,7 @@ class GameScreen extends Screen
 			if (player.turn)
 			{
 				card = cast (e.currentTarget);
+				thiscard = card;
 				
 				if (boughtTool.length == 1 && boughtTool[0].type == card.equipment)
 				{
@@ -511,7 +528,14 @@ class GameScreen extends Screen
 					staffValue = staffCard.num;
 					
 					card.assignStaffCard(type, staffValue);
-					if (type == "ALL") displayALLPrompt();
+					if (type == "ALL") 
+					{
+						displayALLPrompt();
+						thiscard.x = assignRect.x + assignRect.width / 4;
+						thiscard.y = assignRect.y + assignRect.height / 1.8;
+						addChild(card);
+						
+					}
 					else goNextTurn();
 				} 
 			}
@@ -556,11 +580,11 @@ class GameScreen extends Screen
 			posX += card.width + 10;
 		}
 		
-		var toolButton = new Button( 
+		toolButton = new Button( 
 			Assets.getBitmapData("img/Button_tools.png"),
 			Assets.getBitmapData("img/Button_tools.png"), 
 			Assets.getBitmapData("img/Button_tools.png"), 
-			"Tools", 
+			"", 
 			toolPrompt );
 			
 			toolButton.scaleX = toolButton.scaleY = 0.4 * universalScalingConstant;
@@ -591,7 +615,9 @@ class GameScreen extends Screen
 			card.addEventListener(MouseEvent.CLICK, patientClicked);
 			addChild(card);
 			card.x = Lib.current.stage.stageWidth/2 + posX;
-			card.y = Lib.current.stage.stageHeight/2;
+			card.y = Lib.current.stage.stageHeight / 2;
+			card.originalX = card.x;
+			card.originalY = card.y;
 			posX += card.width + 10;
 		}
 	}

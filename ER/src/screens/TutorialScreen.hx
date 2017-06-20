@@ -131,7 +131,7 @@ class TutorialScreen extends Screen
 		if (clicked.length == 1)
 		{
 			removeChild(docCard);
-			for ( i in 0...2)
+			for ( i in 0...3)
 			{	
 				trace("removed");
 				var removed = docSpheres.pop();
@@ -363,7 +363,7 @@ class TutorialScreen extends Screen
 	{
 		for (card in patSpheres)
 		{
-			doctor = 4;
+			doctor = 3;
 			nurse = Std.random(5) + 1;
 			management = Std.random(5) + 1;
 			healthcare = Std.random(5) + 1;

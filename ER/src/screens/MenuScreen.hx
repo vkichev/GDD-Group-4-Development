@@ -42,6 +42,13 @@ class MenuScreen extends Screen
 			"Options", 
 			onOptionClick );
 			
+		var tutorial:Button = new Button( 
+			Assets.getBitmapData("img/Button.png"), 
+			Assets.getBitmapData("img/Button_over.png"), 
+			Assets.getBitmapData("img/Button_pressed.png"), 
+			"Tutorial", 
+			onTutorialClick );
+			
 		var exit:Button = new Button( 
 			Assets.getBitmapData("img/Button.png"), 
 			Assets.getBitmapData("img/Button_over.png"), 
@@ -54,13 +61,15 @@ class MenuScreen extends Screen
 		play.width = option.width = exit.width = 150;
 		play.height = option.height = exit.height = 46;
 		
-		play.x = option.x = exit.x = (stage.stageWidth-play.width) / 2;
-		play.y = stage.stageHeight / 2 - play.height;
+		play.x = option.x = tutorial.x = exit.x = (stage.stageWidth-play.width) / 2;
+		play.y = stage.stageHeight / 2 - play.height * 2;
 		option.y = play.y + play.height + 10;
-		exit.y = option.y + option.height + 10;
+		tutorial.y = option.y + option.height + 10;
+		exit.y = tutorial.y + tutorial.height + 10;
 		
 		addChild(play);
 		addChild(option);
+		addChild(tutorial);
 		addChild(exit);
 		
 	}
@@ -68,6 +77,11 @@ class MenuScreen extends Screen
 	private function onExitClick() 
 	{
 		System.exit(0);
+	}
+	
+	function onTutorialClick()
+	{
+		Main.instance.loadScreen(ScreenType.Tut);
 	}
 	
 	private function onOptionClick() 

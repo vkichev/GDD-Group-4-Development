@@ -19,6 +19,7 @@
 -D lime-curl
 -D openfl-native
 -D lime-cffi
+-D fdb
 -D windows
 -D desktop
 --remap flash:openfl
