@@ -43,7 +43,7 @@ class GameScreen extends Screen
 	
 	var currentTurn : Int = 1;
 	var lastTurn : Int;
-	public var doubleTurn:Int = 2; //0 is the normal value.
+	public var doubleTurn:Int = 0; //0 is the normal value.
 	
 	var _rect:Sprite;
 	var allPromptButtons:Array<TextField>;
@@ -53,8 +53,8 @@ class GameScreen extends Screen
 	var allTextField:openfl.text.TextField;
 	
 	var timerBar:Timer;
-	var maxTime:Int = 15000;		//should be 15000
-	var currentTime:Int = 15000; //should be 15000
+	var maxTime:Int = 2000;		//should be 15000
+	var currentTime:Int = 2000; //should be 15000
 	var lastUpdate:Int;
 	
 	public var solved : Int = 0;

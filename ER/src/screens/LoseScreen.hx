@@ -27,23 +27,25 @@ class LoseScreen extends Screen
 		var textFormat : TextFormat = new TextFormat("_sans", 48, 0x000000, true);
 		textFormat.align = TextFormatAlign.LEFT;
 		var textField : TextField = new TextField();
+		textField.selectable = false;
 		textField.defaultTextFormat = textFormat;
 		textField.text = "Burnout!";
 		textField.autoSize = TextFieldAutoSize.LEFT;
 		textField.x = (stage.stageWidth - textField.width) / 2;
 		textField.y = stage.stageHeight / 3;
+		textField.border = true;
 		addChild(textField);
 		
-		var toGame:Button = new Button( 
+		var exit:Button = new Button( 
 			Assets.getBitmapData("img/Button.png"), 
 			Assets.getBitmapData("img/Button_over.png"), 
 			Assets.getBitmapData("img/Button_pressed.png"), 
 			"Exit", 
 			onExitClick );
 		
-		toGame.x = (stage.stageWidth-toGame.width) / 2;
-		toGame.y = 2*stage.stageHeight / 3;
-		addChild( toGame );
+		exit.x = (stage.stageWidth-exit.width) / 2;
+		exit.y = 2*stage.stageHeight / 3;
+		addChild( exit );
 	}
 	
 	function onExitClick() 

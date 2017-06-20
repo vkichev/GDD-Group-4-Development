@@ -58,6 +58,7 @@ class PatientCard extends Sprite {
 	
 	//Multiply by this for magic
 	var universalScalingConstant = Lib.current.stage.stageHeight / 1080;
+	var universalScalingConstantX = Lib.current.stage.stageWidth / 1920;
 	
 	public var originalX : Float;
 	public var originalY : Float;
@@ -80,7 +81,8 @@ class PatientCard extends Sprite {
 		var cardData : BitmapData = Assets.getBitmapData(imgID);
 		card = new Bitmap( cardData );
 		
-		card.scaleX = card.scaleY = .15 * universalScalingConstant;		
+		card.scaleY = 1.5 * universalScalingConstant;	
+		card.scaleX = 1.5 * universalScalingConstantX;
 		
 		card.x = -card.width / 2;
 		card.y = -card.height / 2;
@@ -136,7 +138,7 @@ class PatientCard extends Sprite {
 		for (i in 0...5)
 		{
 			dSprite.graphics.beginFill(0xFFFFFF);
-			dSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, card.y + 2*card.height/3 - 9, 4 * universalScalingConstant);
+			dSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, card.y + 2*card.height/3 - 4, 4 * universalScalingConstant);
 			dSprite.graphics.endFill();
 		}
 		addChild(dSprite);
@@ -147,7 +149,7 @@ class PatientCard extends Sprite {
 		for (i in 0...5)
 		{
 			nSprite.graphics.beginFill(0xFFFFFF);
-			nSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/6.5, 4 * universalScalingConstant);
+			nSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/5.2, 4 * universalScalingConstant);
 			nSprite.graphics.endFill();
 		}
 		addChild(nSprite);
@@ -156,7 +158,7 @@ class PatientCard extends Sprite {
 		for (i in 0...5)
 		{
 			mSprite.graphics.beginFill(0xFFFFFF);
-			mSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/4.75, 4 * universalScalingConstant);
+			mSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/4, 4 * universalScalingConstant);
 			mSprite.graphics.endFill();
 		}
 		addChild(mSprite);
@@ -165,7 +167,7 @@ class PatientCard extends Sprite {
 		for (i in 0...5)
 		{
 			hSprite.graphics.beginFill(0xFFFFFF);
-			hSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/3.75, 4 * universalScalingConstant);
+			hSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/3.2, 4 * universalScalingConstant);
 			hSprite.graphics.endFill();
 		}
 		addChild(hSprite);
@@ -175,7 +177,7 @@ class PatientCard extends Sprite {
 		for (i in 0...5)
 		{
 			dSpriteInner.graphics.beginFill(0x181818);
-			dSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, card.y + 2*card.height/3 - 9, 3 * universalScalingConstant);
+			dSpriteInner.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, card.y + 2*card.height/3 - 4, 3 * universalScalingConstant);
 			dSpriteInner.graphics.endFill();
 		}
 		addChild(dSpriteInner);
@@ -186,7 +188,7 @@ class PatientCard extends Sprite {
 		for (i in 0...5)
 		{
 			nSpriteInner.graphics.beginFill(0x181818);
-			nSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/6.5, 3 * universalScalingConstant);
+			nSpriteInner.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/5.2, 3 * universalScalingConstant);
 			nSpriteInner.graphics.endFill();
 		}
 		addChild(nSpriteInner);
@@ -195,7 +197,7 @@ class PatientCard extends Sprite {
 		for (i in 0...5)
 		{
 			mSpriteInner.graphics.beginFill(0x181818);
-			mSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/4.75, 3 * universalScalingConstant);
+			mSpriteInner.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/4, 3 * universalScalingConstant);
 			mSpriteInner.graphics.endFill();
 		}
 		addChild(mSpriteInner);
@@ -204,7 +206,7 @@ class PatientCard extends Sprite {
 		for (i in 0...5)
 		{
 			hSpriteInner.graphics.beginFill(0x181818);
-			hSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/3.75, 3 * universalScalingConstant);
+			hSpriteInner.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/3.2, 3 * universalScalingConstant);
 			hSpriteInner.graphics.endFill();
 		}
 		addChild(hSpriteInner);
@@ -215,7 +217,7 @@ class PatientCard extends Sprite {
 		for (i in 0...doctor)
 		{
 			doctorSprite.graphics.beginFill(0xFFFFFF);
-			doctorSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, card.y + 2*card.height/3 - 9, 4 * universalScalingConstant);
+			doctorSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, card.y + 2*card.height/3 - 4, 4 * universalScalingConstant);
 			doctorSprite.graphics.endFill();
 		}
 		addChild(doctorSprite);
@@ -227,7 +229,7 @@ class PatientCard extends Sprite {
 		for (i in 0...nurse)
 		{
 			nurseSprite.graphics.beginFill(0xFFFFFF);
-			nurseSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/6.5, 4 * universalScalingConstant);
+			nurseSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/5.2, 4 * universalScalingConstant);
 			nurseSprite.graphics.endFill();
 		}
 		addChild(nurseSprite);
@@ -237,7 +239,7 @@ class PatientCard extends Sprite {
 		for (i in 0...management)
 		{
 			managementSprite.graphics.beginFill(0xFFFFFF);
-			managementSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/4.75, 4 * universalScalingConstant);
+			managementSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/4, 4 * universalScalingConstant);
 			managementSprite.graphics.endFill();
 		}
 		addChild(managementSprite);
@@ -247,7 +249,7 @@ class PatientCard extends Sprite {
 		for (i in 0...healthcare)
 		{
 			healthcareSprite.graphics.beginFill(0xFFFFFF);
-			healthcareSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/3.75, 4 * universalScalingConstant);
+			healthcareSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/3.2, 4 * universalScalingConstant);
 			healthcareSprite.graphics.endFill();
 		}
 		addChild(healthcareSprite);
