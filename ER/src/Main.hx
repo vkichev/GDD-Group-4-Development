@@ -22,8 +22,6 @@ import screens.*;
  */
 class Main extends Sprite 
 {
-	public static var muteST : Bool = false;
-	public static var muteFX : Bool = false;
 
 	// which screen is visible/active now
 	private var currentScreen:Screen;

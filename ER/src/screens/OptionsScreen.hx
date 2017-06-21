@@ -8,9 +8,6 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.text.TextFieldAutoSize;
 import openfl.text.TextFormatAlign;
-import openfl.media.Sound;
-import openfl.media.SoundChannel;
-import openfl.media.SoundTransform;
 
 /**
  * ...
@@ -20,7 +17,6 @@ class OptionsScreen extends Screen
 {
 	var musicToggle:Toggle;
 	var soundToggle:Toggle;
-	var soundFX : Sound;
 
 	public function new() 
 	{
@@ -31,14 +27,6 @@ class OptionsScreen extends Screen
 	{
 		createBackButton();
 		
-		soundtrack = Assets.getSound("sounds/Menuscreen.wav");
-		soundTransform = new SoundTransform(1.0, 0);
-		soundFX = Assets.getSound("sounds/Menu button click.wav");
-		
-		if (Main.muteST == false)
-		{
-			channel = soundtrack.play(0, 100, soundTransform);
-		}
 		
 		musicToggle = new Toggle( 
 			Assets.getBitmapData("img/Toggle_left.png"), 
@@ -78,16 +66,6 @@ class OptionsScreen extends Screen
 	
 	function onBackClick()
 	{
-		if (Main.muteFX == false)
-		{
-			soundFX.play(0, 1, soundTransform);
-		}
-		
-		if (channel != null)
-		{
-			channel.stop();
-		}
-		
 		Main.instance.loadScreen( ScreenType.Menu );
 	}
 	
@@ -95,26 +73,11 @@ class OptionsScreen extends Screen
 	{
 		if (musicToggle.state == false)
 		{
-			if (Main.muteFX == false)
-			{
-				soundFX.play(0, 1, soundTransform);
-			}
-			
 			trace("music off");
-			Main.muteST = true;
-			channel.stop();
 		}
 		if (musicToggle.state == true)
 		{
-			if (Main.muteFX == false)
-			{
-				soundFX.play(0, 1, soundTransform);
-			}
-			
 			trace("music on");
-			Main.muteST = false;
-			channel = soundtrack.play(0, 100, soundTransform);
-			
 		}
 	}
 	
@@ -122,31 +85,11 @@ class OptionsScreen extends Screen
 	{
 		if (soundToggle.state == false)
 		{
-			if (Main.muteFX == false)
-			{
-				soundFX.play(0, 1, soundTransform);
-			}
-			
 			trace("sounds off");
-			Main.muteFX = true;
 		}
 		if (soundToggle.state == true)
 		{
-			
-			if (Main.muteFX == true)
-			{
-				soundFX.play(0, 1, soundTransform);
-			}
 			trace("sounds on");
-			Main.muteFX = false;
-		}
-	}
-	override public function onDestroy()
-	{
-		if (channel != null)
-		{
-			channel.stop();
-			channel = null;
 		}
 	}
 	
