@@ -23,7 +23,7 @@ class Toggle extends Sprite
 	var leftBitmapData:BitmapData;
 	var rightBitmapData:BitmapData;
 
-	public var state:Bool = false; //false == left; true == right
+	public var state:Bool = true; //false == left; true == right
 
 	var image:Bitmap;
 

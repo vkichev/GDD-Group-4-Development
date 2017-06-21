@@ -6,6 +6,10 @@ import openfl.display.Sprite;
 import openfl.Lib;
 import openfl.events.MouseEvent;
 import openfl.events.Event;
+import openfl.media.Sound;
+import openfl.media.SoundChannel;
+import openfl.media.SoundTransform;
+
 
 
 /**
@@ -14,6 +18,11 @@ import openfl.events.Event;
  */
 class Player extends Sprite
 {
+	var soundFX : Sound;
+	var selectCard : Sound;
+	var outOfCards : Sound;
+	var soundTransform = new SoundTransform(1, 0);
+	
 	public var id:Int = 0;
 	var turnPassed:Bool;
 	public var cardsInHand:Array<StaffCard> = [];
@@ -23,11 +32,31 @@ class Player extends Sprite
 	
 	public var turn : Bool; 
 	
+	public var ooC : Bool; 
+	
 	public function new(i:Int) 
 	{
 		super();
 		id = i;
+		
+		selectCard = Assets.getSound("sounds/SelectCard.wav");
+		outOfCards = Assets.getSound("sounds/OutOfCards.wav");
+		
+		addEventListener(Event.ENTER_FRAME, update);
 	}
+	
+	function update(e:Event)
+	{
+		//if (cardsInHand.length == 0 && ooC)
+		//{
+			//if (Main.muteFX == false)
+			//{
+				//outOfCards.play(0, 1, soundTransform);
+			//}
+			//
+		//}
+	}
+	
 	
 	public function removeCard(card:StaffCard)
 	{
@@ -61,9 +90,15 @@ class Player extends Sprite
 			
 			if (selected.length < 1)
 			{
+				if (Main.muteFX == false)
+				{
+					selectCard.play(0, 1, soundTransform);
+				}
+				
 				selected.push(card);
 				card.scaleX = card.scaleY = 1.2;
 				trace(selected.length);
+				
 			}
 		}	
 	}
@@ -128,4 +163,5 @@ class Player extends Sprite
 			}
 		}
 	}
+	
 }

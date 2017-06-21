@@ -24,6 +24,7 @@
 	<assets path="assets/img" rename="img" />
 	<assets path="assets/db" rename="db" />
 	<assets path="assets/fonts" rename="fonts" />
+	<assets path="assets/Sounds" rename="sounds" />
 	
 	<!--Permissions-->
 	<android permission="android.permission.WRITE_EXTERNAL_STORAGE"/>

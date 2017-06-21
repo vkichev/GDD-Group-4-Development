@@ -20,17 +20,17 @@ import haxe.macro.Expr;
 	
 	public static function main () {
 		
-		var projectName = "NewProject";
+		var projectName = "ER";
 		
 		var config = {
 			
-			build: "601",
-			company: "Rutger Regtop",
-			file: "NewProject",
+			build: "675",
+			company: "MEMEBIG",
+			file: "ER",
 			fps: 60,
-			name: "New Project",
+			name: "Emergency Room",
 			orientation: "",
-			packageName: "NewProject",
+			packageName: "com.ER.Group4",
 			version: "1.0.0",
 			windows: [
 				
@@ -51,7 +51,7 @@ import haxe.macro.Expr;
 					parameters: {},
 					resizable: true,
 					stencilBuffer: true,
-					title: "New Project",
+					title: "Emergency Room",
 					vsync: false,
 					width: 3140,
 					x: null,

@@ -6,6 +6,9 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.text.TextFieldAutoSize;
 import openfl.text.TextFormatAlign;
+import openfl.media.Sound;
+import openfl.media.SoundChannel;
+import openfl.media.SoundTransform;
 
 
 import openfl.display.Sprite;
@@ -16,6 +19,7 @@ import openfl.display.Sprite;
  */
 class LoseScreen extends Screen
 {
+	var soundFX : Sound;
 
 	public function new() 
 	{
@@ -36,6 +40,15 @@ class LoseScreen extends Screen
 		textField.border = true;
 		addChild(textField);
 		
+		soundtrack = Assets.getSound("sounds/Gamelose.wav");
+		soundFX = Assets.getSound("sounds/Menu button click.wav");
+		soundTransform = new SoundTransform(1.0, 0);
+		
+		if (Main.muteST == false)
+		{
+			channel = soundtrack.play(0, 100, soundTransform);
+		}
+		
 		var exit:Button = new Button( 
 			Assets.getBitmapData("img/Button.png"), 
 			Assets.getBitmapData("img/Button_over.png"), 
@@ -50,7 +63,28 @@ class LoseScreen extends Screen
 	
 	function onExitClick() 
 	{
+		if (Main.muteFX == false)
+		{
+			soundFX.play(0, 1, soundTransform);
+		}
+		
+		if (channel != null)
+		{
+			channel.stop();
+		}
 		Main.instance.loadScreen( ScreenType.Menu );
+	}
+	
+	override public function onDestroy()
+ 	{
+		if (channel != null)
+		{
+			channel.stop();
+			channel = null;
+	
+	
+		}
+	
 	}
 	
 }

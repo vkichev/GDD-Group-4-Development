@@ -10,6 +10,10 @@ import openfl.text.TextFormat;
 import screens.*;
 import openfl.Lib;
 
+import openfl.media.Sound;
+import openfl.media.SoundChannel;
+import openfl.media.SoundTransform;
+
 /**
  * ...
  * @author Rutger Regtop
@@ -34,6 +38,11 @@ class PatientCard extends Sprite {
 	//public var managementTextField : TextField;
 	//public var healthcareTextField : TextField;
 	//public var equipmentTextField : TextField;
+	
+	var taskStart : Sound;
+	var soundTransform = SoundTransform;
+	var firstAssign : Bool = true;
+	
 	
 	var card:Bitmap;
 	
@@ -112,6 +121,17 @@ class PatientCard extends Sprite {
 	
 	public function assignStaffCard(type:String, value:Int)
 	{
+		
+		if (firstAssign)
+		{
+			
+			//if (Main.muteFX == false)
+			//{
+				//taskStart = Assets.getSound("sound/TaskStart.wav");
+				//var soundTransform = new SoundTransform(1, 0);
+				//taskStart.play(0, 1, soundTransform);
+			//}
+		}
 		switch (type) {
 			case "D": doctor = doctor - value; createStaffFields();
 			case "N": nurse -= value; createStaffFields();
@@ -119,6 +139,8 @@ class PatientCard extends Sprite {
 			case "M": management -= value; createStaffFields();
 			case "Tool": management -= value; createStaffFields();
 		}
+		
+		firstAssign = false;
 	}
 	
 	function createStaffFields()
