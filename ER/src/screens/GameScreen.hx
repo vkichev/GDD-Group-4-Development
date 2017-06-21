@@ -857,7 +857,7 @@ class GameScreen extends Screen
 	
 	override public function onDestroy()
 	{
-		
+		removeEventListener(Event.ENTER_FRAME, update);
 	}
 
 
