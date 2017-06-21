@@ -32,7 +32,7 @@ class Player extends Sprite
 	
 	public var turn : Bool; 
 	
-	public var ooC : Bool; 
+	public var ooC : Bool = false; 
 	
 	public function new(i:Int) 
 	{
@@ -47,14 +47,14 @@ class Player extends Sprite
 	
 	function update(e:Event)
 	{
-		//if (cardsInHand.length == 0 && ooC)
-		//{
-			//if (Main.muteFX == false)
-			//{
-				//outOfCards.play(0, 1, soundTransform);
-			//}
-			//
-		//}
+		if (cardsInHand.length == 0 && ooC)
+		{
+			if (Main.muteFX == false)
+			{
+				outOfCards.play(0, 1, soundTransform);
+			}
+			ooC = false;
+		}
 	}
 	
 	
@@ -90,6 +90,7 @@ class Player extends Sprite
 			
 			if (selected.length < 1)
 			{
+				ooC = true;
 				if (Main.muteFX == false)
 				{
 					selectCard.play(0, 1, soundTransform);

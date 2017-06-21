@@ -224,6 +224,10 @@ class GameScreen extends Screen
 		}
 		if (patientsField.length == 6)
 		{
+			if ( channel != null)
+			{
+				channel.stop();
+			}
 			trace("you lose"); //Go to losing screen
 			Main.instance.loadScreen( ScreenType.Lose );
 		}
@@ -733,8 +737,6 @@ class GameScreen extends Screen
 			}
 			addChild(player);
 			
-			player.ooC = true;
-			
 		}
 	}
 	
@@ -828,6 +830,11 @@ class GameScreen extends Screen
 
 	function onQuitClick()
 	{
+		if ( channel != null)
+		{
+			channel.stop();
+		}
+		
 		Main.instance.loadScreen( ScreenType.Menu );
 	}
 	

@@ -91,11 +91,6 @@ class MenuScreen extends Screen
 	
 	private function onExitClick() 
 	{
-		if (Main.muteFX == false)
-		{
-			soundFX.play(0, 1, soundTransform);
-		}
-		
 		System.exit(0);
 	}
 	
@@ -106,11 +101,6 @@ class MenuScreen extends Screen
 	
 	private function onOptionClick() 
 	{
-		if (Main.muteFX == false)
-		{
-			soundFX.play(0, 1, soundTransform);
-		}
-		
 		if (channel != null)
 		{
 			channel.stop();
@@ -120,12 +110,7 @@ class MenuScreen extends Screen
 	}
 
 	private function onPlayClick()
-	{
-		if (Main.muteFX == false)
-		{
-			soundFX.play(0, 1, soundTransform);
-		}
-		
+	{	
 		if (channel != null)
 		{
 			channel.stop();

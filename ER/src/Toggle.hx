@@ -14,6 +14,9 @@ import openfl.text.TextFieldAutoSize;
 import openfl.text.TextFormat;
 import openfl.text.TextFormatAlign;
 
+import openfl.media.Sound;
+import openfl.media.SoundTransform;
+
 /**
  * A fairly crude button with state functionality and a callback for when clicked.
  *
@@ -28,15 +31,23 @@ class Toggle extends Sprite
 	var image:Bitmap;
 
 	var callback:Void->Void;
+	
+	var clickSound : Sound;
 
 	public function new( left:BitmapData, right:BitmapData, label:String, callback:Void->Void )
 	{
 		super();
 		
+		clickSound = Assets.getSound("sounds/Menu button click.wav");
+		if (Main.muteFX == false)
+		{
+			clickSound.play(0, 1, new SoundTransform(1, 0));
+		}
+		
 		leftBitmapData = left;
 		rightBitmapData = right;
 		
-		image = new Bitmap( leftBitmapData );
+		image = new Bitmap( rightBitmapData );
 		addChild( image );
 		
 		if( label.length > 0 )

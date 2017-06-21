@@ -14,6 +14,9 @@ import openfl.text.TextFieldAutoSize;
 import openfl.text.TextFormat;
 import openfl.text.TextFormatAlign;
 
+import openfl.media.Sound;
+import openfl.media.SoundTransform;
+
 /**
  * A fairly crude button with state functionality and a callback for when clicked.
  *
@@ -29,6 +32,8 @@ class Button extends Sprite
 	var image:Bitmap;
 
 	var callback:Void->Void;
+	
+	var clickSound : Sound;
 
 	/**
 	 * Create the button
@@ -47,6 +52,12 @@ class Button extends Sprite
 		upBitmapData = up;
 		overBitmapData = over;
 		downBitmapData = down;
+		
+		clickSound = Assets.getSound("sounds/Menu button click.wav");
+		if (Main.muteFX == false)
+		{
+			clickSound.play(0, 1, new SoundTransform(1, 0));
+		}
 
 		image = new Bitmap( upBitmapData );
 		addChild( image );

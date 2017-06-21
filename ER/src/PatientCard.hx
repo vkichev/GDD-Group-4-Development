@@ -40,7 +40,7 @@ class PatientCard extends Sprite {
 	//public var equipmentTextField : TextField;
 	
 	var taskStart : Sound;
-	var soundTransform = SoundTransform;
+	var soundTransform : SoundTransform;
 	var firstAssign : Bool = true;
 	
 	
@@ -75,6 +75,9 @@ class PatientCard extends Sprite {
 	public function new (imageName : String, doc : Int, nur : Int, mng : Int, hcw : Int, eqm : String, rew : String, gs : GameScreen)
 	{
 		super();
+		
+		taskStart = Assets.getSound("sounds/TaskStart.wav");
+		soundTransform = new SoundTransform(1, 0);
 		
 		imgID = imageName;
 		doctor = doc;
@@ -124,14 +127,12 @@ class PatientCard extends Sprite {
 		
 		if (firstAssign)
 		{
-			
-			//if (Main.muteFX == false)
-			//{
-				//taskStart = Assets.getSound("sound/TaskStart.wav");
-				//var soundTransform = new SoundTransform(1, 0);
-				//taskStart.play(0, 1, soundTransform);
-			//}
+			if (Main.muteFX == false)
+			{
+				taskStart.play(0, 1, soundTransform);
+			}
 		}
+		
 		switch (type) {
 			case "D": doctor = doctor - value; createStaffFields();
 			case "N": nurse -= value; createStaffFields();

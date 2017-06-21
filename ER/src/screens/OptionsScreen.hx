@@ -54,6 +54,9 @@ class OptionsScreen extends Screen
 			sounds );
 		addChild(soundToggle);
 		
+		musicToggle.state = Main.mToggle; // supposedly sets the state right
+		soundToggle.state = Main.sToggle;
+		
 		musicToggle.x = soundToggle.x = (stage.stageWidth - musicToggle.width) / 2;
 		musicToggle.y = stage.stageHeight / 2 - musicToggle.height;
 		soundToggle.y = musicToggle.y + soundToggle.height + 10;
@@ -78,11 +81,6 @@ class OptionsScreen extends Screen
 	
 	function onBackClick()
 	{
-		if (Main.muteFX == false)
-		{
-			soundFX.play(0, 1, soundTransform);
-		}
-		
 		if (channel != null)
 		{
 			channel.stop();
@@ -95,24 +93,16 @@ class OptionsScreen extends Screen
 	{
 		if (musicToggle.state == false)
 		{
-			if (Main.muteFX == false)
-			{
-				soundFX.play(0, 1, soundTransform);
-			}
-			
 			trace("music off");
 			Main.muteST = true;
+			Main.mToggle = false;
 			channel.stop();
 		}
 		if (musicToggle.state == true)
 		{
-			if (Main.muteFX == false)
-			{
-				soundFX.play(0, 1, soundTransform);
-			}
-			
 			trace("music on");
 			Main.muteST = false;
+			Main.mToggle = true;
 			channel = soundtrack.play(0, 100, soundTransform);
 			
 		}
@@ -122,23 +112,15 @@ class OptionsScreen extends Screen
 	{
 		if (soundToggle.state == false)
 		{
-			if (Main.muteFX == false)
-			{
-				soundFX.play(0, 1, soundTransform);
-			}
-			
 			trace("sounds off");
 			Main.muteFX = true;
+			Main.sToggle = false;
 		}
 		if (soundToggle.state == true)
 		{
-			
-			if (Main.muteFX == true)
-			{
-				soundFX.play(0, 1, soundTransform);
-			}
 			trace("sounds on");
 			Main.muteFX = false;
+			Main.sToggle = true;
 		}
 	}
 	override public function onDestroy()

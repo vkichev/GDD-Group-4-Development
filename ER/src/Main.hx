@@ -24,6 +24,9 @@ class Main extends Sprite
 {
 	public static var muteST : Bool = false;
 	public static var muteFX : Bool = false;
+	
+	public static var sToggle : Bool = true; // false = left; true = right
+	public static var mToggle : Bool = true; // false = left; true = right
 
 	// which screen is visible/active now
 	private var currentScreen:Screen;
