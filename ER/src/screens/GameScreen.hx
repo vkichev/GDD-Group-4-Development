@@ -15,6 +15,11 @@ import openfl.text.TextFieldAutoSize;
 import sys.db.Sqlite;
 import sys.db.Connection;
 import sys.db.ResultSet;
+
+import openfl.media.Sound;
+import openfl.media.SoundChannel;
+import openfl.media.SoundTransform;
+
 #if android
 import hxcpp.StaticSqlite;
 #end
@@ -26,6 +31,19 @@ import hxcpp.StaticSqlite;
  */
 class GameScreen extends Screen
 {
+	var buttonClick : Sound;
+	var gameWin : Sound;
+	var outOfCards : Sound;
+	var playCard : Sound;
+	var assignTool : Sound;
+	var timerStart : Sound;
+	var timerHalf : Sound;
+	var timerOut : Sound;
+	var startRound : Sound;
+	var gameWelcome : Sound;
+	
+	var halfPlayed : Bool;
+	
 	var patientDeck : Array<PatientCard> = [];
 	var toolDeck : Array<ToolCard> = [];
 	var staffDeck : Array<StaffCard> = [];
@@ -56,8 +74,8 @@ class GameScreen extends Screen
 	var allTextField:openfl.text.TextField;
 	
 	var timerBar:Timer;
-	var maxTime:Int = 2000;		//should be 15000
-	var currentTime:Int = 2000; //should be 15000
+	var maxTime:Int = 15000;		//should be 15000
+	var currentTime:Int = 15000;	//should be 15000
 	var lastUpdate:Int;
 	
 	public var solved : Int = 0;
@@ -65,7 +83,7 @@ class GameScreen extends Screen
 	var exitButton:Button;
 	var continueButton:Button;
 	var winTextField : TextField;
-	
+ 	
 	var roundsPassed : Int = 0;
 	
 	var assignRect : Bitmap;
@@ -93,6 +111,31 @@ class GameScreen extends Screen
 		bg.height = Lib.current.stage.stageHeight;
 		addChild(bg);
 		createQuitButton();
+		
+		soundtrack = Assets.getSound("sounds/InGame.wav");
+		buttonClick = Assets.getSound("sounds/Menu button click.wav");
+		startRound = Assets.getSound("sounds/StartRound.wav");
+		gameWin = Assets.getSound("sounds/GameWin.wav");
+		outOfCards = Assets.getSound("sounds/OutOfCards.wav");
+		playCard = Assets.getSound("sounds/PlayCard.wav");
+		assignTool = Assets.getSound("sounds/AssignTool.wav");
+		timerStart = Assets.getSound("sounds/TimerStart.wav");
+		timerHalf = Assets.getSound("sounds/TimerHalf.wav");
+		timerOut = Assets.getSound("sounds/TimeOut.wav");
+		gameWelcome = Assets.getSound("sounds/GameWelcome.wav");
+		soundTransform = new SoundTransform(0.8, 0);
+		
+		if (Main.muteFX == false)
+		{
+			gameWelcome.play(0, 1, soundTransform);
+		}
+		
+		
+		
+		if (Main.muteST == false)
+		{
+			channel = soundtrack.play(5, 100, soundTransform);
+		}
 		
 		createTurnIndicator();
 
@@ -171,6 +214,11 @@ class GameScreen extends Screen
 		//trace(patientsField.length);
 		if (solved == 6)
 		{
+			if (Main.muteFX == false)
+			{
+				gameWin.play(0, 1, soundTransform);
+			}
+			
 			trace("you win"); //Go to win screen
 			setupWinScreen();
 		}
@@ -292,9 +340,39 @@ class GameScreen extends Screen
 		
 		checkForNoCards();
 		
+		if (currentTime == maxTime)
+		{
+			if (Main.muteFX == false)
+			{
+				timerStart.play(0, 1, soundTransform);
+				
+			}
+		}
+		
+		if (halfPlayed == false)
+		{
+			if (currentTime >= 7490 && currentTime <= 7510)
+			{
+				halfPlayed = true;
+				if (Main.muteFX == false)
+				{
+					timerHalf.play(0, 1, soundTransform);
+					
+				}
+			}
+		}
+		
 		// if currentTime is less than or equal to zero the time is up. Reset the timer
 		if( currentTime <= 0 )
-		{			
+		{	
+			halfPlayed = false;
+			
+			if (Main.muteFX == false)
+			{
+				timerOut.play(0, 1, soundTransform);
+				
+			}
+			
 			// Resets the time
 			currentTime = maxTime + currentTime;
 			
@@ -518,6 +596,11 @@ class GameScreen extends Screen
 				
 				if (boughtTool.length == 1 && boughtTool[0].type == card.equipment)
 				{
+					if (Main.muteFX == false)
+					{
+						assignTool.play(0, 1, soundTransform);
+						
+					}
 					card.equipmentBought = true;
 					card.assignStaffCard("Tool", 0);
 					boughtTool[0].restoreDefaults();
@@ -529,6 +612,11 @@ class GameScreen extends Screen
 				
 				if (player.selected.length == 1)
 				{
+					if (Main.muteFX == false)
+					{
+						playCard.play(0, 1, soundTransform);
+						
+					}
 					staffCard = player.selected.pop();
 					player.removeCard(staffCard);
 					var type : String = staffCard.type;
@@ -644,6 +732,9 @@ class GameScreen extends Screen
 				player.addCard(card);
 			}
 			addChild(player);
+			
+			player.ooC = true;
+			
 		}
 	}
 	
@@ -756,6 +847,11 @@ class GameScreen extends Screen
 			currentTurn += 1;
 			if (currentTurn == 5)
 			{
+				if (Main.muteFX == false)
+				{
+					startRound.play(0, 1, soundTransform);
+				}
+				
 				roundsPassed++;
 				trace("rounds passed = " + roundsPassed);
 				currentTurn = 1;
@@ -872,6 +968,12 @@ class GameScreen extends Screen
 	
 	override public function onDestroy()
 	{
+		
+		if (channel != null)
+		{
+			channel.stop();
+			channel = null;
+		}
 		removeEventListener(Event.ENTER_FRAME, update);
 	}
 

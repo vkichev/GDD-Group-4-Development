@@ -5,6 +5,9 @@ import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
 import openfl.system.System;
+import openfl.media.Sound;
+import openfl.media.SoundChannel;
+import openfl.media.SoundTransform;
 
 /**
  * @author Alireza Doustdar
@@ -15,6 +18,8 @@ import openfl.system.System;
  */
 class MenuScreen extends Screen
 {
+	var soundFX : Sound;
+	
 	public function new()
 	{
 		super();
@@ -27,6 +32,16 @@ class MenuScreen extends Screen
 		background.width = stage.stageWidth;
 		background.height = stage.stageHeight;
 		addChildAt(background, 0);
+		
+		soundtrack = Assets.getSound("sounds/Menuscreen.wav");
+		soundFX = Assets.getSound("sounds/Menu button click.wav");
+		soundTransform = new SoundTransform( 1 , 0);
+		
+		if (Main.muteST == false)
+		{
+			channel = soundtrack.play(0, 100, new SoundTransform (0.8, 0));
+		}
+		
 		
 		var play:Button = new Button( 
 			Assets.getBitmapData("img/Button.png"), 
@@ -76,6 +91,11 @@ class MenuScreen extends Screen
 	
 	private function onExitClick() 
 	{
+		if (Main.muteFX == false)
+		{
+			soundFX.play(0, 1, soundTransform);
+		}
+		
 		System.exit(0);
 	}
 	
@@ -86,12 +106,41 @@ class MenuScreen extends Screen
 	
 	private function onOptionClick() 
 	{
+		if (Main.muteFX == false)
+		{
+			soundFX.play(0, 1, soundTransform);
+		}
+		
+		if (channel != null)
+		{
+			channel.stop();
+		}
+		
 		Main.instance.loadScreen( ScreenType.Options );
 	}
 
 	private function onPlayClick()
 	{
+		if (Main.muteFX == false)
+		{
+			soundFX.play(0, 1, soundTransform);
+		}
+		
+		if (channel != null)
+		{
+			channel.stop();
+		}
+		
 		Main.instance.loadScreen( ScreenType.Game );
+	}
+	
+	override public function onDestroy()
+	{
+		if (channel != null)
+		{
+			channel.stop();
+			channel = null;
+		}
 	}
 
 }
