@@ -21,8 +21,13 @@
     <class path="C:\HaxeToolkit\haxe\lib\actuate\1,8,7" />
     <class path="C:\HaxeToolkit\haxe\lib\hxcpp\3,4,64" />
     <class path="src" />
+<<<<<<< HEAD
     <class path="C:\HaxeToolkit\haxe\lib\openfl\5,0,0\externs\core\openfl" />
     <class path="C:\HaxeToolkit\haxe\lib\openfl\5,0,0\externs\extras" />
+=======
+    <class path="C:\HaxeToolkit\haxe\lib\openfl\5,1,2\externs\core\openfl" />
+    <class path="C:\HaxeToolkit\haxe\lib\openfl\5,1,2\externs\extras" />
+>>>>>>> ace00bc567c5db4d81348b2c2426313295e08d68
     <class path="bin\windows\neko\debug\haxe" />
   </classpaths>
   <!-- Build options -->
