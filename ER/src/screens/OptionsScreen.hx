@@ -54,8 +54,25 @@ class OptionsScreen extends Screen
 			sounds );
 		addChild(soundToggle);
 		
-		musicToggle.state = Main.mToggle; // supposedly sets the state right
+		musicToggle.state = Main.mToggle;// supposedly sets the state right
 		soundToggle.state = Main.sToggle;
+		if (musicToggle.state == false)
+		{
+			musicToggle.image.bitmapData = musicToggle.leftBitmapData;
+		}
+		else
+		{
+			musicToggle.image.bitmapData = musicToggle.rightBitmapData;
+		}
+		
+		if (soundToggle.state == false)
+		{
+			soundToggle.image.bitmapData = soundToggle.leftBitmapData;
+		}
+		else
+		{
+			soundToggle.image.bitmapData = soundToggle.rightBitmapData;
+		}
 		
 		musicToggle.x = soundToggle.x = (stage.stageWidth - musicToggle.width) / 2;
 		musicToggle.y = stage.stageHeight / 2 - musicToggle.height;

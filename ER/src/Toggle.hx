@@ -23,12 +23,12 @@ import openfl.media.SoundTransform;
  */
 class Toggle extends Sprite 
 {
-	var leftBitmapData:BitmapData;
-	var rightBitmapData:BitmapData;
+	public var leftBitmapData:BitmapData;
+	public var rightBitmapData:BitmapData;
 
 	public var state:Bool = true; //false == left; true == right
 
-	var image:Bitmap;
+	public var image:Bitmap;
 
 	var callback:Void->Void;
 	
