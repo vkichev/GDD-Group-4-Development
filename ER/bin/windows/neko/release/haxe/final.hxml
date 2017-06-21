@@ -7,6 +7,8 @@
 -D lime=5.0.3
 -cp C:/HaxeToolkit/haxe/lib/actuate/1,8,7
 -D actuate=1.8.7
+-cp C:/HaxeToolkit/haxe/lib/hxcpp/3,4,64
+-D hxcpp=3.4.64
 -cp src
 -D lime-openal
 -D tools=5.0.3
@@ -19,7 +21,6 @@
 -D lime-curl
 -D openfl-native
 -D lime-cffi
--D fdb
 -D windows
 -D desktop
 --remap flash:openfl
