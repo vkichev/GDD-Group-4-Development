@@ -1,7 +1,18 @@
 package;
 
 import openfl.display.Sprite;
-
+//DB
+#if android
+import sys.io.File;
+import lime.Assets;
+import sys.FileSystem;
+import haxe.io.Bytes;
+import lime.system.System;
+import sys.db.Sqlite;
+import sys.db.Connection;
+import sys.db.ResultSet;
+import hxcpp.StaticSqlite;
+#end
 import screens.*;
 
 /**
@@ -14,7 +25,8 @@ class Main extends Sprite
 
 	// which screen is visible/active now
 	private var currentScreen:Screen;
-
+	//Database android
+	public static var DB_PATH: String;
 	// the static variable pointing to the instance of this class
 	// see http://haxe.org/manual/class-field-property.html for the access modifiers
 	public static var instance(get, null):Main;
@@ -25,6 +37,16 @@ class Main extends Sprite
 	private function new () 
 	{
 		super ();
+		//Dbase
+		#if android
+		DB_PATH = System.applicationStorageDirectory + "patientdata.db";
+		trace(DB_PATH);
+		if (!FileSystem.exists (DB_PATH)) {
+			var bytes: Bytes = Assets.getBytes ("db/patientdata.db");
+			var content: String = bytes.toString();
+			File.saveContent (DB_PATH, content);
+		}
+		#end
 	}
 
 	/**

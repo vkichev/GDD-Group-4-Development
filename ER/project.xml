@@ -3,10 +3,10 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="New Project" package="NewProject" version="1.0.0" company="Rutger Regtop" />
+	<meta title="Emergency Room" package="com.ER.Group4" version="1.0.0" company="MEMEBIG" />
 	
 	<!-- output -->
-	<app main="Main" file="NewProject" path="bin" />
+	<app main="Main" file="ER" path="bin" />
 	
 	<window background="#FFFFFF" fps="60" />
 	<window width="3140" height="2160" unless="mobile" />
@@ -17,13 +17,20 @@
 	<source path="src" />
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
-	
+	<!--<haxelib name="sqlite" />-->
+	<haxelib name="hxcpp" />
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />
 	<assets path="assets/img" rename="img" />
 	<assets path="assets/db" rename="db" />
 	<assets path="assets/fonts" rename="fonts" />
 	
+	<!--Permissions-->
+	<android permission="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<android permission="android.permission.READ_EXTERNAL_STORAGE"/>
+	<android permission="android.permission.WRITE_INTERNAL_STORAGE"/>
+	<android permission="android.permission.READ_INTERNAL_STORAGE"/>
+
 	<!-- optimize output
 	<haxeflag name="-dce full" /> -->
 	

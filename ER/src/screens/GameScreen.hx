@@ -15,6 +15,9 @@ import openfl.text.TextFieldAutoSize;
 import sys.db.Sqlite;
 import sys.db.Connection;
 import sys.db.ResultSet;
+#if android
+import hxcpp.StaticSqlite;
+#end
 
 /**
  * Simple screen in the application.
@@ -114,7 +117,11 @@ class GameScreen extends Screen
 	function toolPrompt()
 	{
 		removeChild(toolButton);
+		#if android
+		lastUpdate = 999999;
+		#else
 		lastUpdate = null;
+		#end
 		removeEventListener( Event.ENTER_FRAME, update );
 		
 		toolRect = new Bitmap( Assets.getBitmapData("img/menu_tools.png") );
@@ -684,7 +691,11 @@ class GameScreen extends Screen
 		
 		for (i in 1...16 )
 		{
+			#if android
+			var patientdat = Sqlite.open(Main.DB_PATH);
+			#else
 			var patientdat = Sqlite.open("db/patientdata.db");
+			#end
 			var resultset = patientdat.request("SELECT * FROM patients WHERE rowid = " + i + ";");
 			
 			for (row in resultset)
@@ -703,7 +714,11 @@ class GameScreen extends Screen
 		
 		for ( e in 1...6 )
 		{
-			var patientdat = Sqlite.open( "db/patientdata.db");
+			#if android
+			var patientdat = Sqlite.open(Main.DB_PATH);
+			#else
+			var patientdat = Sqlite.open("db/patientdata.db");
+			#end
 			var resultset = patientdat.request("SELECT * FROM tools WHERE rowid = " + e + ";");
 			
 			for (row in resultset)
