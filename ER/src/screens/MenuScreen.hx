@@ -1,6 +1,7 @@
 package screens;
 
 import openfl.Assets;
+import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
@@ -19,6 +20,8 @@ import openfl.media.SoundTransform;
 class MenuScreen extends Screen
 {
 	var soundFX : Sound;
+	
+	var universalScalingConstant = Lib.current.stage.stageHeight / 1080;
 	
 	public function new()
 	{
@@ -72,9 +75,8 @@ class MenuScreen extends Screen
 			onExitClick );
 			
 		
-
-		play.width = option.width = exit.width = 150;
-		play.height = option.height = exit.height = 46;
+		play.width = option.width = exit.width = tutorial.width = 150;
+		play.height = option.height = exit.height = tutorial.height = 46;
 		
 		play.x = option.x = tutorial.x = exit.x = (stage.stageWidth-play.width) / 2;
 		play.y = stage.stageHeight / 2 - play.height * 2;
@@ -86,7 +88,6 @@ class MenuScreen extends Screen
 		addChild(option);
 		addChild(tutorial);
 		addChild(exit);
-		
 	}
 	
 	private function onExitClick() 

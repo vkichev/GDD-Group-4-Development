@@ -1,6 +1,7 @@
 package;
 
 import openfl.Assets;
+import openfl.Lib;
 
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -33,6 +34,8 @@ class Toggle extends Sprite
 	var callback:Void->Void;
 	
 	var clickSound : Sound;
+	
+	var universalScalingConstant = Lib.current.stage.stageHeight / 1080;
 
 	public function new( left:BitmapData, right:BitmapData, label:String, callback:Void->Void )
 	{
@@ -48,6 +51,7 @@ class Toggle extends Sprite
 		rightBitmapData = right;
 		
 		image = new Bitmap( rightBitmapData );
+		image.scaleX = image.scaleY = 1 * universalScalingConstant;
 		addChild( image );
 		
 		if( label.length > 0 )
@@ -60,6 +64,7 @@ class Toggle extends Sprite
 			tf.mouseEnabled = false;
 			tf.selectable = false;
 			tf.text = label;
+			tf.scaleX = tf.scaleY = 1 * universalScalingConstant;
 			tf.x = (image.width - tf.width) / 2;
 			tf.y = ((image.height - tf.height) / 2) - 3;
 			addChild( tf );

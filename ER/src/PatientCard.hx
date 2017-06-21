@@ -43,7 +43,6 @@ class PatientCard extends Sprite {
 	var soundTransform : SoundTransform;
 	var firstAssign : Bool = true;
 	
-	
 	var card:Bitmap;
 	
 	var dSprite:Sprite;

@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "20",
+			build: "75",
 			company: "MEMEBIG",
 			file: "ER",
 			fps: 60,
@@ -42,9 +42,9 @@ import haxe.macro.Expr;
 					borderless: false,
 					depthBuffer: false,
 					display: 0,
-					fullscreen: true,
+					fullscreen: false,
 					hardware: true,
-					height: 2160,
+					height: 960,
 					hidden: #if munit true #else null #end,
 					maximized: null,
 					minimized: null,
@@ -53,7 +53,7 @@ import haxe.macro.Expr;
 					stencilBuffer: true,
 					title: "Emergency Room",
 					vsync: false,
-					width: 3140,
+					width: 1280,
 					x: null,
 					y: null
 				},
@@ -73,7 +73,7 @@ import haxe.macro.Expr;
 		
 		#if (js && html5)
 		#if (munit || utest)
-		lime.system.System.embed (projectName, null, 3140, 2160, config);
+		lime.system.System.embed (projectName, null, 1280, 960, config);
 		#end
 		#else
 		create (config);

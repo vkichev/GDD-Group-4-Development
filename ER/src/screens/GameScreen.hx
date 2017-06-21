@@ -130,15 +130,13 @@ class GameScreen extends Screen
 			gameWelcome.play(0, 1, soundTransform);
 		}
 		
-		
-		
 		if (Main.muteST == false)
 		{
 			channel = soundtrack.play(5, 100, soundTransform);
 		}
 		
 		createTurnIndicator();
-
+		
 		createStaff();
 		readFromDataBase();
 		
@@ -154,7 +152,6 @@ class GameScreen extends Screen
 		createTimer();
 		
 		solvedCounter();
-		
 	}
 	
 	function toolPrompt()
@@ -178,7 +175,7 @@ class GameScreen extends Screen
 		
 		for (card in toolDeck)
 		{
-			card.y = Lib.current.stage.stageHeight / 2 - card.height;
+			card.y = Lib.current.stage.stageHeight / 2 - card.height / 2;
 			addChild(card);
 		}
 		
@@ -190,7 +187,7 @@ class GameScreen extends Screen
 			onCloseClick );
 		
 		closeButton.x = (Lib.current.stage.stageWidth - closeButton.width) / 2;
-		closeButton.y = Lib.current.stage.stageHeight / 2;
+		closeButton.y = 2 * Lib.current.stage.stageHeight / 3;
 		addChild( closeButton );
 	}
 	
@@ -450,12 +447,10 @@ class GameScreen extends Screen
 		var turnIndicator:BitmapData = Assets.getBitmapData( "img/Indicator_Turn.png" );
 		turnI = new Bitmap( turnIndicator );
 		turnI.scaleX = turnI.scaleY = 0.1 * universalScalingConstant;
-
+		
 		var turnDouble:BitmapData = Assets.getBitmapData("img/Indicator_Double.png");
 		turnD = new Bitmap( turnDouble );
 		turnD.scaleX = turnD.scaleY = 0.1 * universalScalingConstant;
-		
-
 	}
 	
 	function displayTurnIndicator(id:Int)
@@ -566,8 +561,12 @@ class GameScreen extends Screen
 			case 3: card.assignStaffCard("H", staffValue);
 		}
 		removeALLPrompt();
-		thiscard.x = thiscard.originalX;
-		thiscard.y = thiscard.originalY;
+		
+		if (Std.string(Type.typeof(thiscard)) == "PatientCard")
+		{
+			thiscard.x = thiscard.originalX;
+			thiscard.y = thiscard.originalY;
+		}
 		thiscard = null;
 		goNextTurn();
 	}
@@ -581,9 +580,9 @@ class GameScreen extends Screen
 			{
 				removeChild(textField);
 			}
-			removeChild(_rect);
+			//removeChild(_rect);
 			removeChild(assignRect);
-			removeChild(toolRect);
+			//removeChild(toolRect);
 			removeChild(allTextField);
 		}
 		//goNextTurn();
@@ -686,12 +685,11 @@ class GameScreen extends Screen
 			"", 
 			toolPrompt );
 			
-			toolButton.scaleX = toolButton.scaleY = 0.4 * universalScalingConstant;
+			toolButton.scaleX = toolButton.scaleY = 0.4;
 			
 		toolButton.x = (Lib.current.stage.stageWidth - toolButton.width) / 2;
 		toolButton.y = Lib.current.stage.stageHeight / 3 - toolButton.height/2;
 		addChild( toolButton );
-		
 	}
 	
 	function initPatients()
@@ -887,6 +885,7 @@ class GameScreen extends Screen
 		);
 		toMenu.x = stage.stageWidth - (toMenu.width * 1.5);
 		toMenu.y = stage.stageHeight - toMenu.height;
+		toMenu.scaleX = toMenu.scaleY = 1 * universalScalingConstant;
 		addChild( toMenu );
 	}
 	

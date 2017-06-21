@@ -1,6 +1,7 @@
 package;
 
 import openfl.Assets;
+import openfl.Lib;
 
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -34,6 +35,8 @@ class Button extends Sprite
 	var callback:Void->Void;
 	
 	var clickSound : Sound;
+	
+	var universalScalingConstant = Lib.current.stage.stageHeight / 1080;
 
 	/**
 	 * Create the button
@@ -58,10 +61,11 @@ class Button extends Sprite
 		{
 			clickSound.play(0, 1, new SoundTransform(1, 0));
 		}
-
+		
 		image = new Bitmap( upBitmapData );
+		image.scaleX = image.scaleY = 1 * universalScalingConstant;
 		addChild( image );
-
+		
 		if( label.length > 0 )
 		{
 			var tfmt:TextFormat = new TextFormat( Assets.getFont("fonts/Retro Computer_DEMO.ttf").fontName, 22, 0xFFFFFF, true, false, false, null, null, TextFormatAlign.CENTER );
@@ -72,6 +76,7 @@ class Button extends Sprite
 			tf.mouseEnabled = false;
 			tf.selectable = false;
 			tf.text = label;
+			tf.scaleX = tf.scaleY = 1 * universalScalingConstant;
 			tf.x = (image.width - tf.width) / 2;
 			tf.y = ((image.height - tf.height) / 2) - 3;
 			addChild( tf );

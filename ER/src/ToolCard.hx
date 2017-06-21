@@ -30,6 +30,16 @@ class ToolCard extends Sprite {
 	public var managementTextField : TextField;
 	public var healthcareTextField : TextField;
 	
+	var dSprite:Sprite;
+	var nSprite:Sprite;
+	var mSprite:Sprite;
+	var hSprite:Sprite;
+	
+	var dSpriteInner:Sprite;
+	var nSpriteInner:Sprite;
+	var mSpriteInner:Sprite;
+	var hSpriteInner:Sprite;
+	
 	var doctorSprite : Sprite;
 	var nurseSprite : Sprite;
 	var managementSprite : Sprite;
@@ -40,6 +50,8 @@ class ToolCard extends Sprite {
 	var posY : Float = 0;
 	
 	var card : Bitmap;
+	
+	var universalScalingConstant = Lib.current.stage.stageHeight / 1080;
 
 	public function new (imageName : String, doc : Int, nur : Int, mng : Int, hcw : Int, typ : String, gs : GameScreen)
 	{
@@ -62,12 +74,7 @@ class ToolCard extends Sprite {
 		var cardData : BitmapData = Assets.getBitmapData( imgID );
 		card = new Bitmap( cardData );
 		
-		//temp tool size
-		//card.height = 100;
-		//card.width = 60;
-		//temp tool size
-		
-		card.scaleX = card.scaleY = .1 * Lib.current.stage.stageHeight / 1080;
+		card.scaleX = card.scaleY = 1.2 * Lib.current.stage.stageHeight / 1080;
 		
 		card.x = -card.width / 2;
 		card.y = -card.height / 2;
@@ -119,12 +126,101 @@ class ToolCard extends Sprite {
 	
 	function createStaffFields()
 	{
+		//var staffTextFormat : TextFormat = new TextFormat("_sans", 12, 0xFF0000, true);
+		//doctorTextField = new TextField();
+		//doctorTextField.defaultTextFormat = staffTextFormat;
+		//doctorTextField.width = 10;
+		//doctorTextField.height = 15;
+		//doctorTextField.x = card.x + 30;
+		//doctorTextField.y = card.y + 11;
+		//doctorTextField.text = doctor + "";
+		//addChild(doctorTextField);
+		
+		//outer line of the circle
+		dSprite = new Sprite();
+		for (i in 0...5)
+		{
+			dSprite.graphics.beginFill(0xFFFFFF);
+			dSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, card.y + 2*card.height/3 - 4, 4 * universalScalingConstant);
+			dSprite.graphics.endFill();
+		}
+		addChild(dSprite);
+		
+		if (firstTime) posY = dSprite.y + dSprite.height ; firstTime = false;
+		
+		nSprite = new Sprite();
+		for (i in 0...5)
+		{
+			nSprite.graphics.beginFill(0xFFFFFF);
+			nSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/5.2, 4 * universalScalingConstant);
+			nSprite.graphics.endFill();
+		}
+		addChild(nSprite);
+		
+		mSprite = new Sprite();
+		for (i in 0...5)
+		{
+			mSprite.graphics.beginFill(0xFFFFFF);
+			mSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/4, 4 * universalScalingConstant);
+			mSprite.graphics.endFill();
+		}
+		addChild(mSprite);
+		
+		hSprite = new Sprite();
+		for (i in 0...5)
+		{
+			hSprite.graphics.beginFill(0xFFFFFF);
+			hSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/3.2, 4 * universalScalingConstant);
+			hSprite.graphics.endFill();
+		}
+		addChild(hSprite);
+		
+		//the inner part of the circles
+		dSpriteInner = new Sprite();
+		for (i in 0...5)
+		{
+			dSpriteInner.graphics.beginFill(0x181818);
+			dSpriteInner.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, card.y + 2*card.height/3 - 4, 3 * universalScalingConstant);
+			dSpriteInner.graphics.endFill();
+		}
+		addChild(dSpriteInner);
+		
+		if (firstTime) posY = dSpriteInner.y + dSpriteInner.height; firstTime = false;
+		
+		nSpriteInner = new Sprite();
+		for (i in 0...5)
+		{
+			nSpriteInner.graphics.beginFill(0x181818);
+			nSpriteInner.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/5.2, 3 * universalScalingConstant);
+			nSpriteInner.graphics.endFill();
+		}
+		addChild(nSpriteInner);
+		
+		mSpriteInner = new Sprite();
+		for (i in 0...5)
+		{
+			mSpriteInner.graphics.beginFill(0x181818);
+			mSpriteInner.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/4, 3 * universalScalingConstant);
+			mSpriteInner.graphics.endFill();
+		}
+		addChild(mSpriteInner);
+		
+		hSpriteInner = new Sprite();
+		for (i in 0...5)
+		{
+			hSpriteInner.graphics.beginFill(0x181818);
+			hSpriteInner.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/3.2, 3 * universalScalingConstant);
+			hSpriteInner.graphics.endFill();
+		}
+		addChild(hSpriteInner);
+		
+		//adds white circles
 		removeChild(doctorSprite);
 		doctorSprite = new Sprite();
 		for (i in 0...doctor)
 		{
-			doctorSprite.graphics.beginFill(0x00FF00);
-			doctorSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, card.y + 2*card.height/3 - 9, 4);
+			doctorSprite.graphics.beginFill(0xFFFFFF);
+			doctorSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, card.y + 2*card.height/3 - 4, 4 * universalScalingConstant);
 			doctorSprite.graphics.endFill();
 		}
 		addChild(doctorSprite);
@@ -135,8 +231,8 @@ class ToolCard extends Sprite {
 		nurseSprite = new Sprite();
 		for (i in 0...nurse)
 		{
-			nurseSprite.graphics.beginFill(0x00FF00);
-			nurseSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/6.5, 4);
+			nurseSprite.graphics.beginFill(0xFFFFFF);
+			nurseSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/5.2, 4 * universalScalingConstant);
 			nurseSprite.graphics.endFill();
 		}
 		addChild(nurseSprite);
@@ -145,8 +241,8 @@ class ToolCard extends Sprite {
 		managementSprite = new Sprite();
 		for (i in 0...management)
 		{
-			managementSprite.graphics.beginFill(0x00FF00);
-			managementSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/4.75, 4);
+			managementSprite.graphics.beginFill(0xFFFFFF);
+			managementSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/4, 4 * universalScalingConstant);
 			managementSprite.graphics.endFill();
 		}
 		addChild(managementSprite);
@@ -155,22 +251,12 @@ class ToolCard extends Sprite {
 		healthcareSprite = new Sprite();
 		for (i in 0...healthcare)
 		{
-			healthcareSprite.graphics.beginFill(0x00FF00);
-			healthcareSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height/3.75, 4);
+			healthcareSprite.graphics.beginFill(0xFFFFFF);
+			healthcareSprite.graphics.drawCircle((card.x + card.width/3.90) + card.width/18 * i, posY + card.height/3.2, 4 * universalScalingConstant);
 			healthcareSprite.graphics.endFill();
 		}
 		addChild(healthcareSprite);
 		
-		//var staffTextFormat : TextFormat = new TextFormat("_sans", 12, 0xFF0000, true);
-		//doctorTextField = new TextField();
-		//doctorTextField.defaultTextFormat = staffTextFormat;
-		//doctorTextField.width = 10;
-		//doctorTextField.height = 15;
-		//doctorTextField.x = card.x + 10;
-		//doctorTextField.y = card.y + 20;
-		//doctorTextField.text = doctor + "";
-		//addChild(doctorTextField);
-		//
 		//nurseTextField = new TextField();
 		//nurseTextField.defaultTextFormat = staffTextFormat;
 		//nurseTextField.width = 10;
@@ -197,6 +283,15 @@ class ToolCard extends Sprite {
 		//healthcareTextField.y = managementTextField.y + 12;
 		//healthcareTextField.text = healthcare + "";
 		//addChild(healthcareTextField);
+		//
+		//equipmentTextField = new TextField();
+		//equipmentTextField.defaultTextFormat = staffTextFormat;
+		//equipmentTextField.width = 50;
+		//equipmentTextField.height = 15;
+		//equipmentTextField.x = doctorTextField.x;
+		//equipmentTextField.y = healthcareTextField.y + 12;
+		//equipmentTextField.text = equipment + "";
+		//addChild(equipmentTextField);
 	}
 
 }

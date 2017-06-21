@@ -29,17 +29,10 @@ class StaffCard extends Sprite
 		var cardData : BitmapData = Assets.getBitmapData( imageName );
 		var card : Bitmap = new Bitmap( cardData );
 		
-		//Temp cardsize
-		//card.width = 30;
-		//card.height = 50;
-		//scale was disabled
-		
-		card.scaleX = card.scaleY = Lib.current.stage.stageHeight / 1536;
-		
 		card.x = -card.width / 2;
 		card.y = -card.height / 2;
 		
-		//card.scaleX = card.scaleY = .5;
+		card.scaleX = card.scaleY = 1.1 * Lib.current.stage.stageHeight / 1080;
 		
 		addChild(card);
 	}

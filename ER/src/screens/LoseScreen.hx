@@ -40,7 +40,7 @@ class LoseScreen extends Screen
 		textField.border = true;
 		addChild(textField);
 		
-		soundtrack = Assets.getSound("sounds/Gamelose.wav");
+		soundtrack = Assets.getSound("sounds/GameLose.wav");
 		soundFX = Assets.getSound("sounds/Menu button click.wav");
 		soundTransform = new SoundTransform(1.0, 0);
 		
