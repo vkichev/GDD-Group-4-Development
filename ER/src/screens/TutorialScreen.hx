@@ -7,6 +7,9 @@ import openfl.display.BitmapData;
 import openfl.Lib;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
+import openfl.media.Sound;
+import openfl.media.SoundTransform;
+import openfl.media.SoundChannel;
 import openfl.text.TextField;
 import openfl.text.TextFieldAutoSize;
 import openfl.text.TextFormat;
@@ -66,6 +69,14 @@ class TutorialScreen extends Screen
 	var patSpheres : Array<Sprite> = [];
 	var done : Bool = false;
 	
+	var selectCard : Sound;
+	var playCard : Sound;
+	var bg : Bitmap;
+	var turnIndicator : Bitmap;
+	
+	var universalScalingConstant = Lib.current.stage.stageHeight / 1080;
+	
+	var spheres : Array<Sprite> = [];
 	
 	public function new() 
 	{
@@ -75,6 +86,17 @@ class TutorialScreen extends Screen
 	
 	override public function onLoad()
 	{
+		
+		soundtrack = Assets.getSound("sounds/InGame.wav");
+		selectCard = Assets.getSound("sounds/SelectCard.wav");
+		playCard = Assets.getSound("sounds/PlayCard.wav");
+		soundTransform = new SoundTransform(0.25, 0);
+		
+		if (Main.muteST == false)
+		{
+			channel = soundtrack.play(0, 100, new SoundTransform(0.5, 0));
+		}
+		
 		background();
 		createHand();
 		createOHands();
@@ -85,7 +107,7 @@ class TutorialScreen extends Screen
 	
 	function background()
 	{
-		var bg:Bitmap = new Bitmap(Assets.getBitmapData("img/tut.png"));
+		bg = new Bitmap(Assets.getBitmapData("img/tut.png"));
 		bg.width = Lib.current.stage.stageWidth;
 		bg.height = Lib.current.stage.stageHeight;
 		addChild(bg);
@@ -122,7 +144,7 @@ class TutorialScreen extends Screen
 		//textField.border = true;
 		//textField.borderColor = 0xFFFFFF;
 		textField.x = 10;
-		textField.y = next.y + next.height / 5;
+		textField.y = next.y - next.height / 3;
 		addChild(textField);
 	}
 	
@@ -130,6 +152,10 @@ class TutorialScreen extends Screen
 	{
 		if (clicked.length == 1)
 		{
+			if (Main.muteFX == false)
+			{
+				playCard.play(0, 1, soundTransform);
+			}
 			removeChild(docCard);
 			for ( i in 0...3)
 			{	
@@ -146,9 +172,14 @@ class TutorialScreen extends Screen
 	
 	function cardAssign(e:MouseEvent)
 	{
-		docCard.scaleX = docCard.scaleY = 1.1;
+		
 		if ( clicked.length == 0)
 		{
+			if (Main.muteFX == false)
+			{
+				selectCard.play(0, 1, soundTransform);
+			}
+			docCard.scaleX = docCard.scaleY = 1.1;
 			clicked.push(docCard);
 		}
 	}
@@ -156,6 +187,7 @@ class TutorialScreen extends Screen
 	function indicator(e:Event)
 	{
 		timer++;
+		trace(timer);
 		if (ind == 0)
 		{
 			tap.x += 2.5 * Lib.current.stage.stageWidth / 1920;
@@ -198,21 +230,26 @@ class TutorialScreen extends Screen
 	function createHand()
 	{	
 		var card1:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_N_4.png"));
-		card1.scaleX = card1.scaleY = .13 * Lib.current.stage.stageHeight / 1080;
+		card1.scaleX = card1.scaleY = Lib.current.stage.stageHeight / 750;
 		hand1.push(card1);
 		
 		var card2:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_ALL_2.png"));
-		card2.scaleX = card2.scaleY = .13 * Lib.current.stage.stageHeight / 1080;
+		card2.scaleX = card2.scaleY = Lib.current.stage.stageHeight / 750;
 		hand1.push(card2);
 		
 		card3 = new Bitmap(Assets.getBitmapData("img/Staff_D_3.png"));
-		card3.scaleX = card3.scaleY = .13 * Lib.current.stage.stageHeight / 1080;
+		card3.scaleX = card3.scaleY = Lib.current.stage.stageHeight / 750;
 		hand1.push(card3);
 		docCard.addChild(card3);
 		
 		var card4:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_H_3.png"));
-		card4.scaleX = card4.scaleY = .13 * Lib.current.stage.stageHeight / 1080;
+		card4.scaleX = card4.scaleY = Lib.current.stage.stageHeight / 750;
 		hand1.push(card4);
+		
+		turnIndicator = new Bitmap(Assets.getBitmapData("img/Indicator_Turn.png"));
+		turnIndicator.scaleX = turnIndicator.scaleY = 0.1;
+		addChild(turnIndicator);
+		
 		
 		posHand();
 	}
@@ -221,7 +258,10 @@ class TutorialScreen extends Screen
 	{
 		var posX : Float = -hand1.length * hand1[0].width / 2;
 		var firstPosX = Lib.current.stage.stageWidth / 2 - 40;
-		var firstPosY = Lib.current.stage.stageHeight - hand1[0].height * 2.05;
+		var firstPosY = Lib.current.stage.stageHeight - hand1[0].height * 2.20;
+		
+		turnIndicator.x = Lib.current.stage.stageWidth / 2 - turnIndicator.width / 2;
+		turnIndicator.y = firstPosY - 55;
 		
 		for (card in hand1)
 		{
@@ -246,35 +286,35 @@ class TutorialScreen extends Screen
 	function createOHands()
 	{	
 		var card1:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_M_1.png"));
-		card1.scaleX = card1.scaleY = .13 * Lib.current.stage.stageHeight / 1080;
+		card1.scaleX = card1.scaleY = Lib.current.stage.stageHeight / 750;
 		hand2.push(card1);
 		
 		var card2:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_H_4.png"));
-		card2.scaleX = card2.scaleY = .13 * Lib.current.stage.stageHeight / 1080;
+		card2.scaleX = card2.scaleY = Lib.current.stage.stageHeight / 750;
 		hand2.push(card2);
 		
 		var card_3:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_M_2.png"));
-		card_3.scaleX = card_3.scaleY = .13 * Lib.current.stage.stageHeight / 1080;
+		card_3.scaleX = card_3.scaleY = Lib.current.stage.stageHeight / 750;
 		hand2.push(card_3);
 		
 		var card4:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_D_2.png"));
-		card4.scaleX = card4.scaleY = .13 * Lib.current.stage.stageHeight / 1080;
+		card4.scaleX = card4.scaleY = Lib.current.stage.stageHeight / 750;
 		hand2.push(card4);
 		
 		var card5:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_N_2.png"));
-		card5.scaleX = card5.scaleY = .13 * Lib.current.stage.stageHeight / 1080;
+		card5.scaleX = card5.scaleY = Lib.current.stage.stageHeight / 750;
 		hand4.push(card5);
 		
 		var card6:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_ALL_1.png"));
-		card6.scaleX = card6.scaleY = .13 * Lib.current.stage.stageHeight / 1080;
+		card6.scaleX = card6.scaleY = Lib.current.stage.stageHeight / 750;
 		hand4.push(card6);
 		
 		var card7:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_D_1.png"));
-		card7.scaleX = card7.scaleY = .13 * Lib.current.stage.stageHeight / 1080;
+		card7.scaleX = card7.scaleY = Lib.current.stage.stageHeight / 750;
 		hand4.push(card7);
 		
 		var card8:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_H_4.png"));
-		card8.scaleX = card8.scaleY = .13 * Lib.current.stage.stageHeight / 1080;
+		card8.scaleX = card8.scaleY = Lib.current.stage.stageHeight / 750;
 		hand4.push(card8);
 		
 		posOHands();
@@ -282,8 +322,8 @@ class TutorialScreen extends Screen
 	
 	function posOHands()
 	{
-		var Ypos : Float = -hand2.length * hand2[0].height / 2;
-		var firstPosX = Lib.current.stage.stageWidth - hand2[0].width * 1.5;
+		var yPos : Float = -hand2.length * hand2[0].height / 2;
+		var firstPosX = Lib.current.stage.stageWidth - hand2[0].width * 1.7;
 		var firstPosY = Lib.current.stage.stageHeight/2 - 20;
 		
 		for (card in hand2)
@@ -291,13 +331,13 @@ class TutorialScreen extends Screen
 			addChild(card);
 			card.rotation = -90;
 			card.x = firstPosX;
-			card.y = firstPosY + Ypos;
-			Ypos += card.height - 20;
+			card.y = firstPosY + yPos;
+			yPos += card.height - 20;
 			
 		}
 		
-		Ypos = -hand4.length * hand4[0].height / 2;
-		firstPosX = hand4[0].width * 1.5;
+		yPos = -hand4.length * hand4[0].height / 2;
+		firstPosX = hand4[0].width * 1.7;
 		firstPosY = Lib.current.stage.stageHeight/3;
 		
 		for (card in hand4)
@@ -305,29 +345,29 @@ class TutorialScreen extends Screen
 			addChild(card);
 			card.rotation = 90; 
 			card.x = firstPosX;
-			card.y = firstPosY + Ypos;
-			Ypos += card.height - 20;
+			card.y = firstPosY + yPos;
+			yPos += card.height - 20;
 		}
 	}
 	
 	function createPatients()
 	{
 		var card1:Bitmap = new Bitmap(Assets.getBitmapData("img/Patient_7.png"));
-		card1.scaleX = card1.scaleY = .21 * Lib.current.stage.stageHeight / 1080;
+		card1.scaleX = card1.scaleY = Lib.current.stage.stageHeight / 700;
 		patients.push(card1);
 		
 		var card2:Bitmap = new Bitmap(Assets.getBitmapData("img/Patient_12.png"));
-		card2.scaleX = card2.scaleY = .21 * Lib.current.stage.stageHeight / 1080;
+		card2.scaleX = card2.scaleY = Lib.current.stage.stageHeight / 700;
 		patients.push(card2);
 		
 		pCard3 = new Bitmap(Assets.getBitmapData("img/Patient_8.png"));
-		pCard3.scaleX = pCard3.scaleY = .21 * Lib.current.stage.stageHeight / 1080;
+		pCard3.scaleX = pCard3.scaleY = Lib.current.stage.stageHeight / 700;
 		pCard.addChild(pCard3);
 		patients.push(pCard3);
 		patSpheres.push(pCard);
 		
 		var card4:Bitmap = new Bitmap(Assets.getBitmapData("img/Patient_5.png"));
-		card4.scaleX = card4.scaleY = .21 * Lib.current.stage.stageHeight / 1080;
+		card4.scaleX = card4.scaleY = Lib.current.stage.stageHeight / 700;
 		patients.push(card4);
 		
 		posPatients();
@@ -337,7 +377,7 @@ class TutorialScreen extends Screen
 	function posPatients()
 	{
 		var posX : Float = -patients.length * patients[0].width / 2;
-		var Ypos: Float = Lib.current.stage.stageHeight / 10;
+		var yPos: Float = Lib.current.stage.stageHeight / 10;
 		
 		for (card in patients)
 		{
@@ -345,7 +385,7 @@ class TutorialScreen extends Screen
 			{
 				addChild(card);
 				card.x = Lib.current.stage.stageWidth/2 + posX;
-				card.y = Ypos;
+				card.y = yPos;
 				posX += card.width + 10;
 			}
 			
@@ -353,7 +393,7 @@ class TutorialScreen extends Screen
 			{
 				addChild(pCard);
 				pCard.x = Lib.current.stage.stageWidth/2 + posX;
-				pCard.y = Ypos;
+				pCard.y = yPos;
 				posX += pCard.width + 10;
 			}
 		}
@@ -364,16 +404,17 @@ class TutorialScreen extends Screen
 		for (card in patSpheres)
 		{
 			doctor = 3;
-			nurse = Std.random(5) + 1;
-			management = Std.random(5) + 1;
-			healthcare = Std.random(5) + 1;
+			nurse = 2;
+			management = 4;
+			healthcare = 1;
 			
 			dSprite = new Sprite();
 			for (i in 0...5)
 			{
 				dSprite.graphics.beginFill(0xFFFFFF);
-				dSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, card.y + 2*card.height/3 - 9, 4);
+				dSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, card.y + card.height/1.6 + 4, 4);
 				dSprite.graphics.endFill();
+				spheres.push(dSprite);
 			}
 			addChild(dSprite);
 			
@@ -383,8 +424,9 @@ class TutorialScreen extends Screen
 			for (i in 0...5)
 			{
 				nSprite.graphics.beginFill(0xFFFFFF);
-				nSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height - 13, 4);
+				nSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height + 14, 4);
 				nSprite.graphics.endFill();
+				spheres.push(nSprite);
 			}
 			addChild(nSprite);
 			
@@ -392,8 +434,9 @@ class TutorialScreen extends Screen
 			for (i in 0...5)
 			{
 				mSprite.graphics.beginFill(0xFFFFFF);
-				mSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height + 1, 4);
+				mSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height*1.14, 4);
 				mSprite.graphics.endFill();
+				spheres.push(mSprite);
 			}
 			addChild(mSprite);
 			
@@ -401,8 +444,9 @@ class TutorialScreen extends Screen
 			for (i in 0...5)
 			{
 				hSprite.graphics.beginFill(0xFFFFFF);
-				hSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height + 15, 4);
+				hSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height*1.15 + 10,4);
 				hSprite.graphics.endFill();
+				spheres.push(hSprite);
 			}
 			addChild(hSprite);
 			
@@ -411,8 +455,9 @@ class TutorialScreen extends Screen
 			for (i in 0...5)
 			{
 				dSpriteInner.graphics.beginFill(0x181818);
-				dSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, card.y + 2*card.height/3 - 9, 3);
+				dSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, card.y + card.height/1.6 + 4, 3);
 				dSpriteInner.graphics.endFill();
+				spheres.push(dSpriteInner);
 			}
 			addChild(dSpriteInner);
 			
@@ -422,8 +467,9 @@ class TutorialScreen extends Screen
 			for (i in 0...5)
 			{
 				nSpriteInner.graphics.beginFill(0x181818);
-				nSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height - 13, 3);
+				nSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height + 14, 3);
 				nSpriteInner.graphics.endFill();
+				spheres.push(nSpriteInner);
 			}
 			addChild(nSpriteInner);
 			
@@ -431,8 +477,9 @@ class TutorialScreen extends Screen
 			for (i in 0...5)
 			{
 				mSpriteInner.graphics.beginFill(0x181818);
-				mSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height + 1, 3);
+				mSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height*1.14, 3);
 				mSpriteInner.graphics.endFill();
+				spheres.push(mSpriteInner);
 			}
 			addChild(mSpriteInner);
 			
@@ -440,8 +487,9 @@ class TutorialScreen extends Screen
 			for (i in 0...5)
 			{
 				hSpriteInner.graphics.beginFill(0x181818);
-				hSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height + 15, 3);
+				hSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height*1.15 + 10, 3);
 				hSpriteInner.graphics.endFill();
+				spheres.push(hSpriteInner);
 			}
 			addChild(hSpriteInner);
 			
@@ -450,10 +498,11 @@ class TutorialScreen extends Screen
 			for (i in 0...doctor)
 			{
 				doctorSprite.graphics.beginFill(0x00FF00);
-				doctorSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, card.y + 2*card.height/3 - 9, 4);
+				doctorSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, card.y + card.height/1.6 + 4, 4);
 				doctorSprite.graphics.endFill();
 				docSpheres.push(doctorSprite);
-				docY = card.y + 2 * card.height / 3 - 9;
+				spheres.push(doctorSprite);
+				docY = card.y + card.height/1.6 + 4;
 			}
 			addChild(doctorSprite);
 			
@@ -462,28 +511,31 @@ class TutorialScreen extends Screen
 			nurseSprite = new Sprite();
 			for (i in 0...nurse)
 			{
-				nurseSprite.graphics.beginFill(0x00FF00);
-				nurseSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height - 13, 4);
+				nurseSprite.graphics.beginFill(0xFFFFFF);
+				nurseSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height + 14, 4);
 				nurseSprite.graphics.endFill();
+				spheres.push(nurseSprite);
 			}
 			addChild(nurseSprite);
 			
 			managementSprite = new Sprite();
 			for (i in 0...management)
 			{
-				managementSprite.graphics.beginFill(0x00FF00);
-				managementSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height + 1, 4);
+				managementSprite.graphics.beginFill(0xFFFFFF);
+				managementSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height*1.14, 4);
 				managementSprite.graphics.endFill();
+				spheres.push(managementSprite);
 			}
 			addChild(managementSprite);
 			
 			healthcareSprite = new Sprite();
 			for (i in 0...healthcare)
 			{
-				healthcareSprite.graphics.beginFill(0x00FF00);
-				healthcareSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height + 15, 4);
+				healthcareSprite.graphics.beginFill(0xFFFFFF);
+				healthcareSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height*1.15 + 10, 4);
 				healthcareSprite.graphics.endFill();
-				hCareY = posY + card.height;
+				spheres.push(healthcareSprite);
+				hCareY = posY + card.height*1.15 + 10;
 			}
 			addChild(healthcareSprite);
 		}
@@ -502,8 +554,9 @@ class TutorialScreen extends Screen
 				for (i in 0...5)
 				{
 					dSprite.graphics.beginFill(0xFFFFFF);
-					dSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, card.y + 2*card.height/3 - 9, 4);
+					dSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, card.y + card.height/1.6 + 4, 4);
 					dSprite.graphics.endFill();
+					spheres.push(dSprite);
 				}
 				addChild(dSprite);
 				
@@ -513,8 +566,9 @@ class TutorialScreen extends Screen
 				for (i in 0...5)
 				{
 					nSprite.graphics.beginFill(0xFFFFFF);
-					nSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height - 13, 4);
+					nSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height + 14, 4);
 					nSprite.graphics.endFill();
+					spheres.push(nSprite);
 				}
 				addChild(nSprite);
 				
@@ -522,8 +576,9 @@ class TutorialScreen extends Screen
 				for (i in 0...5)
 				{
 					mSprite.graphics.beginFill(0xFFFFFF);
-					mSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height + 1, 4);
+					mSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height*1.14, 4);
 					mSprite.graphics.endFill();
+					spheres.push(mSprite);
 				}
 				addChild(mSprite);
 				
@@ -531,8 +586,9 @@ class TutorialScreen extends Screen
 				for (i in 0...5)
 				{
 					hSprite.graphics.beginFill(0xFFFFFF);
-					hSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height + 15, 4);
+					hSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i,  posY + card.height*1.15 + 10, 4);
 					hSprite.graphics.endFill();
+					spheres.push(hSprite);
 				}
 				addChild(hSprite);
 				
@@ -541,8 +597,9 @@ class TutorialScreen extends Screen
 				for (i in 0...5)
 				{
 					dSpriteInner.graphics.beginFill(0x181818);
-					dSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, card.y + 2*card.height/3 - 9, 3);
+					dSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, card.y + card.height/1.6 + 4, 3);
 					dSpriteInner.graphics.endFill();
+					spheres.push(dSpriteInner);
 				}
 				addChild(dSpriteInner);
 				
@@ -552,8 +609,9 @@ class TutorialScreen extends Screen
 				for (i in 0...5)
 				{
 					nSpriteInner.graphics.beginFill(0x181818);
-					nSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height - 13, 3);
+					nSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height + 14, 3);
 					nSpriteInner.graphics.endFill();
+					spheres.push(nSpriteInner);
 				}
 				addChild(nSpriteInner);
 				
@@ -561,8 +619,9 @@ class TutorialScreen extends Screen
 				for (i in 0...5)
 				{
 					mSpriteInner.graphics.beginFill(0x181818);
-					mSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height + 1, 3);
+					mSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i,  posY + card.height*1.14, 3);
 					mSpriteInner.graphics.endFill();
+					spheres.push(mSpriteInner);
 				}
 				addChild(mSpriteInner);
 				
@@ -570,8 +629,9 @@ class TutorialScreen extends Screen
 				for (i in 0...5)
 				{
 					hSpriteInner.graphics.beginFill(0x181818);
-					hSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height + 15, 3);
+					hSpriteInner.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i,  posY + card.height*1.15 + 10, 3);
 					hSpriteInner.graphics.endFill();
+					spheres.push(hSpriteInner);
 				}
 				addChild(hSpriteInner);
 				
@@ -579,9 +639,10 @@ class TutorialScreen extends Screen
 				doctorSprite = new Sprite();
 				for (i in 0...doctor)
 				{
-					doctorSprite.graphics.beginFill(0x00FF00);
-					doctorSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, card.y + 2*card.height/3 - 9, 4);
+					doctorSprite.graphics.beginFill(0xFFFFFF);
+					doctorSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, card.y + card.height/1.6 + 4, 4);
 					doctorSprite.graphics.endFill();
+					spheres.push(doctorSprite);
 				}
 				addChild(doctorSprite);
 				
@@ -590,27 +651,30 @@ class TutorialScreen extends Screen
 				nurseSprite = new Sprite();
 				for (i in 0...nurse)
 				{
-					nurseSprite.graphics.beginFill(0x00FF00);
-					nurseSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height - 13, 4);
+					nurseSprite.graphics.beginFill(0xFFFFFF);
+					nurseSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height + 14, 4);
 					nurseSprite.graphics.endFill();
+					spheres.push(nurseSprite);
 				}
 				addChild(nurseSprite);
 				
 				managementSprite = new Sprite();
 				for (i in 0...management)
 				{
-					managementSprite.graphics.beginFill(0x00FF00);
-					managementSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height + 1, 4);
+					managementSprite.graphics.beginFill(0xFFFFFF);
+					managementSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i, posY + card.height*1.14, 4);
 					managementSprite.graphics.endFill();
+					spheres.push(managementSprite);
 				}
 				addChild(managementSprite);
 				
 				healthcareSprite = new Sprite();
 				for (i in 0...healthcare)
 				{
-					healthcareSprite.graphics.beginFill(0x00FF00);
-					healthcareSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/18 * i, posY + card.height + 15, 4);
+					healthcareSprite.graphics.beginFill(0xFFFFFF);
+					healthcareSprite.graphics.drawCircle((card.x + card.width/4.25) + card.width/16 * i,  posY + card.height*1.15 + 10, 4);
 					healthcareSprite.graphics.endFill();
+					spheres.push(healthcareSprite);
 				}
 				addChild(healthcareSprite);
 				
@@ -624,35 +688,35 @@ class TutorialScreen extends Screen
 		if (nextClicked == 0)
 		{
 			addChild(tap);
-			textField.text = "This is your hand, it contains staff cards, which you will use to cure patients.";
+			textField.text = "This is your hand, it contains personnel cards, which you will use to cure patients.\n Each personnel card has a value displayed on the corners.\n The green lightbulb means it's your turn. ";
 			tap.x = hand1[0].x;
-			tap.y = hand1[0].y + hand1[0].height;
+			tap.y = hand1[0].y + hand1[0].height / 1.15;
 			addEventListener(Event.ENTER_FRAME, indicator);
 			nextClicked = 1;
 			
 		}
 		
-		if (nextClicked == 1 && timer >= 60)
+		if (nextClicked == 1 && timer >= 30)
 		{
 			ind = 1;
 			timer = 0;
-			textField.text = "These are the patients. Every patient has a different task and need for staff.";
+			textField.text = "These are the patients. Every patient has a different task and need of personnel.";
 			tap.x = patients[0].x;
 			tap.y = patients[0].y + patients[0].height;
 			nextClicked = 2;
 		}
 		
-		if (nextClicked == 2 && timer >= 60)
+		if (nextClicked == 2 && timer >= 30)
 		{
 			ind = 2;
 			timer = 0;
-			textField.text = "Every patient has green dots next to a letter, this shows how many of a certain staff are needed to complete this task. The letter signifies the type of staff card.\n" + "D = Doctor, N = Nurse, M = Management, C = CNA.";
+			textField.text = "Every patient has green dots next to a letter, this shows how many of a certain personnel are needed to complete this task. The letter signifies the type of personnel card.\n" + "D = Doctor, N = Nurse, M = Management, C = CNA.";
 			tap.x = pCard.x + pCard.width / 2;
 			tap.y = docY;
 			nextClicked = 3;
 		}
 		
-		if (nextClicked == 3 && timer >= 60)
+		if (nextClicked == 3 && timer >= 30)
 		{
 			ind = 3;
 			timer = 0;
@@ -661,16 +725,96 @@ class TutorialScreen extends Screen
 			tap.y = docCard.y + docCard.height / 2;
 			docCard.addEventListener(MouseEvent.CLICK, cardAssign);
 			pCard.addEventListener(MouseEvent.CLICK, assignPatient);
-			nextClicked = 3;
+			nextClicked = 4;
 		}
 		
 		if (nextClicked == 4 && done)
 		{
-			ind = 4;
+			ind = -1;
 			timer = 0;
-			textField.text = "";
-			
+			tap.x = tap.y = -100;
+			textField.text = "Good job! You see that Grace had 3 doctor dots, and you just gave her all 3.\n After assigning a personnel card, the turn goes to the next player.";
+			nextClicked = 5;
 		}
 		
+		if ( nextClicked == 5 && timer >= 30)
+		{
+			timer = 0;
+			textField.text = "You need to reduce all the personnel needs of a patient down to zero and to supply a special tool if required.\n This cures the patient and gives everyone a reward, plus a possible special reward.";
+			nextClicked = 6;
+		}
+		
+		if ( nextClicked == 6 && timer >= 30)
+		{
+			timer = 0;
+			textField.text = "You need to cure 6 patients to win the game. You lose the game if you get 6 uncured patients on the table."; 
+			nextClicked = 7;
+		}
+		
+		if (nextClicked == 7 && timer >= 30)
+		{
+			removeChild(bg);
+			removeChild(tap);
+			removeChild(next);
+			removeChild(pCard);
+			removeChild(turnIndicator);
+			for (card in hand1)
+			{
+				removeChild(card);
+			}
+			for (card in hand2)
+			{
+				removeChild(card);
+			}
+			for (card in hand4)
+			{
+				removeChild(card);
+			}
+			for (card in patients)
+			{
+				removeChild(card);
+			}
+			for (sphere in spheres)
+			{
+				removeChild(sphere);
+			}
+			timer = 0;
+			textField.y = 50;
+			textField.x = Lib.current.stage.stageWidth / 2 - textField.width / 2;
+			var textFormat:TextFormat = new TextFormat("Verdana", 32, 0xFFFFFF, true);
+			textField.defaultTextFormat = textFormat;
+			textField.text = "Other rules are:\n\n\n 1. You can view and buy the special tool cards at any time by clicking the Tool button.\n\n" +
+			"2. You only get new personnel cards if you have cured a patient.\n\n 3. If you run out of personnel cards, your turn will be skipped.\n\n" +
+			"4. If everyone has run out of personnel cards, you lose the game.\n\n";
+			
+			var menu : Button = new Button(
+				Assets.getBitmapData("img/Button.png"), 
+				Assets.getBitmapData("img/Button_over.png"), 
+				Assets.getBitmapData("img/Button_pressed.png"), 
+				"Menu", 
+				onMenuClick );
+			
+			menu.x = Lib.current.stage.stageWidth / 2 - menu.width / 2;
+			menu.y = Lib.current.stage.stageHeight - menu.height * 2;
+			addChild(menu);
+		}
+	}
+	
+	function onMenuClick()
+	{
+		if (channel != null)
+		{
+			channel.stop();
+		}
+		Main.instance.loadScreen(ScreenType.Menu);
+	}
+	
+	override public function onDestroy()
+	{
+		if (channel != null)
+		{
+			channel.stop();
+			channel = null;
+		}
 	}
 }
