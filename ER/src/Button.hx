@@ -59,7 +59,7 @@ class Button extends Sprite
 		clickSound = Assets.getSound("sounds/Menu button click.wav");
 		if (Main.muteFX == false)
 		{
-			clickSound.play(0, 1, new SoundTransform(1, 0));
+			clickSound.play(0, 1, new SoundTransform(2.0, 0));
 		}
 		
 		image = new Bitmap( upBitmapData );

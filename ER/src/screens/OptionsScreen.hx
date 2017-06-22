@@ -32,12 +32,9 @@ class OptionsScreen extends Screen
 		createBackButton();
 		
 		soundtrack = Assets.getSound("sounds/Menuscreen.wav");
-		soundTransform = new SoundTransform(1.0, 0);
-		soundFX = Assets.getSound("sounds/Menu button click.wav");
-		
 		if (Main.muteST == false)
 		{
-			channel = soundtrack.play(0, 100, soundTransform);
+			channel = soundtrack.play(0, 100, new SoundTransform(0.35, 0));
 		}
 		
 		musicToggle = new Toggle( 
@@ -91,8 +88,8 @@ class OptionsScreen extends Screen
 			"back", 
 			onBackClick 
 		);
-		toMenu.x = stage.stageWidth - (toMenu.width * 1.5);
-		toMenu.y = stage.stageHeight - toMenu.height;
+		toMenu.x = Lib.current.stage.stageWidth /2 - toMenu.width / 2;
+		toMenu.y = stage.stageHeight - toMenu.height * 2;
 		addChild(toMenu);
 	}
 	
@@ -120,7 +117,7 @@ class OptionsScreen extends Screen
 			trace("music on");
 			Main.muteST = false;
 			Main.mToggle = true;
-			channel = soundtrack.play(0, 100, soundTransform);
+			channel = soundtrack.play(0, 100, new SoundTransform(0.35, 0));
 			
 		}
 	}

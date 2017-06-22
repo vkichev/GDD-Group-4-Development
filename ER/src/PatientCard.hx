@@ -7,6 +7,8 @@ import openfl.display.BitmapData;
 import openfl.Assets;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
+import openfl.text.TextFormatAlign;
+import openfl.text.TextFieldAutoSize;
 import screens.*;
 import openfl.Lib;
 
@@ -68,6 +70,8 @@ class PatientCard extends Sprite {
 	var universalScalingConstant = Lib.current.stage.stageHeight / 1080;
 	var universalScalingConstantX = Lib.current.stage.stageWidth / 1920;
 	
+	var toolText : TextField;
+	
 	public var originalX : Float;
 	public var originalY : Float;
 
@@ -76,7 +80,7 @@ class PatientCard extends Sprite {
 		super();
 		
 		taskStart = Assets.getSound("sounds/TaskStart.wav");
-		soundTransform = new SoundTransform(1, 0);
+		soundTransform = new SoundTransform(0.5, 0);
 		
 		imgID = imageName;
 		doctor = doc;
@@ -102,10 +106,18 @@ class PatientCard extends Sprite {
 		createStaffFields();
 		
 		this.addEventListener(Event.ENTER_FRAME, update);
+		
+		toolTxt();
 	}
 	
 	function update(e:Event)
 	{
+		if (equipmentBought == true)
+		{
+			var textFormat:TextFormat = new TextFormat("Verdana", 10, 0x119b1a, true);
+			toolText.defaultTextFormat = textFormat;
+		}
+		
 		if (doctor <= 0 && nurse <= 0 && management <= 0 && healthcare <= 0 && equipmentBought == true)
 		{
 			new Rewards(reward, gamescreen);
@@ -118,6 +130,39 @@ class PatientCard extends Sprite {
 			removeEventListener(Event.ENTER_FRAME, update);
 			
 			//Rewards the player for completing a card.
+		}
+	}
+	
+	function toolTxt()
+	{
+		var textFormat:TextFormat = new TextFormat("Verdana", 10, 0xf92525, true);
+		textFormat.align = TextFormatAlign.CENTER;
+		
+		toolText = new TextField();
+		toolText.defaultTextFormat = textFormat;
+		toolText.autoSize = TextFieldAutoSize.CENTER;
+		toolText.text = "";
+		toolText.height = 50;
+		toolText.width = 50;
+		toolText.selectable = false;
+		toolText.wordWrap = true;
+		//textField.border = true;
+		//textField.borderColor = 0xFFFFFF;
+		toolText.x = card.x + card.width - card.width / 2;
+		toolText.y = card.y + card.height / 1.45;
+		addChild(toolText);
+		
+		toolName();
+	}
+	
+	function toolName()
+	{
+		switch(equipment) {
+			case "A": toolText.text = "OR Prepa- ration";
+			case "B": toolText.text = "Chemo- therapy";
+			case "C": toolText.text = "EEG";
+			case "D": toolText.text = "CT scan";
+			case "E": toolText.text = "X-ray";
 		}
 	}
 	

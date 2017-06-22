@@ -37,12 +37,10 @@ class MenuScreen extends Screen
 		addChildAt(background, 0);
 		
 		soundtrack = Assets.getSound("sounds/Menuscreen.wav");
-		soundFX = Assets.getSound("sounds/Menu button click.wav");
-		soundTransform = new SoundTransform( 1 , 0);
 		
 		if (Main.muteST == false)
 		{
-			channel = soundtrack.play(0, 100, new SoundTransform (0.8, 0));
+			channel = soundtrack.play(0, 100, new SoundTransform (0.35, 0));
 		}
 		
 		

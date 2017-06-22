@@ -123,7 +123,7 @@ class GameScreen extends Screen
 		timerHalf = Assets.getSound("sounds/TimerHalf.wav");
 		timerOut = Assets.getSound("sounds/TimeOut.wav");
 		gameWelcome = Assets.getSound("sounds/GameWelcome.wav");
-		soundTransform = new SoundTransform(0.8, 0);
+		soundTransform = new SoundTransform(0.25, 0);
 		
 		if (Main.muteFX == false)
 		{
@@ -132,7 +132,7 @@ class GameScreen extends Screen
 		
 		if (Main.muteST == false)
 		{
-			channel = soundtrack.play(5, 100, soundTransform);
+			channel = soundtrack.play(5, 100, new SoundTransform(0.5, 0));
 		}
 		
 		createTurnIndicator();

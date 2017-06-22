@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "75",
+			build: "66",
 			company: "MEMEBIG",
 			file: "ER",
 			fps: 60,
@@ -38,11 +38,11 @@ import haxe.macro.Expr;
 					allowHighDPI: false,
 					alwaysOnTop: false,
 					antialiasing: 0,
-					background: 16777215,
+					background: 0,
 					borderless: false,
 					depthBuffer: false,
 					display: 0,
-					fullscreen: false,
+					fullscreen: true,
 					hardware: true,
 					height: 960,
 					hidden: #if munit true #else null #end,

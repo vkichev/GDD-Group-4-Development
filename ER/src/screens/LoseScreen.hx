@@ -41,12 +41,10 @@ class LoseScreen extends Screen
 		addChild(textField);
 		
 		soundtrack = Assets.getSound("sounds/GameLose.wav");
-		soundFX = Assets.getSound("sounds/Menu button click.wav");
-		soundTransform = new SoundTransform(1.0, 0);
 		
 		if (Main.muteST == false)
 		{
-			channel = soundtrack.play(0, 100, soundTransform);
+			channel = soundtrack.play(0, 100, new SoundTransform(0.5, 0));
 		}
 		
 		var exit:Button = new Button( 
@@ -63,11 +61,6 @@ class LoseScreen extends Screen
 	
 	function onExitClick() 
 	{
-		if (Main.muteFX == false)
-		{
-			soundFX.play(0, 1, soundTransform);
-		}
-		
 		if (channel != null)
 		{
 			channel.stop();

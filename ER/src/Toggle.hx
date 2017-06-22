@@ -42,10 +42,6 @@ class Toggle extends Sprite
 		super();
 		
 		clickSound = Assets.getSound("sounds/Menu button click.wav");
-		if (Main.muteFX == false)
-		{
-			clickSound.play(0, 1, new SoundTransform(1, 0));
-		}
 		
 		leftBitmapData = left;
 		rightBitmapData = right;
@@ -87,12 +83,20 @@ class Toggle extends Sprite
 		if (!state)
 		{
 			image.bitmapData = rightBitmapData; trace("left->right");
+			if (Main.muteFX == false)
+			{
+				clickSound.play(0, 1, new SoundTransform(2, 0));
+			}
 			//image = new Bitmap( rightBitmapData );
 			//addChild( image );
 		}
 		if (state) 
 		{
 			image.bitmapData = leftBitmapData; trace("right->left");
+			if (Main.muteFX == false)
+			{
+				clickSound.play(0, 1, new SoundTransform(2, 0));
+			}
 			//image = new Bitmap( leftBitmapData );
 			//addChild( image );
 		}
