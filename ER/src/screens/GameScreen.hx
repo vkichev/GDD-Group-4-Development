@@ -454,7 +454,10 @@ class GameScreen extends Screen
 		turnD = new Bitmap( turnDouble );
 		turnD.scaleX = turnD.scaleY = 0.1 * universalScalingConstant;
 	}
-	
+	/**
+	 * Adds a turn indicator to the correct player.A doubleTurn indicator replaces it if the player has a doubleturn.
+	 * @param	id The current player
+	 */
 	function displayTurnIndicator(id:Int)
 	{
 		removeChild(turnI);
@@ -487,6 +490,7 @@ class GameScreen extends Screen
 		
 		addChild(turnI);
 		
+		//Doubletur indicator replacer (on top of it).
 		if (id == doubleTurn)
 		{
 			turnD.x = turnI.x;
@@ -846,7 +850,7 @@ class GameScreen extends Screen
 	}
 	
 	/**
-	 * The player with 
+	 * The player with current turn. If the doubleturn indicator equals the turn indicator, the current player has a doubleTurn and gets another turn after this one ends.
 	 */
 	function goNextTurn():Void 
 	{
@@ -898,6 +902,7 @@ class GameScreen extends Screen
 		addChild( toMenu );
 	}
 	
+	// Adds 1 card to all players.
 	public function addCardAllPlayers()
 	{
 		var card : StaffCard;
@@ -908,7 +913,9 @@ class GameScreen extends Screen
 		}
 	}
 	
-
+	/**
+	 * Adds 1 card to the player with the least cards. If there are multiple options, it will chooce between them at random.
+	 */
 	public function addCardLeastPlayer()
 	{
 		var cards:Int = 0;
@@ -965,7 +972,7 @@ class GameScreen extends Screen
 	}
 	
 	/**
-	 * Gives a staff 5 card to a random player.
+	 * Gives a 'ALL 5' card to a random player.
 	 */
 	public function addStaff5RandomPlayer()
 	{

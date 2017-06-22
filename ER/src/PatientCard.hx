@@ -120,6 +120,7 @@ class PatientCard extends Sprite {
 		
 		if (doctor <= 0 && nurse <= 0 && management <= 0 && healthcare <= 0 && equipmentBought == true)
 		{
+			//Rewards the player for completing a card.
 			new Rewards(reward, gamescreen);
 			
 			trace("solved");
@@ -129,7 +130,6 @@ class PatientCard extends Sprite {
 			removeChild(this);
 			removeEventListener(Event.ENTER_FRAME, update);
 			
-			//Rewards the player for completing a card.
 		}
 	}
 	

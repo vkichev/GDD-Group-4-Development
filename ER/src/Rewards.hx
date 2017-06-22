@@ -9,7 +9,7 @@ import openfl.media.SoundTransform;
 import openfl.Assets;
 
 /**
- * ...
+ * The class that handles all rewards. Gets called from the PatientCard class, once a patientcard is cleared. 
  * @author vincent van de vegte
  */
 class Rewards extends Sprite
@@ -21,6 +21,11 @@ class Rewards extends Sprite
 	var sR:String;
 	public var main:GameScreen;
 	
+	/**
+	 * The new function will always give a standard reward (ALL +1) and will then test for a special reward with a case switcher.
+	 * @param	rewards The type of specialreward
+	 * @param	gs allowes changing things in the gamescreen clase through the patientcard class.
+	 */
 	public function new(rewards:String, gs:GameScreen) 
 	{
 		getCard = Assets.getSound("sounds/GetCard.wav");
@@ -47,7 +52,9 @@ class Rewards extends Sprite
 	}
 	
 
-	
+	/**
+	 * The standartreward function and the specialrewards function will call their reward function in gamescreen and a sound function.
+	 */
 	function standardReward() 
 	{
 		if (Main.muteFX == false)
