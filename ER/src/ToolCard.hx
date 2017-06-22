@@ -52,6 +52,9 @@ class ToolCard extends Sprite {
 	var card : Bitmap;
 	
 	var universalScalingConstant = Lib.current.stage.stageHeight / 1080;
+	
+	public var originalX : Float;
+	public var originalY : Float;
 
 	public function new (imageName : String, doc : Int, nur : Int, mng : Int, hcw : Int, typ : String, gs : GameScreen)
 	{

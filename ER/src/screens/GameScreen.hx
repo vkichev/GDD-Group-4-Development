@@ -177,6 +177,8 @@ class GameScreen extends Screen
 		{
 			card.y = Lib.current.stage.stageHeight / 2 - card.height / 2;
 			addChild(card);
+			card.originalX = card.x;
+			card.originalY = card.y;
 		}
 		
 		closeButton = new Button( 
@@ -562,11 +564,9 @@ class GameScreen extends Screen
 		}
 		removeALLPrompt();
 		
-		if (Std.string(Type.typeof(thiscard)) == "PatientCard")
-		{
-			thiscard.x = thiscard.originalX;
-			thiscard.y = thiscard.originalY;
-		}
+		thiscard.x = thiscard.originalX;
+		thiscard.y = thiscard.originalY;
+		
 		thiscard = null;
 		goNextTurn();
 	}
@@ -647,6 +647,7 @@ class GameScreen extends Screen
 			if (player.turn)
 			{
 				card = cast (e.currentTarget);
+				thiscard = card;
 				
 				var staffCard : StaffCard;
 				
@@ -658,8 +659,16 @@ class GameScreen extends Screen
 					staffValue = staffCard.num;
 					
 					card.assignStaffCard(type, staffValue);
-					if (type == "ALL") displayALLPrompt();
+					if (type == "ALL") 
+					{
+						displayALLPrompt();
+						thiscard.x = assignRect.x + assignRect.width / 4;
+						thiscard.y = assignRect.y + assignRect.height / 1.8;
+						addChild(card);
+						
+					}
 					else goNextTurn();
+				
 					
 				} 
 			}
