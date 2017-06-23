@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "66",
+			build: "68",
 			company: "MEMEBIG",
 			file: "ER",
 			fps: 60,

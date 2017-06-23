@@ -94,8 +94,6 @@ class MenuScreen extends Screen
 	/**
 	 * Closes the game.
 	 */
-	 * Closes the game.
-	 */
 	private function onExitClick() 
 	{
 		System.exit(0);
