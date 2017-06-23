@@ -26,7 +26,7 @@ import hxcpp.StaticSqlite;
 
 /**
  * The main gamescreen. Creates the deck, player hands, timer, turn indicator buttons, win/lose/tool/ALLcard prompts and winning/loosing conditons.
- * 
+ * @author Group 4
  *
  */
 class GameScreen extends Screen

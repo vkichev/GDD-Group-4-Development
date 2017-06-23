@@ -21,7 +21,7 @@ import openfl.media.SoundTransform;
  * This class remembers which image/patient was assigned to it. It keeps track of the rewards once it has been completed. 
  * This class tests if the patientcard it represents has been completed, and calls for Rewards if it has been.
  * This class remembers the current and needed values for the 4 Staff stats, and puts it on the cards.
- * @author Group 5
+ * @author Group 4
  */
 class PatientCard extends Sprite {
 

@@ -16,7 +16,7 @@ import openfl.text.TextFormat;
 import openfl.text.TextFormatAlign;
 
 /**
- * ...
+ * The tutorial screen. Explains some basic functions to the players & states additional rules.
  * @author Rutger Regtop
  */
 class TutorialScreen extends Screen 
@@ -84,6 +84,7 @@ class TutorialScreen extends Screen
 		
 	}
 	
+	// Loads sounds and calls functions that control the entire class
 	override public function onLoad()
 	{
 		
@@ -102,9 +103,10 @@ class TutorialScreen extends Screen
 		createOHands();
 		createPatients();
 		textBar();
-		trace(docSpheres.length);
 	}
 	
+	// loads the background, the "Next" button which makes explanation and on-screen activity change
+	// also loads the hand indicator used to explain things visually
 	function background()
 	{
 		bg = new Bitmap(Assets.getBitmapData("img/tut.png"));
@@ -128,6 +130,7 @@ class TutorialScreen extends Screen
 		tap.x = tap.y = -90;
 	}
 	
+	// creates the textfield which is displayed at the bottom of the field, will contain all the explanatory text
 	function textBar()
 	{
 		var textFormat:TextFormat = new TextFormat("Verdana", 24, 0xFFFFFF, true);
@@ -141,13 +144,13 @@ class TutorialScreen extends Screen
 		textField.width = Lib.current.stage.stageWidth / 1.2;
 		textField.wordWrap = true;
 		textField.selectable = false;
-		//textField.border = true;
-		//textField.borderColor = 0xFFFFFF;
 		textField.x = 10;
 		textField.y = next.y - next.height / 3;
 		addChild(textField);
 	}
 	
+	// for a specific part of the tutorial, checks if the doctor card has been selected
+	// removes specific staff value spheres
 	function assignPatient(e:MouseEvent)
 	{
 		if (clicked.length == 1)
@@ -170,6 +173,7 @@ class TutorialScreen extends Screen
 		}
 	}
 	
+	// at a certain point in the tutorial, allows you to select the doctor 3 card
 	function cardAssign(e:MouseEvent)
 	{
 		
@@ -184,6 +188,7 @@ class TutorialScreen extends Screen
 		}
 	}
 	
+	// determines what the indicator hand is doing/moving to and from
 	function indicator(e:Event)
 	{
 		timer++;
@@ -227,6 +232,8 @@ class TutorialScreen extends Screen
 		}
 	}
 	
+	// creates the 4 staff cards of the player in the tutorial
+	// makes one a sprite for interaction purposes
 	function createHand()
 	{	
 		var card1:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_N_4.png"));
@@ -254,6 +261,7 @@ class TutorialScreen extends Screen
 		posHand();
 	}
 	
+	//determines the positions for the player's hand
 	function posHand()
 	{
 		var posX : Float = -hand1.length * hand1[0].width / 2;
@@ -279,10 +287,10 @@ class TutorialScreen extends Screen
 				docCard.y = firstPosY;
 				posX += docCard.width + 20;
 			}
-		
 		}
 	}
 	
+	// creates the staff cards for the other 2 dummy players visible, purely decorative
 	function createOHands()
 	{	
 		var card1:Bitmap = new Bitmap(Assets.getBitmapData("img/Staff_M_1.png"));
@@ -320,6 +328,7 @@ class TutorialScreen extends Screen
 		posOHands();
 	}
 	
+	// positions the cards of the other 2 dummy players on the right spot on the background
 	function posOHands()
 	{
 		var yPos : Float = -hand2.length * hand2[0].height / 2;
@@ -350,6 +359,7 @@ class TutorialScreen extends Screen
 		}
 	}
 	
+	// creates the 4 patient cards, makes 1 a sprite for interaction purposes
 	function createPatients()
 	{
 		var card1:Bitmap = new Bitmap(Assets.getBitmapData("img/Patient_7.png"));
@@ -374,6 +384,7 @@ class TutorialScreen extends Screen
 		createSpheres();
 	}
 	
+	// positions the patient cards where they should be displayed on the background
 	function posPatients()
 	{
 		var posX : Float = -patients.length * patients[0].width / 2;
@@ -399,6 +410,8 @@ class TutorialScreen extends Screen
 		}
 	}
 	
+	// creates and positions the value spheres for each patientcard
+	// makes sure the sprite among the patient cards gets specific amount of spheres, with the relevant one a noticeable colour
 	function createSpheres()
 	{
 		for (card in patSpheres)
@@ -683,6 +696,9 @@ class TutorialScreen extends Screen
 		}
 	}
 	
+	// switches to a new text explanation and hand indicator movement every time you click next
+	// slight delay added to counter something being triggered multiple times
+	// eventually removes all assets to only display some rules and give the ability to return to main menu
 	function onNextClick()
 	{
 		if (nextClicked == 0)
@@ -800,6 +816,7 @@ class TutorialScreen extends Screen
 		}
 	}
 	
+	// redirects you back to the menu on clicking the menu button
 	function onMenuClick()
 	{
 		if (channel != null)
@@ -809,6 +826,7 @@ class TutorialScreen extends Screen
 		Main.instance.loadScreen(ScreenType.Menu);
 	}
 	
+	// Removes the channel if the class gets 'destroyed'.
 	override public function onDestroy()
 	{
 		if (channel != null)

@@ -32,7 +32,7 @@ class LoseScreen extends Screen
 	 */
 	override public function onLoad():Void
 	{
-		var textFormat : TextFormat = new TextFormat("_sans", 48, 0x000000, true);
+		var textFormat : TextFormat = new TextFormat("_sans", 48, 0xFFFFFF, true);
 		textFormat.align = TextFormatAlign.LEFT;
 		var textField : TextField = new TextField();
 		textField.selectable = false;
