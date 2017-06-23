@@ -14,8 +14,9 @@ import openfl.media.SoundTransform;
 import openfl.display.Sprite;
 
 /**
- * ...
- * @author ...
+ * A screen that shows a player that they lost.
+ * Contains text and a button that points to menu.
+ * @author Group 4
  */
 class LoseScreen extends Screen
 {
@@ -26,6 +27,9 @@ class LoseScreen extends Screen
 		super();
 	}
 	
+	/**
+	 * Creates the 'Burnout' text and a exit Button.
+	 */
 	override public function onLoad():Void
 	{
 		var textFormat : TextFormat = new TextFormat("_sans", 48, 0x000000, true);
@@ -59,6 +63,9 @@ class LoseScreen extends Screen
 		addChild( exit );
 	}
 	
+	/**
+	 * Returns the game to the mainscreen.
+	 */
 	function onExitClick() 
 	{
 		if (channel != null)
@@ -68,6 +75,9 @@ class LoseScreen extends Screen
 		Main.instance.loadScreen( ScreenType.Menu );
 	}
 	
+	/**
+	 * Destroys the 'channel' when switching screens.
+	 */
 	override public function onDestroy()
  	{
 		if (channel != null)

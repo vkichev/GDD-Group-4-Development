@@ -25,8 +25,8 @@ import hxcpp.StaticSqlite;
 #end
 
 /**
- * Simple screen in the application.
- * Shows a text, a button and a moving element.
+ * The main gamescreen. Creates the deck, player hands, timer, turn indicator buttons, win/lose/tool/ALLcard prompts and winning/loosing conditons.
+ * 
  *
  */
 class GameScreen extends Screen
@@ -64,7 +64,7 @@ class GameScreen extends Screen
 	
 	var currentTurn : Int = 1;
 	var lastTurn : Int;
-	public var doubleTurn:Int = 0; //0 is the normal value.
+	public var doubleTurn:Int = 0; //0 is the normal value as there is no player 0.
 	
 	var _rect:Sprite;
 	var allPromptButtons:Array<TextField>;
@@ -93,7 +93,6 @@ class GameScreen extends Screen
 	var turnI:Bitmap;
 	var turnD:openfl.display.Bitmap;
 	
-	//Multiply by this for magic
 	var universalScalingConstant = Lib.current.stage.stageHeight / 1080;
 	
 	var toolButton : Button;
@@ -104,6 +103,10 @@ class GameScreen extends Screen
 		super();
 	}
 
+	/**
+	 * Creates the background and loads the sounds.
+	 * Calls the creation function for the timer, turn indicator, deck, players(hands), display functions and the solved cards counter.
+	 */
 	override public function onLoad():Void
 	{
 		var bg:Bitmap = new Bitmap(Assets.getBitmapData("img/Shit backgroundi.png"));
@@ -154,6 +157,9 @@ class GameScreen extends Screen
 		solvedCounter();
 	}
 	
+	/**
+	 * Removes the button the toolButton, creates the tool menu, and the buttons that closes it.
+	 */
 	function toolPrompt()
 	{
 		removeChild(toolButton);
@@ -193,6 +199,9 @@ class GameScreen extends Screen
 		addChild( closeButton );
 	}
 	
+	/**
+	 * Removes the whole tool menu. Re-adds the button that opens it.
+	 */
 	function onCloseClick()
 	{
 		trace("close tools");
@@ -208,6 +217,9 @@ class GameScreen extends Screen
 		addEventListener( Event.ENTER_FRAME, update );
 	}
 	
+	/**
+	 * Checks if the player won/lost the game. Calls the win/lose function/class.
+	 */
 	function checkEndCondition()
 	{
 		//trace(patientsField.length);
@@ -232,6 +244,10 @@ class GameScreen extends Screen
 		}
 	}
 	
+	/**
+	 * Stops the timer and creates a 'You Win' message. Adds a continue and exit button.
+	 * 
+	 */
 	function setupWinScreen()
 	{
 		this.removeEventListener(Event.ENTER_FRAME, update); //stop the timer
@@ -280,6 +296,9 @@ class GameScreen extends Screen
 		addChild( exitButton );
 	}
 	
+	/**
+	 * removes the 'win screen' and reactivates the timer.
+	 */
 	function onContinueClicked() 
 	{
 		trace("continue");
@@ -294,6 +313,9 @@ class GameScreen extends Screen
 		addEventListener(Event.ENTER_FRAME, update);
 	}
 	
+	/**
+	 * counts and shows how many patients are solved.
+	 */
 	function solvedCounter()
 	{
 		var solvedTextFormat : TextFormat = new TextFormat("_sans", 15, 0xFFFFFF, true);
@@ -307,9 +329,11 @@ class GameScreen extends Screen
 		addChild(solvedTextField);
 	}
 	
+	/**
+	 * Adds a timer and calls the update function for the first time.
+	 */
 	private function createTimer() 
 	{
-		// create and position the progres bar. (Width, Height, 
 		timerBar = new Timer( Math.floor(2*Lib.current.stage.stageWidth/3), 15 * universalScalingConstant, 4 * universalScalingConstant );
 		timerBar.x = Lib.current.stage.stageWidth / 2 - Lib.current.stage.stageWidth / 3;
 		timerBar.y = Lib.current.stage.stageHeight / 4.5;
@@ -319,13 +343,14 @@ class GameScreen extends Screen
 		lastUpdate = Lib.getTimer();
 		addEventListener( Event.ENTER_FRAME, update );
 		
-		// Remembers the player who is supposed to be playing)
+		// Remembers the player who is supposed to be playing
 		lastTurn = currentTurn;
 	}
 	
 	/**
-	 * Event handler for the Event.ENTER_FRAME event
-	 * 
+	 * Event handler for the Event.ENTER_FRAME event.
+	 * Handles the timer, ressetting the timer, and ending the playerturn. 
+	 * Plays certain sounds at certain times.
 	 * 
 	 * @param event 	The Event instance
 	 */
@@ -415,6 +440,9 @@ class GameScreen extends Screen
 		timerBar.setValue( currentTime / maxTime );
 	}
 	
+	/**
+	 * Skips the current turn if the current player's hand is empty.
+	 */
 	function checkForNoCards()
 	{
 		for (player in players)
@@ -426,6 +454,11 @@ class GameScreen extends Screen
 		}
 	}
 	
+	/**
+	 * Disables players from playing cards if it is not their turn.
+	 * Updates the solvedTextField.text.
+	 * @param	e
+	 */
 	function canPlayerPlay(e:Event)
 	{
 		for (player in players)
@@ -444,6 +477,9 @@ class GameScreen extends Screen
 		solvedTextField.text = "patients solved: " + solved;
 	}
 	
+	/**
+	 * loads the turn indicators.
+	 */
 	function createTurnIndicator() 
 	{
 		var turnIndicator:BitmapData = Assets.getBitmapData( "img/Indicator_Turn.png" );
@@ -454,6 +490,7 @@ class GameScreen extends Screen
 		turnD = new Bitmap( turnDouble );
 		turnD.scaleX = turnD.scaleY = 0.1 * universalScalingConstant;
 	}
+	
 	/**
 	 * Adds a turn indicator to the correct player.A doubleTurn indicator replaces it if the player has a doubleturn.
 	 * @param	id The current player
@@ -501,6 +538,9 @@ class GameScreen extends Screen
 		}
 	}
 	
+	/**
+	 * Creates a prompt if an ALL Staffcard gets played, with the four types as choice.
+	 */
 	function displayALLPrompt()
 	{
 		assignRect = new Bitmap(  Assets.getBitmapData( "img/menu_staff.png" ) );
@@ -554,6 +594,10 @@ class GameScreen extends Screen
 		}
 	}
 	
+	/**
+	 * Assigns the ALL Staffcard value to the selected type of the selected patient.
+	 * @param	e	Clicking one of the four staff types on the ALLprompt.
+	 */
 	function promptButtonClicked(e:MouseEvent)
 	{
 		var clickedButtonIndex:Int = allPromptButtons.indexOf(cast e.currentTarget);
@@ -575,9 +619,11 @@ class GameScreen extends Screen
 		goNextTurn();
 	}
 	
+	/**
+	 * Removes the assign menu's for Allcards.
+	 */
 	function removeALLPrompt()
 	{
-		//remove the if statement? It seems redundant.
 		if (_rect != null || assignRect != null)
 		{
 			for (textField in allPromptButtons)
@@ -592,6 +638,12 @@ class GameScreen extends Screen
 		//goNextTurn();
 	}
 	
+	/**
+	 * Assigns a Staffcard to a Patientcard, removing the Staffcard.  
+	 * Removes the patientcard if it is 'solved'.
+	 * Adds sounds to removing cards.
+	 * @param	e		Callback from the patientcard class.
+	 */
 	private function patientClicked(e:Event):Void
 	{
 		for (player in players)
@@ -644,6 +696,11 @@ class GameScreen extends Screen
 		}
 	}
 	
+	/**
+	 * Assigns a Staffcard to a Toolcard, removing the Staffcard.  
+	 * Opens an ALL prompt for assigning ALL Staffcards.	 * 
+	 * @param	e	Clicking a 'Tool' in the toolcard menu.
+	 */
 	private function toolClicked(e:Event):Void
 	{
 		for (player in players)
@@ -672,13 +729,14 @@ class GameScreen extends Screen
 						
 					}
 					else goNextTurn();
-				
-					
 				} 
 			}
 		}
 	}
 
+	/**
+	 * Creates the Button to display the tool menu.
+	 */
 	function displayTools()
 	{
 		var posX : Float = -toolDeck.length * toolDeck[0].width / 2;
@@ -705,6 +763,9 @@ class GameScreen extends Screen
 		addChild( toolButton );
 	}
 	
+	/**
+	 * Adds patientcards to the playfield once the game starts. 
+	 */
 	function initPatients()
 	{
 		
@@ -716,6 +777,9 @@ class GameScreen extends Screen
 		
 	}
 	
+	/**
+	 * Positions and repositions the patientcards on the screen.
+	 */
 	function displayPatients()
 	{
 		var posX : Float = -patientsField.length * patientsField[0].width / 2;
@@ -732,6 +796,9 @@ class GameScreen extends Screen
 		}
 	}
 	
+	/**
+	 * Fills the starthand for all players with Staffcards.
+	 */
 	function createHand()
 	{
 		var card : StaffCard;
@@ -751,6 +818,9 @@ class GameScreen extends Screen
 		}
 	}
 	
+	/**
+	 * creates all the Staffcards in the deck
+	 */
 	function createStaff()
 	{
 		type = ["N", "D", "H", "M", "ALL"];
@@ -776,6 +846,10 @@ class GameScreen extends Screen
 		}
 	}
 	
+	/**
+	 * Shuffles the deck.
+	 * @param	deck	The deck with Patientcards/Staffcards.
+	 */
 	function shuffleDeck(deck : Dynamic)
 	{
 		var n:Int = deck.length;
@@ -789,6 +863,9 @@ class GameScreen extends Screen
 		}
 	}
 
+	/**
+	 * Imports the Patientcards/Toolcards data from the database. Adds this data to the cards.
+	 */
 	function readFromDataBase()
 	{
 		// patients
@@ -838,7 +915,10 @@ class GameScreen extends Screen
 		}
 		
 	}
-
+	
+	/**
+	 * Returns the game to the MenuScreen.
+	 */
 	function onQuitClick()
 	{
 		if ( channel != null)
@@ -850,7 +930,8 @@ class GameScreen extends Screen
 	}
 	
 	/**
-	 * The player with current turn. If the doubleturn indicator equals the turn indicator, the current player has a doubleTurn and gets another turn after this one ends.
+	 * changes the currentTurn to the next player, unless the player has a doubleturn.
+	 * Removes the doubleTurn if it is 'used'.
 	 */
 	function goNextTurn():Void 
 	{
@@ -875,6 +956,7 @@ class GameScreen extends Screen
 				currentTurn = 1;
 			}
 			
+			//Adds a patientcard at the end of each 2 rounds.
 			if (roundsPassed == 2)
 			{
 				var card = patientDeck.pop();
@@ -886,6 +968,9 @@ class GameScreen extends Screen
 		}
 	}
 	
+	/**
+	 * Creates a button to exit the game.
+	 */
 	function createQuitButton():Void 
 	{
 		var toMenu:Button = new Button
@@ -902,7 +987,9 @@ class GameScreen extends Screen
 		addChild( toMenu );
 	}
 	
-	// Adds 1 card to all players.
+	/**
+	 * Adds 1 Staffcard to the hand of all players.
+	 */
 	public function addCardAllPlayers()
 	{
 		var card : StaffCard;
@@ -914,7 +1001,7 @@ class GameScreen extends Screen
 	}
 	
 	/**
-	 * Adds 1 card to the player with the least cards. If there are multiple options, it will chooce between them at random.
+	 * Adds 1 Staffcard to the player with the least cards. If there are multiple options, it will chooce between them at random.
 	 */
 	public function addCardLeastPlayer()
 	{
@@ -972,7 +1059,7 @@ class GameScreen extends Screen
 	}
 	
 	/**
-	 * Gives a 'ALL 5' card to a random player.
+	 * Gives a 'ALL 5' Staffcard to a random player.
 	 */
 	public function addStaff5RandomPlayer()
 	{
@@ -987,7 +1074,9 @@ class GameScreen extends Screen
 		players[n].addCard(stCard);
 	}
 	
-	
+	/**
+	 * Removes the eventlistener and channel if the class gets 'destroyed'.
+	 */
 	override public function onDestroy()
 	{
 		

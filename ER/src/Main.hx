@@ -17,8 +17,8 @@ import screens.*;
 
 /**
  * Demonstrates a way to devide up an application into seperate screens represented by their own class.
- *
  * This Main class is a Singleton
+ * @author Manno Bult
  */
 class Main extends Sprite 
 {

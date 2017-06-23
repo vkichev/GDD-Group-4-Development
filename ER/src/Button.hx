@@ -20,7 +20,7 @@ import openfl.media.SoundTransform;
 
 /**
  * A fairly crude button with state functionality and a callback for when clicked.
- *
+ * @author Manno Bult
  */
 class Button extends Sprite 
 {

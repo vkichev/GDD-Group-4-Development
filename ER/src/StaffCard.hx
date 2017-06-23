@@ -7,7 +7,7 @@ import openfl.Assets;
 import openfl.Lib;
 
 /**
- * ...
+ * The StaffCard class. Store values for the type, name, and 'value' of the staffcard. 
  * @author Rutger Regtop
  */
 class StaffCard extends Sprite
@@ -18,6 +18,12 @@ class StaffCard extends Sprite
 
 	var imageName : String;
 
+	/**
+	 * Sets the settings for the StaffCard.
+	 * @param	subType		StaffCard type. Divided in (D:Doctor, N:Nurse, M:Manager and H:Healtcare worker)
+	 * @param	value		StaffCard Value from
+	 * @param	imgName		StaffCard name of the image
+	 */
 	public function new(subType : String, value : Int, imgName : String) 
 	{
 		super();

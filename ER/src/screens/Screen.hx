@@ -11,6 +11,7 @@ import openfl.media.SoundTransform;
 /**
  * The base class for all screens. 
  * The onLoad and onDestroy can be implemented in the derived classes.
+ * @author Manno Bult
  */
 class Screen extends Sprite
 {

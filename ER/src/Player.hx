@@ -13,8 +13,8 @@ import openfl.media.SoundTransform;
 
 
 /**
- * ...
- * @author Archbishop of Banterberry
+ * Player class. Keeps track of the cards in the hand of the player, and disables playing cards if it is not the players turn.
+ * @author Group 4
  */
 class Player extends Sprite
 {
@@ -23,15 +23,14 @@ class Player extends Sprite
 	var outOfCards : Sound;
 	var soundTransform = new SoundTransform(1, 0);
 	
-	public var id:Int = 0;
 	var turnPassed:Bool;
-	public var cardsInHand:Array<StaffCard> = [];
 	var assignedCard:PatientCard;
 	
+	public var id:Int = 0;
+	public var cardsInHand:Array<StaffCard> = [];
 	public var selected : Array<StaffCard> = [];
 	
 	public var turn : Bool; 
-	
 	public var ooC : Bool = false; 
 	
 	public function new(i:Int) 
@@ -45,6 +44,10 @@ class Player extends Sprite
 		addEventListener(Event.ENTER_FRAME, update);
 	}
 	
+	/**
+	 * Makes a sound if the player is out of Staffcards.
+	 * @param	e	Frameupdate event
+	 */
 	function update(e:Event)
 	{
 		if (cardsInHand.length == 0 && ooC)
@@ -57,7 +60,10 @@ class Player extends Sprite
 		}
 	}
 	
-	
+	/**
+	 * removes the played Staffcard from this player's hand.
+	 * @param	card
+	 */
 	public function removeCard(card:StaffCard)
 	{
 		cardsInHand.remove(card);
@@ -65,6 +71,10 @@ class Player extends Sprite
 		removeChild(card);
 	}
 	
+	/**
+	 * Adds a card to the hand of the player, with the needed eventlisteners. 
+	 * @param	card
+	 */
 	public function addCard(card:StaffCard)
 	{
 		cardsInHand.push(card);
@@ -74,6 +84,10 @@ class Player extends Sprite
 		this.addEventListener(MouseEvent.RIGHT_CLICK, deselect);
 	}
 	
+	/**
+	 * Deselects the rightclicked Staffcard.
+	 * @param	e 	Rightclicking a Staffcard.
+	 */
 	function deselect(e:Event)
 	{
 		var card : StaffCard = cast (e.target);
@@ -82,6 +96,10 @@ class Player extends Sprite
 		trace(selected.length);
 	}
 	
+	/**
+	 * Selects the clicked card if none are selected, and it is the current player's turn. 
+	 * @param	e		Target StaffCArd of a click event
+	 */
 	function playCard(e:Event)
 	{
 		if ( turn == true)
@@ -104,6 +122,9 @@ class Player extends Sprite
 		}	
 	}
 	
+	/**
+	 * Creates and sets the location and rotation of the 'hands' of the 4 players. 
+	 */
 	public function displayCards()
 	{
 		var posX : Float = -cardsInHand.length * cardsInHand[0].width / 2;

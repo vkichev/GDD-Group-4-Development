@@ -13,7 +13,7 @@ import openfl.media.SoundTransform;
 /**
  * @author Alireza Doustdar
  * Menu Screen that has:
- * play
+ * Play
  * Option
  * Exit
  */
@@ -28,6 +28,9 @@ class MenuScreen extends Screen
 		super();
 	}
 	
+	/**
+	 * creates the menuscreen background. Loads 3 Button(s) with their text and images.
+	 */
 	override public function onLoad():Void
 	{
 		var backgroundData: BitmapData = Assets.getBitmapData("img/menu_bg.png");
@@ -88,16 +91,27 @@ class MenuScreen extends Screen
 		addChild(exit);
 	}
 	
+	/**
+	 * Closes the game.
+	 */
+	 * Closes the game.
+	 */
 	private function onExitClick() 
 	{
 		System.exit(0);
 	}
 	
+	/**
+	 * Switches the screen to the TutorialScreen.
+	 */
 	function onTutorialClick()
 	{
 		Main.instance.loadScreen(ScreenType.Tut);
 	}
 	
+	/**
+	 * Switches the screen to the OptionScreen.
+	 */
 	private function onOptionClick() 
 	{
 		if (channel != null)
@@ -108,6 +122,9 @@ class MenuScreen extends Screen
 		Main.instance.loadScreen( ScreenType.Options );
 	}
 
+	/**
+	 * Switches the screen to the GameScreen.
+	 */
 	private function onPlayClick()
 	{	
 		if (channel != null)
@@ -118,6 +135,9 @@ class MenuScreen extends Screen
 		Main.instance.loadScreen( ScreenType.Game );
 	}
 	
+	/**
+	 * Closes the channel if active.
+	 */
 	override public function onDestroy()
 	{
 		if (channel != null)

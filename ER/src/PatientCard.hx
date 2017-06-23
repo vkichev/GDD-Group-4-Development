@@ -17,8 +17,11 @@ import openfl.media.SoundChannel;
 import openfl.media.SoundTransform;
 
 /**
- * ...
- * @author Rutger Regtop
+ * This class is the PatientCards, which get its information from the database once it gets loaded in the GameScreen class.
+ * This class remembers which image/patient was assigned to it. It keeps track of the rewards once it has been completed. 
+ * This class tests if the patientcard it represents has been completed, and calls for Rewards if it has been.
+ * This class remembers the current and needed values for the 4 Staff stats, and puts it on the cards.
+ * @author Group 5
  */
 class PatientCard extends Sprite {
 
@@ -34,12 +37,6 @@ class PatientCard extends Sprite {
 	public var gamescreen : GameScreen;
 	
 	public var assignedCards : Array<StaffCard> = [];
-	
-	//public var doctorTextField : TextField;
-	//public var nurseTextField : TextField;
-	//public var managementTextField : TextField;
-	//public var healthcareTextField : TextField;
-	//public var equipmentTextField : TextField;
 	
 	var taskStart : Sound;
 	var soundTransform : SoundTransform;
@@ -75,6 +72,17 @@ class PatientCard extends Sprite {
 	public var originalX : Float;
 	public var originalY : Float;
 
+	/**
+	 * Imports the parameters from it was assigned in the gamescreen class. Creates a Patientcard with this information	
+	 * @param	imageName	Patient name
+	 * @param	doc			'Docter' value needed to solve
+	 * @param	nur			'Nurse' value needed to solve
+	 * @param	mng			'Manage'r value needed to solve
+	 * @param	hcw			'Healthcare Worker' value needed to solve this card
+	 * @param	eqm			Equipment needed to solve
+	 * @param	rew			Reward the player will get
+	 * @param	gs			link to the GameScreen class. 
+	 */
 	public function new (imageName : String, doc : Int, nur : Int, mng : Int, hcw : Int, eqm : String, rew : String, gs : GameScreen)
 	{
 		super();
@@ -110,6 +118,11 @@ class PatientCard extends Sprite {
 		toolTxt();
 	}
 	
+	/**
+	 * Tests if the nececary tool for this PatientCard is already obtained and shows it by making the text green.
+	 * If the player cleared all conditions to solve this PatientCard, the patientcard gets removed and rewards get called use the reward of this patientcard.
+	 * @param	e		frame update event
+	 */
 	function update(e:Event)
 	{
 		if (equipmentBought == true)
@@ -133,6 +146,9 @@ class PatientCard extends Sprite {
 		}
 	}
 	
+	/**
+	 * Sets the tooltext variables on the PatientCard
+	 */
 	function toolTxt()
 	{
 		var textFormat:TextFormat = new TextFormat("Verdana", 10, 0xf92525, true);
@@ -146,8 +162,6 @@ class PatientCard extends Sprite {
 		toolText.width = 50;
 		toolText.selectable = false;
 		toolText.wordWrap = true;
-		//textField.border = true;
-		//textField.borderColor = 0xFFFFFF;
 		toolText.x = card.x + card.width - card.width / 2;
 		toolText.y = card.y + card.height / 1.45;
 		addChild(toolText);
@@ -155,6 +169,9 @@ class PatientCard extends Sprite {
 		toolName();
 	}
 	
+	/**
+	 * Adds the text to the tooltext, based on the tool requirements.
+	 */
 	function toolName()
 	{
 		switch(equipment) {
@@ -166,6 +183,11 @@ class PatientCard extends Sprite {
 		}
 	}
 	
+	/**
+	 * Sets the staff stat value, and makes a sound if you do so.
+	 * @param	type		The type of Staffcard that is being asigned.
+	 * @param	value		The Value of said StaffCard.
+	 */
 	public function assignStaffCard(type:String, value:Int)
 	{
 		
@@ -188,19 +210,13 @@ class PatientCard extends Sprite {
 		firstAssign = false;
 	}
 	
+	/**
+	 * 'Draws' circles, which represent the staff stat value, on the PatientCard.
+	 * There are two layers of staff stats, the still needed staff stats as full cicles on top, and the hollow staff stats on the bottom.
+	 */
 	function createStaffFields()
-	{
-		//var staffTextFormat : TextFormat = new TextFormat("_sans", 12, 0xFF0000, true);
-		//doctorTextField = new TextField();
-		//doctorTextField.defaultTextFormat = staffTextFormat;
-		//doctorTextField.width = 10;
-		//doctorTextField.height = 15;
-		//doctorTextField.x = card.x + 30;
-		//doctorTextField.y = card.y + 11;
-		//doctorTextField.text = doctor + "";
-		//addChild(doctorTextField);
-		
-		//outer line of the circle
+	{		
+		//outer line of the 'empty circle'
 		dSprite = new Sprite();
 		for (i in 0...5)
 		{
@@ -239,7 +255,7 @@ class PatientCard extends Sprite {
 		}
 		addChild(hSprite);
 		
-		//the inner part of the circles
+		//the inner part of the 'empty circles'
 		dSpriteInner = new Sprite();
 		for (i in 0...5)
 		{
@@ -278,7 +294,7 @@ class PatientCard extends Sprite {
 		}
 		addChild(hSpriteInner);
 		
-		//adds white circles
+		//adds white 'full circles'
 		removeChild(doctorSprite);
 		doctorSprite = new Sprite();
 		for (i in 0...doctor)
@@ -320,42 +336,6 @@ class PatientCard extends Sprite {
 			healthcareSprite.graphics.endFill();
 		}
 		addChild(healthcareSprite);
-		
-		//nurseTextField = new TextField();
-		//nurseTextField.defaultTextFormat = staffTextFormat;
-		//nurseTextField.width = 10;
-		//nurseTextField.height = 15;
-		//nurseTextField.x = doctorTextField.x;
-		//nurseTextField.y = doctorTextField.y + 12;
-		//nurseTextField.text = nurse + "";
-		//addChild(nurseTextField);
-		//
-		//managementTextField = new TextField();
-		//managementTextField.defaultTextFormat = staffTextFormat;
-		//managementTextField.width = 10;
-		//managementTextField.height = 15;
-		//managementTextField.x = doctorTextField.x;
-		//managementTextField.y = nurseTextField.y + 12;
-		//managementTextField.text = management + "";
-		//addChild(managementTextField);
-		//
-		//healthcareTextField = new TextField();
-		//healthcareTextField.defaultTextFormat = staffTextFormat;
-		//healthcareTextField.width = 10;
-		//healthcareTextField.height = 15;
-		//healthcareTextField.x = doctorTextField.x;
-		//healthcareTextField.y = managementTextField.y + 12;
-		//healthcareTextField.text = healthcare + "";
-		//addChild(healthcareTextField);
-		//
-		//equipmentTextField = new TextField();
-		//equipmentTextField.defaultTextFormat = staffTextFormat;
-		//equipmentTextField.width = 50;
-		//equipmentTextField.height = 15;
-		//equipmentTextField.x = doctorTextField.x;
-		//equipmentTextField.y = healthcareTextField.y + 12;
-		//equipmentTextField.text = equipment + "";
-		//addChild(equipmentTextField);
 	}
 	
 }

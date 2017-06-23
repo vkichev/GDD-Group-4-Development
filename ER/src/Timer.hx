@@ -10,6 +10,7 @@ import openfl.display.JointStyle;
  * Draws an outline for the boundaries of the shape.
  * Creates a shape to fill the outline.
  * Scaling the shape with the fill to a value between 0 and 1 makes this bar's size between 0 and 100 percent of the original width
+ * @author Manno Bult
  */
 class Timer extends Sprite
 {

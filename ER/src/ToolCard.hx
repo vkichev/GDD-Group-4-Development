@@ -10,6 +10,13 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 import screens.GameScreen;
 
+/**
+ * This class is the ToolCards, which get its information from the database once it gets loaded in the GameScreen class.
+ * This class remembers which image/tool was assigned to it. 
+ * This class remembers the current and needed values for the 4 Staffcard stats, and puts it on the cards. 
+ * It will change a public variavle to show once it has been completed.
+ * @author Group 4
+ */
 class ToolCard extends Sprite {
 	
 	var gamescreen : GameScreen;
@@ -56,6 +63,16 @@ class ToolCard extends Sprite {
 	public var originalX : Float;
 	public var originalY : Float;
 
+	/**
+	 * Loads the variables from the GameScreen class, which gets it from the batabase.
+	 * @param	imageName		Name of the inmage
+	 * @param	doc				Doctor value	
+	 * @param	nur				Nurse value
+	 * @param	mng				Manager value
+	 * @param	hcw				Healthcare value
+	 * @param	typ				Type of tool (A,B,C,D,E)
+	 * @param	gs				Link with the gamescreen class.
+	 */
 	public function new (imageName : String, doc : Int, nur : Int, mng : Int, hcw : Int, typ : String, gs : GameScreen)
 	{
 		super();
@@ -89,6 +106,10 @@ class ToolCard extends Sprite {
 		
 	}
 	
+	/**
+	 * Marks a tool as solved once it's staff values are 0 or lower.
+	 * @param	e	frameupdate
+	 */
 	function update(e:Event)
 	{
 		if (doctor <= 0 && nurse <= 0 && management <= 0 && healthcare <= 0)
@@ -103,6 +124,9 @@ class ToolCard extends Sprite {
 		}
 	}
 	
+	/**
+	 * Resets the staff values back to the needed values for this tool. 
+	 */
 	public function restoreDefaults()
 	{
 		doctor = orDoc;
@@ -117,6 +141,11 @@ class ToolCard extends Sprite {
 		createStaffFields();
 	}
 	
+	/**
+	 * Updates the current values of the staff values needed, by subtracting the selected StaffCard value.
+	 * @param	type
+	 * @param	value
+	 */
 	public function assignStaffCard(type:String, value:Int)
 	{
 		switch (type) {
@@ -127,19 +156,12 @@ class ToolCard extends Sprite {
 		}
 	}
 	
+	/**
+	 * Adds the 'dots' that show the amount of staff needed to the ToolCard.
+	 */
 	function createStaffFields()
 	{
-		//var staffTextFormat : TextFormat = new TextFormat("_sans", 12, 0xFF0000, true);
-		//doctorTextField = new TextField();
-		//doctorTextField.defaultTextFormat = staffTextFormat;
-		//doctorTextField.width = 10;
-		//doctorTextField.height = 15;
-		//doctorTextField.x = card.x + 30;
-		//doctorTextField.y = card.y + 11;
-		//doctorTextField.text = doctor + "";
-		//addChild(doctorTextField);
-		
-		//outer line of the circle
+		//outer line of the empty circle
 		dSprite = new Sprite();
 		for (i in 0...5)
 		{
@@ -178,7 +200,7 @@ class ToolCard extends Sprite {
 		}
 		addChild(hSprite);
 		
-		//the inner part of the circles
+		//the inner part of the empty circles
 		dSpriteInner = new Sprite();
 		for (i in 0...5)
 		{
@@ -217,7 +239,7 @@ class ToolCard extends Sprite {
 		}
 		addChild(hSpriteInner);
 		
-		//adds white circles
+		//adds white full circles
 		removeChild(doctorSprite);
 		doctorSprite = new Sprite();
 		for (i in 0...doctor)
@@ -259,42 +281,6 @@ class ToolCard extends Sprite {
 			healthcareSprite.graphics.endFill();
 		}
 		addChild(healthcareSprite);
-		
-		//nurseTextField = new TextField();
-		//nurseTextField.defaultTextFormat = staffTextFormat;
-		//nurseTextField.width = 10;
-		//nurseTextField.height = 15;
-		//nurseTextField.x = doctorTextField.x;
-		//nurseTextField.y = doctorTextField.y + 12;
-		//nurseTextField.text = nurse + "";
-		//addChild(nurseTextField);
-		//
-		//managementTextField = new TextField();
-		//managementTextField.defaultTextFormat = staffTextFormat;
-		//managementTextField.width = 10;
-		//managementTextField.height = 15;
-		//managementTextField.x = doctorTextField.x;
-		//managementTextField.y = nurseTextField.y + 12;
-		//managementTextField.text = management + "";
-		//addChild(managementTextField);
-		//
-		//healthcareTextField = new TextField();
-		//healthcareTextField.defaultTextFormat = staffTextFormat;
-		//healthcareTextField.width = 10;
-		//healthcareTextField.height = 15;
-		//healthcareTextField.x = doctorTextField.x;
-		//healthcareTextField.y = managementTextField.y + 12;
-		//healthcareTextField.text = healthcare + "";
-		//addChild(healthcareTextField);
-		//
-		//equipmentTextField = new TextField();
-		//equipmentTextField.defaultTextFormat = staffTextFormat;
-		//equipmentTextField.width = 50;
-		//equipmentTextField.height = 15;
-		//equipmentTextField.x = doctorTextField.x;
-		//equipmentTextField.y = healthcareTextField.y + 12;
-		//equipmentTextField.text = equipment + "";
-		//addChild(equipmentTextField);
 	}
 
 }

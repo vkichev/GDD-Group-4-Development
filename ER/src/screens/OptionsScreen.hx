@@ -13,8 +13,12 @@ import openfl.media.SoundChannel;
 import openfl.media.SoundTransform;
 
 /**
- * ...
- * @author ...
+ * The option screen with the toggles for sound and music.
+ * Contains:
+ * Sound Toggle
+ * Music Toggle
+ * 'Back' button
+ * @author Vasil Kichev 
  */
 class OptionsScreen extends Screen
 {
@@ -27,6 +31,10 @@ class OptionsScreen extends Screen
 		super();
 	}
 	
+	/**
+	 * Creates two toggles; One for sounds and one for music. Sets them to their current position, according to the positions in the Main class.
+	 * Adds sounds to the toggles.
+	 */
 	override public function onLoad():Void
 	{
 		createBackButton();
@@ -78,6 +86,9 @@ class OptionsScreen extends Screen
 		
 	}
 	
+	/**
+	 * creates the back button.
+	 */
 	function createBackButton() 
 	{
 		var toMenu:Button = new Button
@@ -93,6 +104,9 @@ class OptionsScreen extends Screen
 		addChild(toMenu);
 	}
 	
+	/**
+	 * closes the channel and loads the MenuScreen.
+	 */
 	function onBackClick()
 	{
 		if (channel != null)
@@ -103,6 +117,10 @@ class OptionsScreen extends Screen
 		Main.instance.loadScreen( ScreenType.Menu );
 	}
 	
+	/**
+	 * Sets muteST to true if the toggle is set to false. 
+	 * muteST will not allow music in the game/menu if set to false.
+	 */ 
 	private function music()
 	{
 		if (musicToggle.state == false)
@@ -122,6 +140,10 @@ class OptionsScreen extends Screen
 		}
 	}
 	
+	/**
+	 * Sets muteFX to true if the toggle is set to false. 
+	 * muteFX will not allow soundeffects in the game/menu if set to false.
+	 */ 
 	private function sounds()
 	{
 		if (soundToggle.state == false)
